@@ -1,0 +1,35 @@
+Users:
+  <UserID>:
+    Details:
+      FullName: String
+      PhoneNumber: String
+      DateOfBirth: Date
+      Address: String
+    Events:
+      Pending: [EventID]
+      Registered: [EventID]
+      Previous: [EventID]
+Charities:
+  <CharityID>:
+    Name: String
+    Address: String
+    PhoneNumber: String
+    Description: String
+    Category: [String]
+    Events:
+      UpComing: [EventID]
+      Preveious: [EventID]
+Events:
+  <EventID>:
+    Name: String
+    Category: [String]
+    Address: [String]
+    Time: Date
+    Organisers: [CharityID]
+    NumberOfVolunteers:
+      Minimum: Integer
+      Maximum: Integer
+    Volunteers:
+      PendingVolunteers: [UserID]
+      SelectedVolunteers: [UserID]
+      AttendedVolunteers: [UserID]
