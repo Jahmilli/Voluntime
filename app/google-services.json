@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "980927246898",
+    "firebase_url": "https://voluntime-27851.firebaseio.com",
+    "project_id": "voluntime-27851",
+    "storage_bucket": "voluntime-27851.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980927246898:android:777c6fb3d05b3fa0",
+        "android_client_info": {
+          "package_name": "team7.voluntime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980927246898-qb8n6bk8i6q63f2q8v3deb072sjlp25m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbzv2D1QNQywGJg8t9tTN-u2DtfSdzCPg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
