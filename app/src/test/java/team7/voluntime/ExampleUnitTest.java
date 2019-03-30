@@ -1,4 +1,4 @@
-package yourteamnumber.seshealthpatient;
+package team7.voluntime;
 
 import org.junit.Test;
 
