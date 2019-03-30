@@ -18,12 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-import team7.voluntime.Fragments.DataPacketFragment;
-import team7.voluntime.Fragments.HeartRateFragment;
 import team7.voluntime.Fragments.MapFragment;
-import team7.voluntime.Fragments.PatientInformationFragment;
-import team7.voluntime.Fragments.RecordVideoFragment;
-import team7.voluntime.Fragments.SendFileFragment;
 import team7.voluntime.R;
 
 
@@ -72,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        PATIENT_INFO, DATA_PACKET, HEARTRATE, RECORD_VIDEO, SEND_FILE, NAVIGATION_MAP
+        NAVIGATION_MAP
     }
 
     /**
@@ -87,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // the default fragment on display is the patient information
-        currentState = MenuStates.PATIENT_INFO;
+        currentState = MenuStates.NAVIGATION_MAP;
 
         // go look for the main drawer layout
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
@@ -116,38 +111,6 @@ public class MainActivity extends AppCompatActivity {
                         // Using a switch to see which item on the menu was clicked
                         switch (menuItem.getItemId()) {
                             // You can find these id's at: res -> menu -> drawer_view.xml
-                            case R.id.nav_patient_info:
-                                // If the user clicked on a different item than the current item
-                                if (currentState != MenuStates.PATIENT_INFO) {
-                                    // change the fragment to the new fragment
-                                    ChangeFragment(new PatientInformationFragment());
-                                    currentState = MenuStates.PATIENT_INFO;
-                                }
-                                break;
-                            case R.id.nav_data_packet:
-                                if (currentState != MenuStates.DATA_PACKET) {
-                                    ChangeFragment(new DataPacketFragment());
-                                    currentState = MenuStates.DATA_PACKET;
-                                }
-                                break;
-                            case R.id.nav_heartrate:
-                                if (currentState != MenuStates.HEARTRATE) {
-                                    ChangeFragment(new HeartRateFragment());
-                                    currentState = MenuStates.HEARTRATE;
-                                }
-                                break;
-                            case R.id.nav_recordvideo:
-                                if (currentState != MenuStates.RECORD_VIDEO) {
-                                    ChangeFragment(new RecordVideoFragment());
-                                    currentState = MenuStates.RECORD_VIDEO;
-                                }
-                                break;
-                            case R.id.nav_sendfile:
-                                if (currentState != MenuStates.SEND_FILE) {
-                                    ChangeFragment(new SendFileFragment());
-                                    currentState = MenuStates.SEND_FILE;
-                                }
-                                break;
                             case R.id.nav_map:
                                 if (currentState != MenuStates.NAVIGATION_MAP) {
                                     ChangeFragment(new MapFragment());
@@ -191,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the default Fragment once the user logged in
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.fragment_container, new PatientInformationFragment());
+        ft.add(R.id.fragment_container, new MapFragment());
         ft.commit();
     }
 
