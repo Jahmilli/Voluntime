@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // the default fragment on display is the patient information
+        // the default fragment on display is the volunteer information
         currentState = MenuStates.NAVIGATION_MAP;
 
         // go look for the main drawer layout

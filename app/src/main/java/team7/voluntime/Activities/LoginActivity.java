@@ -20,14 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -324,6 +321,7 @@ public class LoginActivity extends AppCompatActivity {
                         startSetup();
                     }
                 } catch (Exception e) {
+                    // TODO: Handle Exception and maybe catch more specific Exceptions
 //                    startSetup();
                     Log.d(TAG, "An exception occurred during setupCompleteCheck");
                     Log.d(TAG, e.toString());
@@ -366,7 +364,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onBackPressed();
         this.finishAffinity();
     }
-
 
     // This listens to any requests made in the activity and deals with them appropriately
     @Override

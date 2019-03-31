@@ -1,31 +1,395 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SetupActivity">
+    android:animateLayoutChanges="true"
+    android:background="@drawable/gradient_login_bg"
+    android:orientation="horizontal">
 
-    <android.support.design.widget.AppBarLayout
+    <TextView
+        android:id="@+id/introSetupTV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Welcome to Voluntime"
+        android:textSize="50sp"
+        android:visibility="gone"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <LinearLayout
+        android:id="@+id/selectSetupLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/selectCharityTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border"
+            android:text="Charity"
+            android:textColor="#154c40"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/selectVolunteerTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_border"
+            android:text="Volunteer"
+            android:textColor="#154c40"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <!-- Volunteer Setup First Screen -->
+    <ScrollView
+        android:id="@+id/setupFirstVolunteerSV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="25dp">
 
-    </android.support.design.widget.AppBarLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Volunteer Setup"
+                android:textColor="#222"
+                android:textSize="37sp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Volunteer Setup"
+                android:textSize="23sp"
+                android:textColor="#555"/>
 
-</android.support.design.widget.CoordinatorLayout>
+            <EditText
+                android:id="@+id/volunteerNameET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_top"
+                android:ems="10"
+                android:hint="Full Name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/volunteerPhoneET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_middle"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/volunteerDOBET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_middle"
+                android:focusable="false"
+                android:hint="Date of Birth"
+                android:inputType="date"/>
+
+            <EditText
+                android:id="@+id/volunteerAddressET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_bottom"
+                android:ems="10"
+                android:hint="Address"
+                android:inputType="textPostalAddress" />
+
+            <RadioGroup
+                android:id="@+id/volunteerGenderRG"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Gender:"
+                    android:textSize="23sp" />
+
+                <RadioButton
+                    android:id="@+id/volunteerMaleRB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Male"
+                    android:textColor="#666"
+                    android:textSize="23sp" />
+
+                <RadioButton
+                    android:id="@+id/volunteerFemaleRB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                    android:textColor="#666"
+                    android:textSize="23sp" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/setupInitVolunteer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:text="Back"
+                    android:textColor="#154c40"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/setupNextVolunteer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:text="Next"
+                    android:textColor="#154c40"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Volunteer Setup Second Screen -->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/setupSecondVolunteerSV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Volunteer"
+                android:textColor="#222"
+                android:textSize="37sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Volunteer setup sec"
+                android:textSize="25sp"
+                android:textColor="#555"/>
+
+            <EditText
+                android:id="@+id/allergiesET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/edit_text_top"
+                android:ems="10"
+                android:hint="Allergies"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/medicationET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_bottom"
+                android:ems="10"
+                android:hint="Medication"
+                android:inputType="textMultiLine" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/setupBackVolunteer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:text="Back"
+                    android:textColor="#154c40"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/setupFinishVolunteer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:text="Finish"
+                    android:textColor="#154c40"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Charity Setup -->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/setupFirstCharitySV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register your Charity!"
+                android:textColor="#222"
+                android:textSize="40sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Charity Setup"
+                android:textSize="25sp"
+                android:textColor="#555"/>
+
+            <EditText
+                android:id="@+id/charityNameET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/edit_text_top"
+                android:ems="10"
+                android:hint="Charity Name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/charityAddressET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_middle"
+                android:ems="10"
+                android:hint="Charity Address"
+                android:inputType="textPostalAddress" />
+
+            <EditText
+                android:id="@+id/charityPhoneET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_middle"
+                android:ems="10"
+                android:hint="Charity Phone Number"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/charityDescriptionET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_middle"
+                android:ems="10"
+                android:hint="Charity Description"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/charityCategoryET"
+                style="@style/loginEditTexts"
+                android:background="@drawable/edit_text_bottom"
+                android:ems="10"
+                android:hint="Categories"
+                android:inputType="text" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/setupInitCharity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:text="Back"
+                    android:textColor="#154c40"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/setupFinishCharity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:text="Finish"
+                    android:textColor="#154c40"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
