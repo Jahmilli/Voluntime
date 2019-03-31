@@ -40,8 +40,8 @@
                 <EditText
                     android:id="@+id/loginEmailET"
                     style="@style/loginEditTexts"
-                    android:background="@drawable/edit_text_top"
                     android:drawableStart="@drawable/ic_mail_outline"
+                    android:layout_marginBottom="10sp"
                     android:hint="Email"
                     android:inputType="textEmailAddress" />
 
@@ -56,8 +56,8 @@
                 <EditText
                     android:id="@+id/loginPasswordET"
                     style="@style/loginEditTexts"
-                    android:background="@drawable/edit_text_bottom"
                     android:drawableStart="@drawable/ic_lock_outline"
+                    android:layout_marginTop="10sp"
                     android:hint="@string/password_txt"
                     android:inputType="textPassword" />
 
@@ -76,58 +76,35 @@
                 android:textColor="#eee" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_gravity="center"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/forgotPwTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Forgot your password?"
-                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/resetPasswordTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textStyle="bold"
+                    android:text="FORGOT PASSWORD?"
+                    android:layout_weight="1"
                     android:textColor="#154c40"
-                    android:text="Reset it here"
-                    android:textSize="16sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/noAccountTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Don't have an account?"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/createAccountTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:textAlignment="textEnd"
+                    android:layout_weight="1"
                     android:textStyle="bold"
                     android:textColor="#154c40"
-                    android:text="Create one here"
+                    android:text="JOIN NOW"
                     android:textSize="16sp"/>
 
             </LinearLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -3,6 +3,8 @@ package team7.voluntime.Activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,15 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-
-
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Fragments.MapFragment;
 import team7.voluntime.R;
-
 
 /**
  * Class: MainActivity
@@ -46,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
      * I recommend you to have a read of it if you need to do any changes to the code.
      */
     private DrawerLayout mDrawerLayout;
+    private FirebaseAuth mAuth;
+    private FirebaseUser fireBaseUser;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private Fragment fragment;
+    private NavigationView navigationView;
 
     /**
      * A reference to the toolbar
@@ -57,10 +70,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private FragmentManager fragmentManager;
 
-    /**
-     * TAG to use
-     */
-    private static String TAG = "MainActivity";
+    private final static String TAG = "MainActivity";
 
     /**
      * I am using this enum to know which is the current fragment being displayed, you will see
@@ -75,11 +85,30 @@ public class MainActivity extends AppCompatActivity {
      */
     private MenuStates currentState;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+        fireBaseUser = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Users").child(fireBaseUser.getUid());
+
+        ButterKnife.bind(this);
+
+        // go look for the main drawer layout
+        mDrawerLayout = findViewById(R.id.main_drawer_layout);
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+            }
+        };
 
         // the default fragment on display is the volunteer information
         currentState = MenuStates.NAVIGATION_MAP;
@@ -156,6 +185,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.fragment_container, new MapFragment());
         ft.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthStateListener);
     }
 
     /**

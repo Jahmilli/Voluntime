@@ -105,8 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (firebaseAuth.getCurrentUser() != null && isUserVerified()) {
                     if (!LoginActivity.this.isFinishing()) {
                         Log.d(TAG, "Logging in " + firebaseAuth.getCurrentUser().getEmail());
-//                        progressDialog.setMessage(getString(R.string.login_progress_dialog));
-//                        progressDialog.show();
+                        progressDialog.setMessage(getString(R.string.login_progress_dialog));
+                        progressDialog.show();
                     }
                     mAuth.removeAuthStateListener(mAuthStateListener);
                     setupCompletedCheck();
@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
-        String logoName = "health_icon_1.png";
+        String logoName = "heart.png";
         try {
             InputStream stream = getAssets().open(logoName);
             Drawable d = Drawable.createFromStream(stream, null);
@@ -153,17 +153,19 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthStateListener);
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this); // TODO: Figure out what to do with this
+
+        // TODO: Figure out what to do with this
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 //        updateUI(account);
     }
 
-//     Navigation method to 'CreateAccountActivity'
+    // Navigation method to 'CreateAccountActivity'
     @OnClick(R.id.createAccountTV)
     public void navToCreateAccount() {
         startActivity(new Intent(this, CreateAccountActivity.class));
     }
 
-//     Navigation method to 'ForgotPasswordFragment'
+    // Navigation method to 'ForgotPasswordFragment'
     @OnClick(R.id.resetPasswordTV)
     public void navToForgotPassword() {
         startActivity(new Intent(this, ForgotPasswordActivity.class));
@@ -311,22 +313,24 @@ public class LoginActivity extends AppCompatActivity {
         reference = database.getReference("Users").child(user.getUid());
         reference.keepSynced(true);
 
-        reference.child("setupComplete").addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child("SetupComplete").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     if (dataSnapshot.getValue() != null && (boolean) dataSnapshot.getValue()) {
+                        Log.d(TAG, "LOGGING IN: In the correct statement");
                         startMain();
                     } else {
+                        Log.d(TAG, "LOGGING IN: In the wrong statement");
                         startSetup();
                     }
                 } catch (Exception e) {
                     // TODO: Handle Exception and maybe catch more specific Exceptions
 //                    startSetup();
-                    Log.d(TAG, "An exception occurred during setupCompleteCheck");
+                    Log.d(TAG, "LOGGING IN: An exception occurred during setupCompleteCheck");
                     Log.d(TAG, e.toString());
                 }
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
             }
 
             @Override
@@ -337,14 +341,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startMain() {
-        reference.child("accountType").addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child("AccountType").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "START MAIN: " + dataSnapshot.getValue() );
                 if (dataSnapshot.getValue() == null) {
                     startSetup();
                 } else {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class)
-                            .putExtra("accountType", dataSnapshot.getValue().toString()));
+                            .putExtra("AccountType", dataSnapshot.getValue().toString()));
                 }
             }
 

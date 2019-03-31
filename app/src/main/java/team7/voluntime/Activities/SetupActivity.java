@@ -85,9 +85,6 @@ public class SetupActivity extends AppCompatActivity {
     @BindView(R.id.setupFirstVolunteerSV)
     ScrollView setupFirstVolunteerSV;
 
-    @BindView(R.id.setupSecondVolunteerSV)
-    ScrollView setupSecondVolunteerSV;
-
     @BindView(R.id.setupFirstCharitySV)
     ScrollView setupFirstCharitySV;
 
@@ -116,7 +113,6 @@ public class SetupActivity extends AppCompatActivity {
         isVolunteer = false;
         selectSetupLL.setVisibility(View.GONE);
         setupFirstVolunteerSV.setVisibility(View.GONE);
-        setupSecondVolunteerSV.setVisibility(View.GONE);
         currentPage = 2;
     }
 
@@ -133,28 +129,13 @@ public class SetupActivity extends AppCompatActivity {
         selectSetupLL.setVisibility(View.VISIBLE);
         setupFirstCharitySV.setVisibility(View.VISIBLE);
         setupFirstVolunteerSV.setVisibility(View.VISIBLE);
-        setupSecondVolunteerSV.setVisibility(View.VISIBLE);
         currentPage = 1;
-    }
-
-    @OnClick(R.id.setupNextVolunteer)
-    public void toNextPageVolunteer() {
-        if (checkPassedFirstVolunteer()) {
-            setupFirstVolunteerSV.setVisibility(View.GONE);
-            currentPage = 3;
-        }
-    }
-
-    @OnClick(R.id.setupBackVolunteer)
-    public void toPreviousPageVolunteer() {
-        setupFirstVolunteerSV.setVisibility(View.VISIBLE);
-        currentPage = 2;
     }
 
     @OnClick(R.id.setupFinishVolunteer)
     public void setVolunteerInfo() {
         // TODO: Decide whether there will be a second screen
-//        if (checkPassedSecondVolunteer()) {
+        if (checkPassedFirstVolunteer()) {
             reference = database.getReference("Users").child(user.getUid());
             String name = volunteerNameET.getText().toString().trim();
             String email = mAuth.getCurrentUser().getEmail();
@@ -169,11 +150,11 @@ public class SetupActivity extends AppCompatActivity {
             reference.child("Profile").child("PhoneNumber").setValue(phoneNumber);
             reference.child("Profile").child("DateOfBirth").setValue(date);
             reference.child("Profile").child("Address").setValue(address);
-            reference.child("Profile").child("Gender").setValue(address);
+            reference.child("Profile").child("Gender").setValue(gender);
 
 
-        reference.child("setupComplete").setValue(true);
-            
+            reference.child("SetupComplete").setValue(true);
+
             // TODO: Remove this as charities and volunteers wont come under the same 'User' Profile
             reference.child("AccountType").setValue("Volunteer");
 
@@ -181,7 +162,7 @@ public class SetupActivity extends AppCompatActivity {
             intent.putExtra("AccountType", "Volunteer");
             startActivity(intent);
             finish();
-//        }
+        }
     }
 
     public boolean checkPassedFirstVolunteer() {
@@ -191,8 +172,8 @@ public class SetupActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (volunteerPhoneET.getText().toString().replaceAll(" ", "").length() != 10 || !StringUtils.isNumericSpace(volunteerPhoneET.getText().toString())) {
-            Toast.makeText(this, "Please enter a mobile number following the 04XX XXX XXX format", Toast.LENGTH_SHORT).show();
+        if (!isValidPhoneNumber(volunteerPhoneET.getText().toString())) {
+            Toast.makeText(this, "Please enter a phone number following the 04XX XXX XXX format", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (volunteerDOBET.getText().toString().trim().isEmpty()) {
@@ -214,16 +195,10 @@ public class SetupActivity extends AppCompatActivity {
         return true;
     }
 
-//    public boolean checkPassedSecondVolunteer() {
-//        Log.d(TAG, "Check all fields being called");
-//        if (allergiesET.getText().toString().trim().isEmpty()) {
-//            allergiesET.setText("N/A");
-//        }
-//        if (medicationET.getText().toString().trim().isEmpty()) {
-//            medicationET.setText("N/A");
-//        }
-//        return true;
-//    }
+    public boolean isValidPhoneNumber(String phoneET) {
+        phoneET = phoneET.replaceAll(" ", "");
+        return (phoneET.length() == 8 || phoneET.length() == 10) && StringUtils.isNumericSpace(phoneET.toString());
+    }
 
     private boolean isValidDOB() {
         Calendar currentCal = Calendar.getInstance();
@@ -281,8 +256,8 @@ public class SetupActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter your address", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (charityPhoneET.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "Please enter your phone number", Toast.LENGTH_SHORT).show();
+        if (!isValidPhoneNumber(charityPhoneET.getText().toString())) {
+            Toast.makeText(this, "Please enter a phone number following the 04XX XXX XXX format", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (charityDescriptionET.getText().toString().trim().isEmpty()) {
@@ -340,7 +315,7 @@ public class SetupActivity extends AppCompatActivity {
         charityPhoneET.addTextChangedListener(phoneNumberTextWatcher(charityPhoneET));
     }
 
-    // Edits text being inputted to follow phone number format
+    // Edits text being inputted to display phone number format
     public TextWatcher phoneNumberTextWatcher(final EditText phoneET) {
         return new TextWatcher() {
             int previousLength = 0;
@@ -360,8 +335,9 @@ public class SetupActivity extends AppCompatActivity {
                 String input = phoneET.getText().toString();
                 int currentLength = input.length();
 
-                if ((previousLength < currentLength) && (currentLength == 4 || currentLength == 8))
+                if ((previousLength < currentLength) && (currentLength == 4 || currentLength == 8)) {
                     phoneET.append(" ");
+                }
             }
         };
     }
@@ -372,8 +348,6 @@ public class SetupActivity extends AppCompatActivity {
             logOut();
         else if (currentPage == 2)
             returnToInit();
-        else if (currentPage == 3 && isVolunteer)
-            toPreviousPageVolunteer();
     }
 
     @Override
