@@ -3,6 +3,8 @@ package team7.voluntime.Activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,20 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-
-
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import team7.voluntime.Fragments.DataPacketFragment;
-import team7.voluntime.Fragments.HeartRateFragment;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Fragments.MapFragment;
-import team7.voluntime.Fragments.PatientInformationFragment;
-import team7.voluntime.Fragments.RecordVideoFragment;
-import team7.voluntime.Fragments.SendFileFragment;
 import team7.voluntime.R;
-
 
 /**
  * Class: MainActivity
@@ -51,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
      * I recommend you to have a read of it if you need to do any changes to the code.
      */
     private DrawerLayout mDrawerLayout;
+    private FirebaseAuth mAuth;
+    private FirebaseUser fireBaseUser;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private Fragment fragment;
+    private NavigationView navigationView;
 
     /**
      * A reference to the toolbar
@@ -62,17 +70,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private FragmentManager fragmentManager;
 
-    /**
-     * TAG to use
-     */
-    private static String TAG = "MainActivity";
+    private final static String TAG = "MainActivity";
 
     /**
      * I am using this enum to know which is the current fragment being displayed, you will see
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        PATIENT_INFO, DATA_PACKET, HEARTRATE, RECORD_VIDEO, SEND_FILE, NAVIGATION_MAP
+        NAVIGATION_MAP
     }
 
     /**
@@ -80,14 +85,33 @@ public class MainActivity extends AppCompatActivity {
      */
     private MenuStates currentState;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // the default fragment on display is the patient information
-        currentState = MenuStates.PATIENT_INFO;
+        mAuth = FirebaseAuth.getInstance();
+        fireBaseUser = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Users").child(fireBaseUser.getUid());
+
+        ButterKnife.bind(this);
+
+        // go look for the main drawer layout
+        mDrawerLayout = findViewById(R.id.main_drawer_layout);
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+            }
+        };
+
+        // the default fragment on display is the volunteer information
+        currentState = MenuStates.NAVIGATION_MAP;
 
         // go look for the main drawer layout
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
@@ -116,38 +140,6 @@ public class MainActivity extends AppCompatActivity {
                         // Using a switch to see which item on the menu was clicked
                         switch (menuItem.getItemId()) {
                             // You can find these id's at: res -> menu -> drawer_view.xml
-                            case R.id.nav_patient_info:
-                                // If the user clicked on a different item than the current item
-                                if (currentState != MenuStates.PATIENT_INFO) {
-                                    // change the fragment to the new fragment
-                                    ChangeFragment(new PatientInformationFragment());
-                                    currentState = MenuStates.PATIENT_INFO;
-                                }
-                                break;
-                            case R.id.nav_data_packet:
-                                if (currentState != MenuStates.DATA_PACKET) {
-                                    ChangeFragment(new DataPacketFragment());
-                                    currentState = MenuStates.DATA_PACKET;
-                                }
-                                break;
-                            case R.id.nav_heartrate:
-                                if (currentState != MenuStates.HEARTRATE) {
-                                    ChangeFragment(new HeartRateFragment());
-                                    currentState = MenuStates.HEARTRATE;
-                                }
-                                break;
-                            case R.id.nav_recordvideo:
-                                if (currentState != MenuStates.RECORD_VIDEO) {
-                                    ChangeFragment(new RecordVideoFragment());
-                                    currentState = MenuStates.RECORD_VIDEO;
-                                }
-                                break;
-                            case R.id.nav_sendfile:
-                                if (currentState != MenuStates.SEND_FILE) {
-                                    ChangeFragment(new SendFileFragment());
-                                    currentState = MenuStates.SEND_FILE;
-                                }
-                                break;
                             case R.id.nav_map:
                                 if (currentState != MenuStates.NAVIGATION_MAP) {
                                     ChangeFragment(new MapFragment());
@@ -191,8 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the default Fragment once the user logged in
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.fragment_container, new PatientInformationFragment());
+        ft.add(R.id.fragment_container, new MapFragment());
         ft.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthStateListener);
     }
 
     /**
