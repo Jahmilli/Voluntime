@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.show();
                     }
                     mAuth.removeAuthStateListener(mAuthStateListener);
-                    setupCompletedCheck();
+                    setupCompletedCheck(false);
                 }
             }
         };
@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
 
         // TODO: Figure out what to do with this
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        // GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 //        updateUI(account);
     }
 
@@ -254,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail: sucess");
                             if (isUserVerified()) {
                                 mAuth.removeAuthStateListener(mAuthStateListener);
-                                setupCompletedCheck();
+                                setupCompletedCheck(false);
                             }
                         } else {
                             Log.d(TAG, "signInWithEmail: failure", task.getException());
@@ -308,29 +308,42 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    public void setupCompletedCheck() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = database.getReference("Users").child(user.getUid());
-        reference.keepSynced(true);
+    // This will likely be called multiple times on login to check whether user is either a volunteer or charity
+    public void setupCompletedCheck(boolean hasRun) {
+        if (!hasRun) {
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            checkAccountExists(database.getReference("Volunteers").child(user.getUid()), false);
+        } else {
+            checkAccountExists(database.getReference("Charities").child(user.getUid()), true);
+        }
 
-        reference.child("SetupComplete").addListenerForSingleValueEvent(new ValueEventListener() {
+    }
+
+    // Not sure how I feel about this but for now it'll allow us to have Charities and Volunteers as separate root elements -seb
+    public void checkAccountExists(final DatabaseReference ref, final boolean hasRun) {
+        boolean userExists = false;
+        ref.child("SetupComplete").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     if (dataSnapshot.getValue() != null && (boolean) dataSnapshot.getValue()) {
-                        Log.d(TAG, "LOGGING IN: In the correct statement");
+                        reference = ref;
+                        reference.keepSynced(true);
+                        progressDialog.dismiss();
                         startMain();
                     } else {
-                        Log.d(TAG, "LOGGING IN: In the wrong statement");
-                        startSetup();
+                        if (hasRun) {
+                            progressDialog.dismiss();
+                            startSetup();
+                        } else {
+                            setupCompletedCheck(true);
+                        }
                     }
                 } catch (Exception e) {
                     // TODO: Handle Exception and maybe catch more specific Exceptions
-//                    startSetup();
                     Log.d(TAG, "LOGGING IN: An exception occurred during setupCompleteCheck");
                     Log.d(TAG, e.toString());
                 }
-                progressDialog.dismiss();
             }
 
             @Override
@@ -340,11 +353,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //
     public void startMain() {
         reference.child("AccountType").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "START MAIN: " + dataSnapshot.getValue() );
                 if (dataSnapshot.getValue() == null) {
                     startSetup();
                 } else {

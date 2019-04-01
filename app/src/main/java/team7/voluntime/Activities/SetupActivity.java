@@ -136,7 +136,7 @@ public class SetupActivity extends AppCompatActivity {
     public void setVolunteerInfo() {
         // TODO: Decide whether there will be a second screen
         if (checkPassedFirstVolunteer()) {
-            reference = database.getReference("Users").child(user.getUid());
+            reference = database.getReference("Volunteers").child(user.getUid());
             String name = volunteerNameET.getText().toString().trim();
             String email = mAuth.getCurrentUser().getEmail();
             String date = volunteerDOBET.getText().toString().trim();
@@ -152,10 +152,7 @@ public class SetupActivity extends AppCompatActivity {
             reference.child("Profile").child("Address").setValue(address);
             reference.child("Profile").child("Gender").setValue(gender);
 
-
             reference.child("SetupComplete").setValue(true);
-
-            // TODO: Remove this as charities and volunteers wont come under the same 'User' Profile
             reference.child("AccountType").setValue("Volunteer");
 
             Intent intent = new Intent(SetupActivity.this, MainActivity.class);
@@ -214,10 +211,11 @@ public class SetupActivity extends AppCompatActivity {
         dob.set(Calendar.MONTH, month);
         dob.set(Calendar.YEAR, year);
         Log.d(TAG, "IsValidDOB being called: " + dob);
-        if(dob.before(currentCal))
+        if(dob.before(currentCal)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     @OnClick(R.id.setupFinishCharity)
@@ -237,7 +235,7 @@ public class SetupActivity extends AppCompatActivity {
             reference.child("Profile").child("Category").setValue(category);
 
             reference.child("SetupComplete").setValue(true);
-            reference.child("AccountType").setValue("charity");
+            reference.child("AccountType").setValue("Charity");
 
             Intent intent = new Intent(SetupActivity.this, MainActivity.class);
             intent.putExtra("AccountType", "Charity");

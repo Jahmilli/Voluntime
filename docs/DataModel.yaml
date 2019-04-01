@@ -1,4 +1,4 @@
-Users:
+Volunteers:
   <UserID>:
     Profile:
       FullName: String
@@ -19,13 +19,13 @@ Charities:
       Description: String
       Category: [String]
     Events:
-      UpComing: [EventID]
+      Upcoming: [EventID]
       Previous: [EventID]
 Events:
   <EventID>:
     Name: String
     Category: [String]
-    Address: [String]
+    Location: [String] # See if we can use [Location] if we can use Java Objects
     Time: Date
     Organisers: CharityID
     NumberOfVolunteers:
