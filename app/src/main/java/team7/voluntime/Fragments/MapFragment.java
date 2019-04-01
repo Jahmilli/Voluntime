@@ -49,6 +49,7 @@ public class MapFragment extends Fragment {
     public void logout() {
         Log.d(TAG, "Logging out now");
         FirebaseAuth.getInstance().signOut();
+        // TODO: Potentially put a check around this to logout only once we've verified user has logged out
         startActivity(new Intent(getContext(), LoginActivity.class));
         getActivity().finish();
     }
