@@ -9,6 +9,7 @@
 * Java Development Kit (JDK) (Comes with Android Studio)
 * An emulator with API version >= 20 OR a physical Android device
 * Git (https://git-scm.com/downloads)
+* Trello (https://trello.com/invite/b/uRSHuzCW/2baa4493996715fa1f62579eed44f479/team-7-volunteer-services-application)
 
 ### Running the Application
 1. From the directory you want to download the application source code into, run:
