@@ -24,8 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import team7.voluntime.Fragments.MapFragment;
+import team7.voluntime.Fragments.Charities.CreateEventFragment;
+import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.R;
 
 /**
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private DrawerLayout mDrawerLayout;
     private FirebaseAuth mAuth;
-    private FirebaseUser fireBaseUser;
+    private FirebaseUser mUser;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -71,13 +71,14 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
 
     private final static String TAG = "MainActivity";
+    private static String accountType;
 
     /**
      * I am using this enum to know which is the current fragment being displayed, you will see
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        NAVIGATION_MAP
+        EVENT, LOGOUT, PROFILE
     }
 
     /**
@@ -90,10 +91,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Gets extra from either login activity or setupActivity
+        // TODO: Determine whether we need to handle null accountType being passed in
+        Bundle extra = getIntent().getExtras();
+        accountType = extra.getString("AccountType");
+
         mAuth = FirebaseAuth.getInstance();
-        fireBaseUser = mAuth.getCurrentUser();
+        mUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Users").child(fireBaseUser.getUid());
+        if (accountType != null && accountType.equals("Volunteer")) {
+            reference = database.getReference("Volunteers").child(mUser.getUid());
+            Log.d(TAG, "User " + mUser.getEmail() + "is registered as a: " + accountType);
+        } else if (accountType != null && accountType.equals("Charity")) {
+            Log.d(TAG, "User " + mUser.getEmail() + "is registered as a: " + accountType);
+            reference = database.getReference("Charities").child(mUser.getUid());
+        } else {
+            // Handle this
+            Log.d(TAG, "Incorrect account type: " + accountType);
+        }
 
         ButterKnife.bind(this);
 
@@ -111,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // the default fragment on display is the volunteer information
-        currentState = MenuStates.NAVIGATION_MAP;
+        currentState = MenuStates.PROFILE;
 
         // go look for the main drawer layout
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
@@ -125,9 +140,20 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+
+        if (accountType.equals("Volunteer")) {
+            initVolunteer();
+        } else if (accountType.equals("Charity")) {
+            initCharity();
+        } else {
+            // TODO: Handle this case
+            Log.d(TAG, "Issue with initialising main activity based on account, accountType is: " + accountType);
+        }
+                    
         // Setup the navigation drawer, most of this code was taken from:
         // https://developer.android.com/training/implementing-navigation/nav-drawer
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -140,10 +166,25 @@ public class MainActivity extends AppCompatActivity {
                         // Using a switch to see which item on the menu was clicked
                         switch (menuItem.getItemId()) {
                             // You can find these id's at: res -> menu -> drawer_view.xml
-                            case R.id.nav_map:
-                                if (currentState != MenuStates.NAVIGATION_MAP) {
-                                    ChangeFragment(new MapFragment());
-                                    currentState = MenuStates.NAVIGATION_MAP;
+                            case R.id.nav_event:
+                                if (currentState != MenuStates.EVENT) {
+                                    ChangeFragment(new CreateEventFragment());
+                                    currentState = MenuStates.EVENT;
+                                }
+                                break;
+                            case R.id.nav_profile:
+                                if (currentState != MenuStates.PROFILE) {
+                                    ChangeFragment(new UserProfileFragment());
+                                    currentState = MenuStates.PROFILE;
+                                }
+                                break;
+                            case R.id.nav_logout:
+                                if (currentState != MenuStates.LOGOUT) {
+                                    Log.d(TAG, "Logging out now");
+                                    FirebaseAuth.getInstance().signOut();
+                                    // TODO: Potentially put a check around this to logout only once we've verified user has logged out
+                                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                    finish();
                                 }
                                 break;
                         }
@@ -183,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the default Fragment once the user logged in
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.fragment_container, new MapFragment());
+        ft.add(R.id.fragment_container, new UserProfileFragment());
         ft.commit();
     }
 
@@ -212,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
      * @param newTitle The new title to write in the
      */
     public void ChangeTitle(String newTitle) {
-        toolbar.setTitle(newTitle);
+        toolbar.setTitle("hello");
     }
 
 
@@ -225,5 +266,15 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void initCharity() {
+        navigationView.inflateMenu(R.menu.drawer_view_charity);
+        navigationView.setCheckedItem(R.id.nav_profile);
+    }
+
+    public void initVolunteer() {
+        navigationView.inflateMenu(R.menu.drawer_view_volunteer);
+        navigationView.setCheckedItem(R.id.nav_profile);
     }
 }

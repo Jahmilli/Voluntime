@@ -1,4 +1,4 @@
-package team7.voluntime.Fragments;
+package team7.voluntime.Fragments.Common;
 
 
 import android.content.Intent;
@@ -21,12 +21,12 @@ import team7.voluntime.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
     private final static String TAG = "MapFragment";
 
 
-    public MapFragment() {
+    public UserProfileFragment() {
         // Required empty public constructor
     }
 
@@ -35,7 +35,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_map, container, false);
+        View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.bind(this, v);
         return v;
     }
@@ -43,15 +43,6 @@ public class MapFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @OnClick(R.id.nav_logout_main)
-    public void logout() {
-        Log.d(TAG, "Logging out now");
-        FirebaseAuth.getInstance().signOut();
-        // TODO: Potentially put a check around this to logout only once we've verified user has logged out
-        startActivity(new Intent(getContext(), LoginActivity.class));
-        getActivity().finish();
     }
 
 }
