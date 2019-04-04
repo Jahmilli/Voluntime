@@ -9,7 +9,6 @@
     <string name="password_reset_txt">Enter your E-mail below and we\'ll send you a link to reset it</string>
 
 
-
     <string name="email_authentication_message_success">A verification email has been sent to your account. Please click on the link sent to verify your account</string>
     <string name="email_authentication_message_failure">Failed to create account</string>
     <string name="create_account_txt">Creating account</string>
