@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,15 +34,21 @@ import team7.voluntime.Activities.LoginActivity;
 import team7.voluntime.Activities.MainActivity;
 import team7.voluntime.R;
 
+import static android.view.View.VISIBLE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UserProfileFragment extends Fragment {
 
     private final static String TAG = "UserProfileFragment";
-    private String userFname;
+
+    //Local variables used in the store database values
     private String Type;
     private String UserName;
+    private String DOB;
+    private String Phone;
+    private String Address;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -61,6 +68,18 @@ public class UserProfileFragment extends Fragment {
 
     @BindView(R.id.uEmail)
     TextView uEmail;
+
+    @BindView(R.id.uPhone)
+    TextView uPhone;
+
+    @BindView(R.id.uAddress)
+    TextView uAddress;
+
+    @BindView(R.id.uDob)
+    TextView uDob;
+
+    @BindView(R.id.cDob)
+    LinearLayout cDob;
 
 
     public UserProfileFragment() {
@@ -83,34 +102,52 @@ public class UserProfileFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
 
         //Shit design
-        DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference("Volunteers");
+        DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference(getType());
 
         typeRef.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Type = dataSnapshot.child("AccountType").getValue().toString();
-                    UserName = dataSnapshot.child("Profile").child("FullName").getValue().toString();
+                    if (getType().equals("Volunteers")) {
+                        Type = dataSnapshot.child("AccountType").getValue().toString();
+                        UserName = dataSnapshot.child("Profile").child("FullName").getValue().toString();
+                        Phone = dataSnapshot.child("Profile").child("PhoneNumber").getValue().toString();
+                        Address = dataSnapshot.child("Profile").child("Address").getValue().toString();
+
+                        DOB = dataSnapshot.child("Profile").child("DateOfBirth").getValue().toString();
+                        cDob.setVisibility(VISIBLE);
+                        uDob.setText(DOB);
+                    }
+                    if (getType().equals("Charities")) {
+                        Type = dataSnapshot.child("AccountType").getValue().toString();
+                        UserName = dataSnapshot.child("Profile").child("Name").getValue().toString();
+                        Address = dataSnapshot.child("Profile").child("Address").getValue().toString();
+                        Phone = dataSnapshot.child("Profile").child("PhoneNumber").getValue().toString();
+                    }
                     uName.setText(UserName);
                     uType.setText(Type);
+                    uPhone.setText(Phone);
+                    uAddress.setText(Address);
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
-
-        uType.setText("None");
         uEmail.setText(mUser.getEmail());
 
-        uName.setText("None");
         return v;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public String getType() {
+        String type = MainActivity.getAccountType();
+        if (type.equals("Volunteer")) return "Volunteers";
+        else return "Charities";
     }
 
 }
