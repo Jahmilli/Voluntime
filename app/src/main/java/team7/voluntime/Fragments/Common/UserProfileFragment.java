@@ -1,36 +1,29 @@
 package team7.voluntime.Fragments.Common;
 
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Activities.LoginActivity;
 import team7.voluntime.Activities.MainActivity;
 import team7.voluntime.R;
 
@@ -49,6 +42,9 @@ public class UserProfileFragment extends Fragment {
     private String DOB;
     private String Phone;
     private String Address;
+    //Bindings
+    @BindView(R.id.edit)
+    ImageView editLogo;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -57,9 +53,9 @@ public class UserProfileFragment extends Fragment {
     private DatabaseReference reference;
 
     private static String accountType;
+    @BindView(R.id.volunteerStuff)
+    LinearLayout volunteerStuff;
 
-
-    //Bindings
     @BindView(R.id.uName)
     TextView uName;
 
@@ -74,18 +70,18 @@ public class UserProfileFragment extends Fragment {
 
     @BindView(R.id.uAddress)
     TextView uAddress;
+    @BindView(R.id.uGen)
+    TextView uGen;
 
     @BindView(R.id.uDob)
     TextView uDob;
+    private String GEN;
 
-    @BindView(R.id.cDob)
-    LinearLayout cDob;
 
 
     public UserProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,13 +91,9 @@ public class UserProfileFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         //Charity or Volunteer
-
-
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-
-        //Shit design
         DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference(getType());
 
         typeRef.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -109,14 +101,17 @@ public class UserProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     if (getType().equals("Volunteers")) {
+                        volunteerStuff.setVisibility(VISIBLE);
                         Type = dataSnapshot.child("AccountType").getValue().toString();
                         UserName = dataSnapshot.child("Profile").child("FullName").getValue().toString();
                         Phone = dataSnapshot.child("Profile").child("PhoneNumber").getValue().toString();
                         Address = dataSnapshot.child("Profile").child("Address").getValue().toString();
 
                         DOB = dataSnapshot.child("Profile").child("DateOfBirth").getValue().toString();
-                        cDob.setVisibility(VISIBLE);
                         uDob.setText(DOB);
+
+                        GEN = dataSnapshot.child("Profile").child("Gender").getValue().toString();
+                        uGen.setText(GEN);
                     }
                     if (getType().equals("Charities")) {
                         Type = dataSnapshot.child("AccountType").getValue().toString();
@@ -128,13 +123,14 @@ public class UserProfileFragment extends Fragment {
                     uType.setText(Type);
                     uPhone.setText(Phone);
                     uAddress.setText(Address);
+                    uEmail.setText(mUser.getEmail());
+
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        uEmail.setText(mUser.getEmail());
 
         return v;
     }
@@ -144,10 +140,18 @@ public class UserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @OnClick(R.id.edit)
+    public void onClick(View arg0) {
+        Toast.makeText(getContext(), "Function Not Complete", Toast.LENGTH_LONG).show();
+
+    }
+
+
     public String getType() {
         String type = MainActivity.getAccountType();
         if (type.equals("Volunteer")) return "Volunteers";
         else return "Charities";
     }
+
 
 }
