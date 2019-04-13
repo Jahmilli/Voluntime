@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.apache.commons.lang3.StringUtils;
+
 import butterknife.ButterKnife;
 import team7.voluntime.Fragments.Charities.CreateEventFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         // Gets extra from either login activity or setupActivity
         // TODO: Determine whether we need to handle null accountType being passed in
         Bundle extra = getIntent().getExtras();
-        accountType = extra.getString("AccountType");
+        accountType = extra.getString("accountType");
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();

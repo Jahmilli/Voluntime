@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity {
     // Not sure how I feel about this but for now it'll allow us to have Charities and Volunteers as separate root elements -seb
     public void checkAccountExists(final DatabaseReference ref, final boolean hasRun) {
         boolean userExists = false;
-        ref.child("SetupComplete").addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("setupComplete").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
@@ -355,14 +355,14 @@ public class LoginActivity extends AppCompatActivity {
 
     //
     public void startMain() {
-        reference.child("AccountType").addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child("accountType").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
                     startSetup();
                 } else {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class)
-                            .putExtra("AccountType", dataSnapshot.getValue().toString()));
+                            .putExtra("accountType", dataSnapshot.getValue().toString()));
                 }
             }
 

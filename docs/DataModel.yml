@@ -1,0 +1,37 @@
+Volunteers:
+  <UserID>:
+    Profile:
+      name: String
+      phoneNumber: String
+      dateOfBirth: Date
+      address: String
+      gender: String
+    Events:
+      pending: [EventID]
+      registered: [EventID]
+      previous: [EventID]
+Charities:
+  <CharityID>:
+    Profile:
+      name: String
+      address: String
+      phoneNumber: String
+      description: String
+      category: [String]
+    Events:
+      upcoming: [EventID]
+      previous: [EventID]
+Events:
+  <EventID>:
+    name: String
+    category: [String]
+    location: [String] # See if we can use [Location] if we can use Java Objects
+    time: Date
+    organisers: CharityID
+    numberOfVolunteers:
+      minimum: Integer
+      maximum: Integer
+    Volunteers:
+      pendingVolunteers: [UserID]
+      registeredVolunteers: [UserID]
+      attendedVolunteers: [UserID]
