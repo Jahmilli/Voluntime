@@ -1,5 +1,6 @@
 package team7.voluntime.Fragments.Charities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Activities.CreateEventActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
@@ -46,6 +48,13 @@ public class ViewEventsFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//
+        getActivity().setTitle("View Events");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -62,6 +71,9 @@ public class ViewEventsFragment extends Fragment {
                 charity = dataSnapshot.getValue(Charity.class);
                 charity.setId(mUser.getUid());
                 Log.d(TAG, charity.toString());
+                if (charity.getName() != null) {
+                    createEventTitleTV.setText(charity.getName());
+                }
             }
 
             @Override
@@ -69,10 +81,6 @@ public class ViewEventsFragment extends Fragment {
                 Log.e(TAG, "The read failed: " + databaseError.getCode());
             }
         });
-
-        if (charity != null && charity.getName() != null) {
-            createEventTitleTV.setText(charity.getName());
-        }
 
         return v;
     }
@@ -85,6 +93,9 @@ public class ViewEventsFragment extends Fragment {
     @OnClick(R.id.createEventIV)
     public void createEventOnClick() {
         Log.d(TAG, "Clicked");
+        Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
+        createEventIntent.putExtra("id", charity.getId());
+        startActivity(createEventIntent);
     }
 
 }
