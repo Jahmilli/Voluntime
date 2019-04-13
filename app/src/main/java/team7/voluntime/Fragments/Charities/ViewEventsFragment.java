@@ -1,9 +1,7 @@
 package team7.voluntime.Fragments.Charities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,21 +17,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Activities.LoginActivity;
-import team7.voluntime.Activities.MainActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
 
-public class CreateEventFragment extends Fragment {
+public class ViewEventsFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private FirebaseUser mUser;
@@ -45,10 +38,10 @@ public class CreateEventFragment extends Fragment {
     @BindView(R.id.createEventIV)
     ImageView createEventIV;
 
-    private final static String TAG = "CreateEventFragment";
+    private final static String TAG = "ViewEventsFragment";
 
 
-    public CreateEventFragment() {
+    public ViewEventsFragment() {
         // Required empty public constructor
     }
 
@@ -56,18 +49,16 @@ public class CreateEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_create_event, container, false);
+        View v = inflater.inflate(R.layout.fragment_view_events, container, false);
         ButterKnife.bind(this, v);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
         reference = Utilities.getCharityReference(database, mUser.getUid());
 
         // Attach a listener to read the data at our posts reference
-        Log.d(TAG, "Made it before reference");
         reference.child("Profile").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "In datasnapshot");
                 charity = dataSnapshot.getValue(Charity.class);
                 charity.setId(mUser.getUid());
                 Log.d(TAG, charity.toString());

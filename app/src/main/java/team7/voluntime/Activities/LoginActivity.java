@@ -45,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Utilities;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -312,9 +313,11 @@ public class LoginActivity extends AppCompatActivity {
     public void setupCompletedCheck(boolean hasRun) {
         if (!hasRun) {
             user = FirebaseAuth.getInstance().getCurrentUser();
-            checkAccountExists(database.getReference("Volunteers").child(user.getUid()), false);
+//            checkAccountExists(database.getReference("Volunteers").child(user.getUid()), false);
+            checkAccountExists(Utilities.getVolunteerReference(database, user.getUid()), false);
         } else {
-            checkAccountExists(database.getReference("Charities").child(user.getUid()), true);
+//            checkAccountExists(database.getReference("Charities").child(user.getUid()), true);
+            checkAccountExists(Utilities.getCharityReference(database, user.getUid()), true);
         }
 
     }
