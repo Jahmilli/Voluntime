@@ -1,9 +1,11 @@
 package team7.voluntime.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,19 +15,64 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Array;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Utilities;
 
 public class CreateEventActivity extends AppCompatActivity {
-
+    private FirebaseDatabase database;
+    private DatabaseReference eventsReference;
+    private DatabaseReference charityReference;
+    private FirebaseUser mUser;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+    private String id;
+    private String categories;
+    private ArrayList<String> upcomingEvents;
+
+
+    @BindView(R.id.createEventTitleET)
+    EditText createEventTitleET;
+
+    @BindView(R.id.createEventDescriptionET)
+    EditText createEventDescriptionET;
+
+    @BindView(R.id.createEventLocationET)
+    EditText createEventLocationET;
 
     @BindView(R.id.createEventDateET)
     EditText eventDateET;
+
+    @BindView(R.id.createEventMinAttendeesET)
+    EditText createEventMinAttendeesET;
+
+    @BindView(R.id.createEventMaxAttendeesET)
+    EditText createEventMaxAttendeesET;
+
 
     private final static String TAG = "CreateEventActivity";
 
@@ -34,9 +81,12 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
         ButterKnife.bind(this);
-
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        database = FirebaseDatabase.getInstance();
         addListeners();
-
+        Bundle extra = getIntent().getExtras();
+        id = extra.getString("id");
+        categories = extra.getString("categories");
 
     }
 
@@ -79,6 +129,131 @@ public class CreateEventActivity extends AppCompatActivity {
                 eventDateET.setText(currentDateString);
             }
         };
+    }
+
+    private void getUpcomingEvents(final String eventId) {
+        charityReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                        upcomingEvents = (ArrayList<String>) dataSnapshot.getValue();
+                        upcomingEvents.add(eventId);
+                        charityReference.setValue(upcomingEvents);
+                } else {
+                    upcomingEvents = new ArrayList<>();
+                    upcomingEvents.add(eventId);
+                    charityReference.setValue(upcomingEvents);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // Will say a month before the current month is valid for whatever reason... too tired to look into
+    private boolean isValidEventDate() {
+        Calendar currentCal = Calendar.getInstance();
+        Calendar dob = Calendar.getInstance();
+        String date = eventDateET.getText().toString().trim();
+        if (date.length() == 0) {
+            return false;
+        }
+        int day = Integer.parseInt(date.substring(0, 2));
+        int month = Integer.parseInt(date.substring(3, 5));
+        int year = Integer.parseInt(date.substring(6, 10));
+        dob.set(Calendar.DAY_OF_MONTH, day);
+        dob.set(Calendar.MONTH, month);
+        dob.set(Calendar.YEAR, year);
+        Log.d(TAG, "IsValidDOB being called: " + dob);
+        if(dob.after(currentCal)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @OnClick(R.id.createEventSubmitBtn)
+    public void submitEvent() {
+        if (checkValidFields()) {
+            eventsReference = database.getReference("Events");
+            String eventId = eventsReference.push().getKey();
+            charityReference = database.getReference("Charities").child(id).child("Events").child("upcoming");
+            Map event = new HashMap();
+            Map volunteers = new HashMap();
+            String title = createEventTitleET.getText().toString().trim();
+            String description = createEventDescriptionET.getText().toString().trim();
+            String location = createEventLocationET.getText().toString().trim();
+
+            String date = eventDateET.getText().toString().trim(); // Make date object
+            String currentTime = Utilities.getCurrentDate();
+
+
+            String minAttendees = createEventMinAttendeesET.getText().toString().trim();
+            String maxAttendees = createEventMaxAttendeesET.getText().toString().trim();
+
+            event.put("title", title);
+            event.put("description", description);
+            event.put("category", categories);
+            event.put("location", location);
+            event.put("date", date);
+            event.put("createdTime", currentTime);
+            event.put("organisers", id); // There could eventually be multiple organisers but for now, just one!
+
+            volunteers.put("minimum", minAttendees);
+            volunteers.put("maximum", maxAttendees);
+            volunteers.put("pendingVolunteers", new ArrayList<String>());
+            volunteers.put("registeredVolunteers", new ArrayList<String>());
+            volunteers.put("attendedVolunteers", new ArrayList<String>());
+            event.put("volunteers", volunteers);
+
+            eventsReference.child(eventId).setValue(event);
+            getUpcomingEvents(eventId);
+            Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT);
+
+            Intent intent = new Intent(CreateEventActivity.this, MainActivity.class);
+            intent.putExtra("accountType", "Charity");
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    public boolean checkValidFields() {
+        Log.d(TAG, "Check all fields being called");
+
+        if (createEventTitleET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(createEventTitleET.getText().toString())) {
+            Toast.makeText(this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (createEventDescriptionET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(createEventDescriptionET.getText().toString())) {
+            Toast.makeText(this, "Please enter a valid event description", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (createEventLocationET.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Fill in a valid location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!isValidEventDate()) {
+            Toast.makeText(this, "Fill in a valid date for this event to be run", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (createEventMinAttendeesET.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Fill in a valid number of minimum attendees", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (createEventMaxAttendeesET.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Fill in a valid number of maximum attendees", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
 

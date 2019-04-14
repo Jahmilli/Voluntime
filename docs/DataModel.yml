@@ -3,7 +3,7 @@ Volunteers:
     Profile:
       name: String
       phoneNumber: String
-      dateOfBirth: Date
+      dateOfBirth: String
       address: String
       gender: String
     Events:
@@ -23,15 +23,16 @@ Charities:
       previous: [EventID]
 Events:
   <EventID>:
-    name: String
+    title: String
+    description: String
     category: [String]
     location: [String] # See if we can use [Location] if we can use Java Objects
-    time: Date
+    date: String
+    createdTime: String
     organisers: CharityID
-    numberOfVolunteers:
+    volunteers:
       minimum: Integer
       maximum: Integer
-    Volunteers:
       pendingVolunteers: [UserID]
       registeredVolunteers: [UserID]
       attendedVolunteers: [UserID]

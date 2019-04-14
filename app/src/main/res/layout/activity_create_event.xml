@@ -40,7 +40,7 @@
                 android:drawableStart="@drawable/ic_lock_outline"
                 android:layout_marginTop="10sp"
                 android:hint="Event Title"
-                android:inputType="textPassword" />
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/createEventDescriptionET"
@@ -48,7 +48,7 @@
                 android:drawableStart="@drawable/ic_lock_outline"
                 android:layout_marginTop="10sp"
                 android:hint="Description"
-                android:inputType="textPassword" />
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/createEventLocationET"
@@ -56,14 +56,14 @@
                 android:drawableStart="@drawable/ic_lock_outline"
                 android:layout_marginTop="10sp"
                 android:hint="Location"
-                android:inputType="textPassword" />
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/createEventDateET"
                 style="@style/loginEditTexts"
                 android:focusable="false"
                 android:layout_marginTop="10sp"
-                android:hint="Date of Birth"
+                android:hint="Event Date"
                 android:inputType="date"/>
 
             <EditText

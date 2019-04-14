@@ -1,8 +1,8 @@
 package team7.voluntime.Fragments.Charities;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,6 +95,7 @@ public class ViewEventsFragment extends Fragment {
         Log.d(TAG, "Clicked");
         Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
         createEventIntent.putExtra("id", charity.getId());
+        createEventIntent.putExtra("categories", charity.getCategory());
         startActivity(createEventIntent);
     }
 
