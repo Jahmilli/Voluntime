@@ -30,7 +30,7 @@ Events:
     date: String
     createdTime: String
     organisers: CharityID
-    volunteers:
+    EventVolunteers:
       minimum: Integer
       maximum: Integer
       pendingVolunteers: [UserID]

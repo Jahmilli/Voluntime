@@ -40,6 +40,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Domains.Event;
+import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -56,22 +58,22 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
     @BindView(R.id.createEventTitleET)
-    EditText createEventTitleET;
+    EditText titleET;
 
     @BindView(R.id.createEventDescriptionET)
-    EditText createEventDescriptionET;
+    EditText descriptionET;
 
     @BindView(R.id.createEventLocationET)
-    EditText createEventLocationET;
+    EditText locationET;
 
     @BindView(R.id.createEventDateET)
     EditText eventDateET;
 
     @BindView(R.id.createEventMinAttendeesET)
-    EditText createEventMinAttendeesET;
+    EditText minAttendeesET;
 
     @BindView(R.id.createEventMaxAttendeesET)
-    EditText createEventMaxAttendeesET;
+    EditText maxAttendeesET;
 
 
     private final static String TAG = "CreateEventActivity";
@@ -183,16 +185,14 @@ public class CreateEventActivity extends AppCompatActivity {
             charityReference = database.getReference("Charities").child(id).child("Events").child("upcoming");
             Map event = new HashMap();
             Map volunteers = new HashMap();
-            String title = createEventTitleET.getText().toString().trim();
-            String description = createEventDescriptionET.getText().toString().trim();
-            String location = createEventLocationET.getText().toString().trim();
 
+            String title = titleET.getText().toString().trim();
+            String description = descriptionET.getText().toString().trim();
+            String location = locationET.getText().toString().trim();
             String date = eventDateET.getText().toString().trim(); // Make date object
             String currentTime = Utilities.getCurrentDate();
-
-
-            String minAttendees = createEventMinAttendeesET.getText().toString().trim();
-            String maxAttendees = createEventMaxAttendeesET.getText().toString().trim();
+            int minAttendees = Integer.parseInt(minAttendeesET.getText().toString().trim());
+            int maxAttendees = Integer.parseInt(maxAttendeesET.getText().toString().trim());
 
             event.put("title", title);
             event.put("description", description);
@@ -204,10 +204,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
             volunteers.put("minimum", minAttendees);
             volunteers.put("maximum", maxAttendees);
-            volunteers.put("pendingVolunteers", new ArrayList<String>());
-            volunteers.put("registeredVolunteers", new ArrayList<String>());
-            volunteers.put("attendedVolunteers", new ArrayList<String>());
-            event.put("volunteers", volunteers);
+            event.put("EventVolunteers", volunteers);
 
             eventsReference.child(eventId).setValue(event);
             getUpcomingEvents(eventId);
@@ -222,18 +219,20 @@ public class CreateEventActivity extends AppCompatActivity {
 
     public boolean checkValidFields() {
         Log.d(TAG, "Check all fields being called");
+        int minNum = Integer.parseInt(minAttendeesET.getText().toString().trim());
+        int maxNum = Integer.parseInt(maxAttendeesET.getText().toString().trim());
 
-        if (createEventTitleET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(createEventTitleET.getText().toString())) {
+        if (titleET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(titleET.getText().toString())) {
             Toast.makeText(this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (createEventDescriptionET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(createEventDescriptionET.getText().toString())) {
+        if (descriptionET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(descriptionET.getText().toString())) {
             Toast.makeText(this, "Please enter a valid event description", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (createEventLocationET.getText().toString().trim().isEmpty()) {
+        if (locationET.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Fill in a valid location", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -243,13 +242,13 @@ public class CreateEventActivity extends AppCompatActivity {
             return false;
         }
 
-        if (createEventMinAttendeesET.getText().toString().trim().isEmpty()) {
+        if (minAttendeesET.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Fill in a valid number of minimum attendees", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (createEventMaxAttendeesET.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "Fill in a valid number of maximum attendees", Toast.LENGTH_SHORT).show();
+        if (maxAttendeesET.getText().toString().trim().isEmpty() || maxNum < minNum) {
+            Toast.makeText(this, "Fill in a valid number of maximum attendees that is greater than your minimum", Toast.LENGTH_SHORT).show();
             return false;
         }
 
