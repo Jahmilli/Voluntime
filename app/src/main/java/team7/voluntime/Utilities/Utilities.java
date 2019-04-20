@@ -17,6 +17,10 @@ public class Utilities {
         return firebaseDatabase.getReference("Volunteers").child(id);
     }
 
+    public static DatabaseReference getEventsReference(FirebaseDatabase firebaseDatabase) {
+        return firebaseDatabase.getReference("Events");
+    }
+
     public static String getCurrentDate() {
         Timestamp currentTime = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
         String s = new SimpleDateFormat("dd/MM/yyyy").format(currentTime);

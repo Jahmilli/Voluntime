@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
      * @param newTitle The new title to write in the
      */
     public void ChangeTitle(String newTitle) {
-        toolbar.setTitle("hello");
+        toolbar.setTitle(newTitle);
     }
 
 

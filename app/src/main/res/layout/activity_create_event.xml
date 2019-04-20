@@ -76,7 +76,7 @@
                 android:id="@+id/createEventMaxAttendeesET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
-                android:hint="Maximum number of attendees"  
+                android:hint="Maximum number of attendees"
                 android:inputType="number"/>
 
             <Button
