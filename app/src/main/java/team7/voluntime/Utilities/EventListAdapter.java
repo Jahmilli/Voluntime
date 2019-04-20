@@ -52,6 +52,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
+        TextView dateTV = (TextView) convertView.findViewById(R.id.adapterEventDateTV);
         TextView titleTV = (TextView) convertView.findViewById(R.id.adapterEventTitleTV);
 //        ImageView patientProfileIV = (ImageView) convertView.findViewById(R.id.patientProfileIV);
 //        ImageView patientRejectIV = (ImageView) convertView.findViewById(R.id.patientRejectIV);
@@ -119,6 +120,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 //                }
 //            });
 
+        dateTV.setText(date);
         titleTV.setText(title);
         return convertView;
     }

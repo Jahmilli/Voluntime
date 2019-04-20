@@ -171,7 +171,7 @@ public class CreateEventActivity extends AppCompatActivity {
         if (checkValidFields()) {
             eventsReference = database.getReference("Events");
             String eventId = eventsReference.push().getKey();
-            charityReference = database.getReference("Charities").child(id).child("Events").child("upcoming");
+            charityReference = database.getReference("Charities").child(id).child("Events").child("Upcoming");
             Map event = new HashMap();
             Map volunteers = new HashMap();
 
