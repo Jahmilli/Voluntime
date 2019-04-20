@@ -25,6 +25,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,6 +90,7 @@ public class ViewEventsFragment extends Fragment {
         listOfPreviousEvents = (ListView) v.findViewById(R.id.listOfPreviousEventsLV);
         final ArrayList<Event> upcomingEventList = new ArrayList<>();
         final ArrayList<Event> previousEventList = new ArrayList<>();
+
         final HashMap<String, String> upcomingEvents = new HashMap<>();
         final HashMap<String, String> previousEvents = new HashMap<>();
 
@@ -169,6 +171,11 @@ public class ViewEventsFragment extends Fragment {
                                 String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
                                         ? child.child("EventVolunteers").child("maximum").getValue().toString() : null;
 
+                                // TODO: Create pending, registered and attended
+//                                if (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null) {
+//                                    Map map = child.child("EventVolunteers").child("pendingVolunteers").getValue(Map.class);
+//                                    Log.d(TAG, "map is " + map.toString());
+//                                }
 //                                ArrayList<String> pendingVolunteers = (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null)
 //                                        ? child.child("pendingVolunteers").getValue() : null;
 //                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
@@ -189,39 +196,20 @@ public class ViewEventsFragment extends Fragment {
                                 event.setVolunteers(eventVolunteers);
 
                                 // Will only display events that the charity has created
-                                Log.d(TAG, "Organisers are: " + event.getOrganisers() + "\tMyID: " + mUser.getUid());
                                 if (event.getOrganisers().equals(mUser.getUid())) {
                                     Log.d(TAG, event.toString());
                                     if (upcomingEvents.containsKey(eventId)) {
-                                        Log.d(TAG, "Upcoming events contains " + eventId);
                                         upcomingEventList.add(event);
                                         if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
                                             upcomingEventsTV.setVisibility(View.INVISIBLE);
                                         }
                                     } else if (previousEvents.containsKey(eventId)) {
-                                        Log.d(TAG, "Previous events contains " + eventId);
                                         previousEventList.add(event);
                                         if (previousEventsTV.getVisibility() != View.INVISIBLE) {
                                             previousEventsTV.setVisibility(View.INVISIBLE);
                                         }
-                                    } else {
-                                        Log.d(TAG, "NEITHER event contains " + eventId);
-                                        Log.d(TAG, "UPCOMING: " + upcomingEventList.toString());
-                                        Log.d(TAG, "PREVIOUS: " + previousEventList.toString());
                                     }
-//                                    if (child.child("approved").exists()) {
-//                                        if (child.child("approved").getValue().toString().equals("pending")) {
-//                                            pendingPatientList.add(patient);
-//                                            if (pendingPatientsTV.getVisibility() != View.INVISIBLE)
-//                                                pendingPatientsTV.setVisibility(View.INVISIBLE);
-//                                        } else if (child.child("approved").getValue().toString().equals("accepted")) {
-//                                            patientList.add(patient);
-//                                            if (currentPatientsTV.getVisibility() != View.INVISIBLE)
-//                                                currentPatientsTV.setVisibility(View.INVISIBLE);
-//                                        }
-//                                        listOfPatients.invalidateViews();
-//                                        listOfPendingPatients.invalidateViews();
-//                                    }
+
                                     listOfUpcomingEvents.invalidateViews();
                                     listOfPreviousEvents.invalidateViews();
                                 }
@@ -252,7 +240,6 @@ public class ViewEventsFragment extends Fragment {
 
     @OnClick(R.id.createEventIV)
     public void createEventOnClick() {
-        Log.d(TAG, "Clicked");
         Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
         createEventIntent.putExtra("id", charity.getId());
         createEventIntent.putExtra("categories", charity.getCategory());
