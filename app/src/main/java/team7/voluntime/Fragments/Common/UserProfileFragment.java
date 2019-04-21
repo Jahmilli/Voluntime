@@ -42,22 +42,29 @@ public class UserProfileFragment extends Fragment {
     private String DOB;
     private String Phone;
     private String Address;
+    @BindView(R.id.charityStuff)
+    LinearLayout charityStuff;
+    @BindView(R.id.uCat)
+    TextView uCat;
+    @BindView(R.id.uDesc)
+    TextView uDesc;
+    private String GEN;
+    private String Category;
+    private String Desc;
+
     //Bindings
     @BindView(R.id.edit)
     ImageView editLogo;
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseUser mUser;
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
-
-    private static String accountType;
     @BindView(R.id.volunteerStuff)
     LinearLayout volunteerStuff;
+    //Local database refrence
+    private FirebaseAuth mAuth;
 
     @BindView(R.id.uName)
     TextView uName;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseUser mUser;
 
     @BindView(R.id.uType)
     TextView uType;
@@ -70,13 +77,12 @@ public class UserProfileFragment extends Fragment {
 
     @BindView(R.id.uAddress)
     TextView uAddress;
+
     @BindView(R.id.uGen)
     TextView uGen;
 
     @BindView(R.id.uDob)
     TextView uDob;
-    private String GEN;
-
 
 
     public UserProfileFragment() {
@@ -90,10 +96,10 @@ public class UserProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.bind(this, v);
 
-        //Charity or Volunteer
+        //Get Current logedin instance from database
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        database = FirebaseDatabase.getInstance();
+        //Get Accoount type and pass it into getType() method to return corects string path
         DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference(getType());
 
         typeRef.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -114,10 +120,15 @@ public class UserProfileFragment extends Fragment {
                         uGen.setText(GEN);
                     }
                     if (getType().equals("Charities")) {
+                        charityStuff.setVisibility(VISIBLE);
                         Type = dataSnapshot.child("AccountType").getValue().toString();
                         UserName = dataSnapshot.child("Profile").child("Name").getValue().toString();
                         Address = dataSnapshot.child("Profile").child("Address").getValue().toString();
                         Phone = dataSnapshot.child("Profile").child("PhoneNumber").getValue().toString();
+                        Category = dataSnapshot.child("Profile").child("Category").getValue().toString();
+                        uCat.setText(Category);
+                        Desc = dataSnapshot.child("Profile").child("Description").getValue().toString();
+                        uDesc.setText(Desc);
                     }
                     uName.setText(UserName);
                     uType.setText(Type);
