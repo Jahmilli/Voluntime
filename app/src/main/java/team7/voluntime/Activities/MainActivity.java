@@ -24,9 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
-import team7.voluntime.Fragments.Charities.CreateEventFragment;
+import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Utilities;
 
 /**
  * Class: MainActivity
@@ -94,17 +95,19 @@ public class MainActivity extends AppCompatActivity {
         // Gets extra from either login activity or setupActivity
         // TODO: Determine whether we need to handle null accountType being passed in
         Bundle extra = getIntent().getExtras();
-        accountType = extra.getString("AccountType");
+        accountType = extra.getString("accountType");
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         if (accountType != null && accountType.equals("Volunteer")) {
-            reference = database.getReference("Volunteers").child(mUser.getUid());
+//            reference = database.getReference("Volunteers").child(mUser.getUid());
+            reference = Utilities.getVolunteerReference(database, mUser.getUid());
             Log.d(TAG, "User " + mUser.getEmail() + "is registered as a: " + accountType);
         } else if (accountType != null && accountType.equals("Charity")) {
             Log.d(TAG, "User " + mUser.getEmail() + "is registered as a: " + accountType);
-            reference = database.getReference("Charities").child(mUser.getUid());
+//            reference = database.getReference("Charities").child(mUser.getUid());
+            reference = Utilities.getCharityReference(database, mUser.getUid());
         } else {
             // Handle this
             Log.d(TAG, "Incorrect account type: " + accountType);
@@ -168,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                             // You can find these id's at: res -> menu -> drawer_view.xml
                             case R.id.nav_event:
                                 if (currentState != MenuStates.EVENT) {
-                                    ChangeFragment(new CreateEventFragment());
+                                    ChangeFragment(new ViewEventsFragment());
                                     currentState = MenuStates.EVENT;
                                 }
                                 break;
@@ -253,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
      * @param newTitle The new title to write in the
      */
     public void ChangeTitle(String newTitle) {
-        toolbar.setTitle("hello");
+        toolbar.setTitle(newTitle);
     }
 
 
