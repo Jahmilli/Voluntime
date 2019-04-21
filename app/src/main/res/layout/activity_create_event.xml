@@ -55,6 +55,7 @@
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
                 android:hint="Location"
+                android:focusable="false"
                 android:inputType="textMultiLine" />
 
             <EditText
