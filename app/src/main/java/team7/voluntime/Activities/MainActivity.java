@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import butterknife.ButterKnife;
 import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
-import team7.voluntime.Fragments.MapFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        EVENT, LOGOUT, PROFILE, MAP
+        EVENT, LOGOUT, PROFILE
     }
 
     /**
@@ -180,12 +179,6 @@ public class MainActivity extends AppCompatActivity {
                                 if (currentState != MenuStates.PROFILE) {
                                     ChangeFragment(new UserProfileFragment());
                                     currentState = MenuStates.PROFILE;
-                                }
-                                break;
-                            case R.id.nav_map:
-                                if (currentState != MenuStates.MAP) {
-                                    ChangeFragment(new MapFragment());
-                                    currentState = MenuStates.MAP;
                                 }
                                 break;
                             case R.id.nav_logout:

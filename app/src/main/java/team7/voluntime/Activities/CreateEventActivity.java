@@ -93,7 +93,6 @@ public class CreateEventActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         id = extra.getString("id");
         categories = extra.getString("categories");
-
     }
 
     public void addListeners() {
@@ -277,25 +276,13 @@ public class CreateEventActivity extends AppCompatActivity {
         if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
             latitude = data.getDoubleExtra("latitude", 0);
             longitude = data.getDoubleExtra("longitude", 0);
+            String address = data.getStringExtra("address");
             if (longitude == 0 && latitude == 0) {
                 Toast.makeText(this, "No Location was Selected", Toast.LENGTH_SHORT);
             } else {
-                setLocationText(latitude, longitude);
+                locationET.setText(address);
             }
         }
     }
-
-
-    private void setLocationText(double latitude, double longitude) {
-        List<Address> addresses = Utilities.getLocation(this, latitude, longitude);
-        if (addresses == null) {
-            Toast.makeText(this, "An error occurred when setting the location", Toast.LENGTH_SHORT);
-        } else {
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            locationET.setText(address);
-        }
-    }
-
-
 
 }

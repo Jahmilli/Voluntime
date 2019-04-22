@@ -4,12 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,74 +17,41 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-import team7.voluntime.Utilities.MapModels.LocationDefaults;
-import team7.voluntime.Utilities.MapModels.PlaceResult;
 import team7.voluntime.R;
-import team7.voluntime.Utilities.Services.Shigleton;
+import team7.voluntime.Utilities.MapModels.LocationDefaults;
+import team7.voluntime.Utilities.Utilities;
 
 public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Toolbar toolbar;
     private static final int DEFAULT_ZOOM = 15;
 
-    Location facilityLocation;
-    Marker mMarker;
     private AlertDialog.Builder helpAlertBuilder;
     private AlertDialog helpAlert;
     private LatLng latLng;
-
-    private MapView mMapView;
     private GoogleMap mGoogleMap;
-    private GeoDataClient mGeoDataClient;
-    private PlaceDetectionClient mPlaceDetectionClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     private boolean mLocationPermissionGranted;
     private Location mLastKnownLocation;
     private LatLng mDefaultLocation = new LatLng(-33.86, 151.2);
 
-    Double Latitude, Longitude, dLatitude, dLongitude;
-
     private final String TAG = "LocationActivity";
-
     private Button setEventLocationBtn;
 
     @Override
@@ -110,8 +75,6 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         
-        // provides access to Google's database of local place and business information
-        mGeoDataClient = Places.getGeoDataClient(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
     }
@@ -124,8 +87,9 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
-        setEventLocation();
+
         // Setting a click event handler for the map
+        setEventLocation();
     }
 
     /**
@@ -223,9 +187,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 // Setting the position for the marker
                 markerOptions.position(latLng);
 
+                final List<Address> addresses = Utilities.getLocation(getApplicationContext(), latLng.latitude, latLng.longitude);
                 // Setting the title for the marker.
                 // This will be displayed on taping the marker
-                markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                 markerOptions.title(addresses.get(0).getAddressLine(0));
 
                 // Clears the previously touched position
                 mGoogleMap.clear();
@@ -233,10 +198,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 // Animating to the touched position
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
+                Marker marker = mGoogleMap.addMarker(markerOptions);
+                marker.showInfoWindow();
                 // Placing a marker on the touched position
-                mGoogleMap.addMarker(markerOptions);
                 setEventLocationBtn.setVisibility(View.VISIBLE);
-
                 setEventLocationBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -245,17 +210,19 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                         Intent intent = new Intent(LocationActivity.this, CreateEventActivity.class);
                         intent.putExtra("longitude", markerOptions.getPosition().longitude);
                         intent.putExtra("latitude", markerOptions.getPosition().latitude);
+                        intent.putExtra("address", addresses.get(0).getAddressLine(0));
                         setResult(RESULT_OK, intent);
                         finish();
                     }
                 });
+
             }
         });
     }
     
     public void createHelpDialog() {
         helpAlertBuilder = new AlertDialog.Builder(this);
-        helpAlertBuilder.setMessage("Select a location for where your event will be run");
+        helpAlertBuilder.setMessage("Select a location for where your event will be run!");
         helpAlertBuilder.setCancelable(true);
         helpAlertBuilder.setPositiveButton(
                 "Ok",
