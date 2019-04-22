@@ -63,6 +63,7 @@ obj/
 /out/
 
 # Idea stuff
+*.idea/
 **/.idea/workspace.xml 
 **/.idea/tasks.xml
 
