@@ -37,13 +37,14 @@ public class Utilities {
         return s;
     }
 
+    // The return value of this can be used to get information about specific location you pass in as GPS coordinates
     public static List<Address> getLocation(Context mContext, double latitude, double longitude) {
         Geocoder geocoder;
         geocoder = new Geocoder(mContext, Locale.getDefault());
         try {
             return geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             /*
-            Possible values to get
+            A few of the possible values which can be used:
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
@@ -55,6 +56,7 @@ public class Utilities {
             Log.d(TAG, e.toString());
             Toast.makeText(mContext, "An error occurred when setting the location", Toast.LENGTH_SHORT);
         }
+        // TODO: Determine whether we can pass back something better than null :p
         return null;
     }
 }
