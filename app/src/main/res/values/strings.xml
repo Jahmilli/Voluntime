@@ -33,8 +33,4 @@
     <string name="email_failure">There was a problem sending an email to the listed email address, please try again and ensure you have the correct email address.</string>
     <string name="title_activity_create_event">CreateEventActivity</string>
     <string name="title_activity_location">LocationActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>
