@@ -27,7 +27,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/back"
+                    android:id="@+id/userprofileBack"
                     android:layout_width="433dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
@@ -37,7 +37,7 @@
                     android:textSize="20sp" />
 
                 <ImageButton
-                    android:id="@+id/edit"
+                    android:id="@+id/userprofileEditBtn"
                     android:layout_width="198dp"
                     android:layout_height="33dp"
                     android:layout_marginTop="20sp"
@@ -59,7 +59,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/uName"
+                    android:id="@+id/userprofileNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -70,7 +70,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/uType"
+                    android:id="@+id/userprofileTypeTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -87,7 +87,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/email"
+                        android:id="@+id/userprofileEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -96,7 +96,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/uEmail"
+                        android:id="@+id/userprofileEmailTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -111,7 +111,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/Phone"
+                        android:id="@+id/userprofilePhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -120,7 +120,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/uPhone"
+                        android:id="@+id/userprofilePhoneTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -135,7 +135,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                    android:id="@+id/Address"
+                        android:id="@+id/userprofileAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
@@ -144,7 +144,7 @@
                     android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/uAddress"
+                        android:id="@+id/userprofileAddressTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -155,7 +155,7 @@
 
                 <!-- Individual Volunteer Attributes -->
                 <LinearLayout
-                    android:id="@+id/volunteerStuff"
+                    android:id="@+id/userprofileVolunteerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -167,7 +167,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/Dob"
+                            android:id="@+id/userprofileDob"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -176,7 +176,7 @@
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/uDob"
+                            android:id="@+id/userprofileDobTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -190,7 +190,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/Gen"
+                            android:id="@+id/userprofileGen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -199,7 +199,7 @@
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/uGen"
+                            android:id="@+id/userprofileGenTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -208,7 +208,7 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/vHisButton"
+                        android:id="@+id/userprofileVolHisBtn"
                         android:layout_width="200sp"
                         android:layout_height="50sp"
                         android:layout_gravity="center"
@@ -220,7 +220,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/charityStuff"
+                android:id="@+id/userprofileCharityLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -232,7 +232,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/Cat"
+                        android:id="@+id/userprofileCat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -241,7 +241,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/uCat"
+                        android:id="@+id/userprofileCatTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -256,7 +256,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/Desc"
+                        android:id="@+id/userprofileDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -265,7 +265,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/uDesc"
+                        android:id="@+id/userprofileDescTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20sp"
