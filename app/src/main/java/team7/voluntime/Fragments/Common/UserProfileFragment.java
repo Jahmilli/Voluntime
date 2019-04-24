@@ -104,7 +104,6 @@ public class UserProfileFragment extends Fragment {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     emailTV.setText(mUser.getEmail());
                     if (getType().equals("Volunteers")) {
                         volunteerLayout.setVisibility(VISIBLE);
@@ -148,7 +147,6 @@ public class UserProfileFragment extends Fragment {
                         });
 
                     }
-                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
