@@ -32,5 +32,5 @@
     <string name="email_success">An email has been sent, please view it to update your password</string>
     <string name="email_failure">There was a problem sending an email to the listed email address, please try again and ensure you have the correct email address.</string>
     <string name="title_activity_create_event">CreateEventActivity</string>
-
+    <string name="title_activity_location">LocationActivity</string>
 </resources>

@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,15 +30,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.MapModels.LocationDefaults;
 import team7.voluntime.Utilities.Utilities;
 
 public class CreateEventActivity extends AppCompatActivity {
@@ -44,6 +55,11 @@ public class CreateEventActivity extends AppCompatActivity {
     private String id;
     private String categories;
     private ArrayList<String> upcomingEvents;
+    private double latitude;
+    private double longitude;
+
+    // Request Codes
+    private static final int LOCATION_REQUEST_CODE = 6;
 
 
     @BindView(R.id.createEventTitleET)
@@ -64,7 +80,6 @@ public class CreateEventActivity extends AppCompatActivity {
     @BindView(R.id.createEventMaxAttendeesET)
     EditText maxAttendeesET;
 
-
     private final static String TAG = "CreateEventActivity";
 
     @Override
@@ -78,7 +93,6 @@ public class CreateEventActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         id = extra.getString("id");
         categories = extra.getString("categories");
-
     }
 
     public void addListeners() {
@@ -186,7 +200,7 @@ public class CreateEventActivity extends AppCompatActivity {
             event.put("title", title);
             event.put("description", description);
             event.put("category", categories);
-            event.put("location", location);
+            event.put("location", latitude + " " + longitude);
             event.put("date", date);
             event.put("createdTime", currentTime);
             event.put("organisers", id); // There could eventually be multiple organisers but for now, just one!
@@ -216,7 +230,7 @@ public class CreateEventActivity extends AppCompatActivity {
             return false;
         }
 
-        if (descriptionET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(descriptionET.getText().toString())) {
+        if (descriptionET.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Please enter a valid event description", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -244,5 +258,31 @@ public class CreateEventActivity extends AppCompatActivity {
         return true;
     }
 
+    @OnClick(R.id.createEventLocationET)
+    public void locationOnClick() {
+        try {
+            Intent intent = new Intent(this, LocationActivity.class);
+            startActivityForResult(intent, LOCATION_REQUEST_CODE);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            Toast.makeText(this, "Unable to open location in Map", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
+            latitude = data.getDoubleExtra("latitude", 0);
+            longitude = data.getDoubleExtra("longitude", 0);
+            String address = data.getStringExtra("address");
+            if (longitude == 0 && latitude == 0) {
+                Toast.makeText(this, "No Location was Selected", Toast.LENGTH_SHORT);
+            } else {
+                locationET.setText(address);
+            }
+        }
+    }
 
 }
