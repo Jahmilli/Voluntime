@@ -50,14 +50,15 @@ public class UserProfileFragment extends Fragment {
     TextView typeTV;
     @BindView(R.id.userprofileEmailTV)
     TextView emailTV;
-    @BindView(R.id.userprofileEmailTV)
+    @BindView(R.id.userprofilePhoneTV)
     TextView phoneTV;
     @BindView(R.id.userprofileAddressTV)
     TextView addressTV;
     @BindView(R.id.userprofileGenTV)
     TextView genTV;
-    @BindView(R.id.userprofileDescTV)
+    @BindView(R.id.userprofileDobTV)
     TextView dobTV;
+
     // Local variables used in the store database values
     private String type;
     private String userName;
@@ -122,7 +123,6 @@ public class UserProfileFragment extends Fragment {
                     phoneTV.setText(phone);
                     addressTV.setText(address);
                     emailTV.setText(mUser.getEmail());
-
                 }
             }
             @Override
