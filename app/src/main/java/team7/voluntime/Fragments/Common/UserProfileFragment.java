@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.Activities.MainActivity;
+import team7.voluntime.Domains.Charity;
+import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Utilities;
 
 import static android.view.View.VISIBLE;
 
@@ -34,6 +38,13 @@ import static android.view.View.VISIBLE;
 public class UserProfileFragment extends Fragment {
 
     private final static String TAG = "UserProfileFragment";
+
+    FirebaseUser mUser;
+    private FirebaseDatabase database;
+    private DatabaseReference charityReference;
+    private DatabaseReference volunteerReference;
+    private Charity charity;
+    private Volunteer volunteer;
 
     // Bindings
     @BindView(R.id.userprofileCharityLayout)
@@ -68,9 +79,6 @@ public class UserProfileFragment extends Fragment {
     private String gender;
     private String category;
     private String description;
-    // Local database reference
-    private FirebaseUser mUser;
-
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -85,6 +93,9 @@ public class UserProfileFragment extends Fragment {
 
         // Get Current logged in instance from database
         mUser = FirebaseAuth.getInstance().getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        charityReference = Utilities.getCharityReference(database, mUser.getUid());
+        volunteerReference = Utilities.getVolunteerReference(database, mUser.getUid());
 
         // Get Account type and pass it into getType() method to return correct string path
         DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference(getType());
@@ -94,35 +105,49 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    emailTV.setText(mUser.getEmail());
                     if (getType().equals("Volunteers")) {
                         volunteerLayout.setVisibility(VISIBLE);
-                        type = dataSnapshot.child("AccountType").getValue().toString();
-                        userName = dataSnapshot.child("Profile").child("FullName").getValue().toString();
-                        phone = dataSnapshot.child("Profile").child("PhoneNumber").getValue().toString();
-                        address = dataSnapshot.child("Profile").child("Address").getValue().toString();
+                        volunteerReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                volunteer = dataSnapshot.getValue(Volunteer.class);
+                                volunteer.setId(mUser.getUid());
+                                nameTV.setText(volunteer.getFullName());
+                                typeTV.setText("Volunteer");
+                                phoneTV.setText(volunteer.getPhoneNumber());
+                                addressTV.setText(volunteer.getAddress());
+                                genTV.setText(volunteer.getGender());
+                                dobTV.setText(volunteer.getDateOfBirth());
+                            }
 
-                        dob = dataSnapshot.child("Profile").child("DateOfBirth").getValue().toString();
-                        dobTV.setText(dob);
-
-                        gender = dataSnapshot.child("Profile").child("Gender").getValue().toString();
-                        genTV.setText(gender);
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "The read failed: " + databaseError.getCode());
+                            }
+                        });
                     }
                     if (getType().equals("Charities")) {
                         charityLayout.setVisibility(VISIBLE);
-                        type = dataSnapshot.child("AccountType").getValue().toString();
-                        userName = dataSnapshot.child("Profile").child("Name").getValue().toString();
-                        address = dataSnapshot.child("Profile").child("Address").getValue().toString();
-                        phone = dataSnapshot.child("Profile").child("PhoneNumber").getValue().toString();
-                        category = dataSnapshot.child("Profile").child("Category").getValue().toString();
-                        catTV.setText(category);
-                        description = dataSnapshot.child("Profile").child("Description").getValue().toString();
-                        descTV.setText(description);
+                        charityReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                charity = dataSnapshot.getValue(Charity.class);
+                                charity.setId(mUser.getUid());
+                                nameTV.setText(charity.getName());
+                                typeTV.setText("Charity");
+                                phoneTV.setText(charity.getPhoneNumber());
+                                addressTV.setText(charity.getAddress());
+                                catTV.setText(charity.getCategory());
+                                descTV.setText(charity.getDescription());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "The read failed: " + databaseError.getCode());
+                            }
+                        });
+
                     }
-                    nameTV.setText(userName);
-                    typeTV.setText(type);
-                    phoneTV.setText(phone);
-                    addressTV.setText(address);
-                    emailTV.setText(mUser.getEmail());
                 }
             }
             @Override
