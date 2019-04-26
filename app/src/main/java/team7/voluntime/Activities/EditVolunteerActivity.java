@@ -238,7 +238,10 @@ public class EditVolunteerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // TODO: fix back press
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("AccountType", "Charity");
+        startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.editDetailsBackTV)
