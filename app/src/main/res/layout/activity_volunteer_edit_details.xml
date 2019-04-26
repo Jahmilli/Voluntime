@@ -118,7 +118,7 @@
                 android:paddingBottom="10dp">
 
                 <TextView
-                    android:id="@+id/backVolunteer"
+                    android:id="@+id/editDetailsBackTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#0000"

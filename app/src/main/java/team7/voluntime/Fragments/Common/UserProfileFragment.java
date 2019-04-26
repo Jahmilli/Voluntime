@@ -14,8 +14,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Activities.EditCharityActivity;
+import team7.voluntime.Activities.EditVolunteerActivity;
 import team7.voluntime.Activities.LoginActivity;
 import team7.voluntime.Activities.MainActivity;
+import team7.voluntime.Activities.SetupActivity;
 import team7.voluntime.R;
 
 /**
@@ -23,7 +26,7 @@ import team7.voluntime.R;
  */
 public class UserProfileFragment extends Fragment {
 
-    private final static String TAG = "MapFragment";
+    private final static String TAG = "UserProfileFragment";
 
 
     public UserProfileFragment() {
@@ -37,12 +40,32 @@ public class UserProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.bind(this, v);
+
+
         return v;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+    @OnClick(R.id.userProfileEditDetailsTV)
+    public void editVolunteerOnClick() {
+        Intent intent = new Intent(getContext(), getEditActivity());
+        startActivity(intent);
+
+
+    }
+
+    public Class getEditActivity() {
+        String type = MainActivity.getAccountType();
+        if (type.equals("Volunteer")) {
+            return EditVolunteerActivity.class;
+        } else {
+            return EditCharityActivity.class;
+        }
     }
 
 }

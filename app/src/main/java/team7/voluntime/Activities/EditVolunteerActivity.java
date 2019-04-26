@@ -34,6 +34,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.R;
 
 public class EditVolunteerActivity extends AppCompatActivity {
@@ -60,8 +61,8 @@ public class EditVolunteerActivity extends AppCompatActivity {
     @BindView(R.id.volunteerGenderRG)
     RadioGroup volunteerGenderRG;
 
-    @BindView(R.id.setupFirstVolunteerSV)
-    ScrollView setupFirstVolunteerSV;
+    @BindView(R.id.editVolunteerSV)
+    ScrollView editVolunteerSV;
 
     private final String TAG = "EditVolunteerActivity";
 
@@ -76,6 +77,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         ButterKnife.bind(this);
+
         addListeners();
     }
 
@@ -236,7 +238,15 @@ public class EditVolunteerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //TODO
+        // TODO: fix back press
+    }
+
+    @OnClick(R.id.editDetailsBackTV)
+    public void editDetailsBackOnClick() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("AccountType", "Volunteer");
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -245,10 +255,5 @@ public class EditVolunteerActivity extends AppCompatActivity {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             animated = true;
         }
-    }
-
-    public void logOut() {
-        mAuth.signOut();
-        finish();
     }
 }

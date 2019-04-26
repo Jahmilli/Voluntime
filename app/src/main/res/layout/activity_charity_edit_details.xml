@@ -92,7 +92,7 @@
                 android:paddingBottom="10dp">
 
                 <TextView
-                    android:id="@+id/backCharity"
+                    android:id="@+id/editDetailsBackTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#0000"
@@ -107,7 +107,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/editFinishCharity"
+                    android:id="@+id/editFinishCharityTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#0000"

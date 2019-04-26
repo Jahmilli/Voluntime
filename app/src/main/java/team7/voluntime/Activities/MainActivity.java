@@ -277,4 +277,8 @@ public class MainActivity extends AppCompatActivity {
         navigationView.inflateMenu(R.menu.drawer_view_volunteer);
         navigationView.setCheckedItem(R.id.nav_profile);
     }
+
+    public static String getAccountType() {
+        return accountType;
+    }
 }
