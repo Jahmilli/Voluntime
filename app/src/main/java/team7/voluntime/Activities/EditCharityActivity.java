@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -24,8 +25,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,6 +39,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Utilities;
+import team7.voluntime.Domains.Charity;
+
 
 public class EditCharityActivity extends AppCompatActivity {
 
@@ -42,6 +49,7 @@ public class EditCharityActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private FirebaseUser user;
     private FirebaseAuth mAuth;
+    private Charity charity;
     private boolean animated = false;
 
     @BindView(R.id.charityNameET)
@@ -62,6 +70,16 @@ public class EditCharityActivity extends AppCompatActivity {
     @BindView(R.id.editCharitySV)
     ScrollView editCharitySV;
 
+    private String name;
+    private String address;
+    private String phone;
+    private String description;
+    private String category;
+
+
+
+
+
     private final String TAG = "EditCharityActivity";
 
     @Override
@@ -74,16 +92,49 @@ public class EditCharityActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
+        reference = Utilities.getCharityReference(database, user.getUid());
+
         ButterKnife.bind(this);
 
         charityPhoneET.addTextChangedListener(phoneNumberTextWatcher(charityPhoneET));
+
+        DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference("Charities");
+
+        typeRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                reference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        charity = dataSnapshot.getValue(Charity.class);
+                        charity.setId(user.getUid());
+                        charityNameET.setText(charity.getName());
+                        charityPhoneET.setText(charity.getPhoneNumber());
+                        charityAddressET.setText(charity.getAddress());
+                        charityCategoryET.setText(charity.getCategory());
+                        charityDescriptionET.setText(charity.getDescription());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "The read failed: " + databaseError.getCode());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "The read failed: " + databaseError.getCode());
+            }
+
+        });
     }
 
     public boolean isValidPhoneNumber(String phoneET) {
         phoneET = phoneET.replaceAll(" ", "");
         return (phoneET.length() == 8 || phoneET.length() == 10) && StringUtils.isNumericSpace(phoneET.toString());
     }
-
 
     @OnClick(R.id.editFinishCharityTV)
     public void setCharityInfo() {
@@ -136,7 +187,6 @@ public class EditCharityActivity extends AppCompatActivity {
         return true;
     }
 
-
     // Edits text being inputted to display phone number format
     public TextWatcher phoneNumberTextWatcher(final EditText phoneET) {
         return new TextWatcher() {
@@ -187,6 +237,4 @@ public class EditCharityActivity extends AppCompatActivity {
             animated = true;
         }
     }
-
-
 }
