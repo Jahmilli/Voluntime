@@ -5,34 +5,34 @@ package team7.voluntime.Domains;
 Volunteers:
   <VolunteerID>:
     Profile:
-      FullName: String
-      Address: String
-      PhoneNumber: String
-      Gender: String
-      DateOfBirth: String
-      Email: String
+      name: String
+      address: String
+      phoneNumber: String
+      gender: String
+      dateOfBirth: String
+      email: String
  */
 public class Volunteer {
     private String id;
-    private String DateOfBirth;
-    private String FullName;
-    private String Address;
-    private String PhoneNumber;
-    private String Gender;
-    private String Email;
+    private String dateOfBirth;
+    private String name;
+    private String address;
+    private String phoneNumber;
+    private String gender;
+    private String email;
 
     public Volunteer() {
 
     }
 
-    public Volunteer(String id, String DateOfBirth, String FullName, String Address, String PhoneNumber, String Gender, String Email) {
+    public Volunteer(String id, String dateOfBirth, String name, String address, String phoneNumber, String gender, String email) {
         this.id = id;
-        this.DateOfBirth = DateOfBirth;
-        this.FullName = FullName;
-        this.Address = Address;
-        this.PhoneNumber = PhoneNumber;
-        this.Gender = Gender;
-        this.Email = Email;
+        this.dateOfBirth = dateOfBirth;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.email = email;
     }
 
     public String getId() {
@@ -43,34 +43,34 @@ public class Volunteer {
         this.id = id;
     }
 
-    public String getFullName() {
-        return FullName;
+    public String getName() {
+        return name;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public String getDateOfBirth() {
-        return DateOfBirth;
+        return dateOfBirth;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     @Override
     public String toString() {
         return "Volunteer ID: " + this.getId() +
-                "\nName: " + this.getFullName() +
+                "\nName: " + this.getName() +
                 "\nAddress: " + this.getAddress() +
                 "\nPhone Number: " + this.getPhoneNumber() +
                 "\nDateOfBirth: " + this.getDateOfBirth() +

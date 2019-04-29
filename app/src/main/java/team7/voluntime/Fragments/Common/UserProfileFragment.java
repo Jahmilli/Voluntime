@@ -111,7 +111,7 @@ public class UserProfileFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 volunteer = dataSnapshot.getValue(Volunteer.class);
                                 volunteer.setId(mUser.getUid());
-                                nameTV.setText(volunteer.getFullName());
+                                nameTV.setText(volunteer.getName());
                                 typeTV.setText("Volunteer");
                                 phoneTV.setText(volunteer.getPhoneNumber());
                                 addressTV.setText(volunteer.getAddress());
