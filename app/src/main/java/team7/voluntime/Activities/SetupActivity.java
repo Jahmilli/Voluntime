@@ -145,18 +145,18 @@ public class SetupActivity extends AppCompatActivity {
             RadioButton radioButton = findViewById(volunteerGenderRG.getCheckedRadioButtonId());
             String gender = radioButton.getText().toString().trim();
 
-            reference.child("Profile").child("FullName").setValue(name);
-            reference.child("Profile").child("Email").setValue(email);
-            reference.child("Profile").child("PhoneNumber").setValue(phoneNumber);
-            reference.child("Profile").child("DateOfBirth").setValue(date);
-            reference.child("Profile").child("Address").setValue(address);
-            reference.child("Profile").child("Gender").setValue(gender);
+            reference.child("Profile").child("name").setValue(name);
+            reference.child("Profile").child("email").setValue(email);
+            reference.child("Profile").child("phoneNumber").setValue(phoneNumber);
+            reference.child("Profile").child("dateOfBirth").setValue(date);
+            reference.child("Profile").child("address").setValue(address);
+            reference.child("Profile").child("gender").setValue(gender);
 
-            reference.child("SetupComplete").setValue(true);
-            reference.child("AccountType").setValue("Volunteer");
+            reference.child("setupComplete").setValue(true);
+            reference.child("accountType").setValue("Volunteer");
 
             Intent intent = new Intent(SetupActivity.this, MainActivity.class);
-            intent.putExtra("AccountType", "Volunteer");
+            intent.putExtra("accountType", "Volunteer");
             startActivity(intent);
             finish();
         }
@@ -228,17 +228,17 @@ public class SetupActivity extends AppCompatActivity {
             String description = charityDescriptionET.getText().toString().trim();
             String category = charityCategoryET.getText().toString().trim();
 
-            reference.child("Profile").child("Name").setValue(name);
-            reference.child("Profile").child("Address").setValue(address);
-            reference.child("Profile").child("PhoneNumber").setValue(phoneNumber);
-            reference.child("Profile").child("Description").setValue(description);
-            reference.child("Profile").child("Category").setValue(category);
+            reference.child("Profile").child("name").setValue(name);
+            reference.child("Profile").child("address").setValue(address);
+            reference.child("Profile").child("phoneNumber").setValue(phoneNumber);
+            reference.child("Profile").child("description").setValue(description);
+            reference.child("Profile").child("category").setValue(category);
 
-            reference.child("SetupComplete").setValue(true);
-            reference.child("AccountType").setValue("Charity");
+            reference.child("setupComplete").setValue(true);
+            reference.child("accountType").setValue("Charity");
 
             Intent intent = new Intent(SetupActivity.this, MainActivity.class);
-            intent.putExtra("AccountType", "Charity");
+            intent.putExtra("accountType", "Charity");
             startActivity(intent);
             finish();
         }
