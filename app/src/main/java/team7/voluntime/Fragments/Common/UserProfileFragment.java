@@ -2,6 +2,7 @@ package team7.voluntime.Fragments.Common;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -166,8 +167,9 @@ public class UserProfileFragment extends Fragment {
     }
 
     @OnClick(R.id.userprofileEditBtn)
-    public void onClick(View arg0) {
-        Toast.makeText(getContext(), "Function Not Complete", Toast.LENGTH_LONG).show();
+    public void onClick() {
+        Intent intent = new Intent(getContext(), getEditActivity());
+        startActivity(intent);
 
     }
 
@@ -181,16 +183,6 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-
-
-    @OnClick(R.id.userProfileEditDetailsTV)
-    public void editVolunteerOnClick() {
-        Intent intent = new Intent(getContext(), getEditActivity());
-        startActivity(intent);
-
-
-    }
-
     public Class getEditActivity() {
         String type = MainActivity.getAccountType();
         if (type.equals("Volunteer")) {
@@ -199,5 +191,4 @@ public class UserProfileFragment extends Fragment {
             return EditCharityActivity.class;
         }
     }
-
 }

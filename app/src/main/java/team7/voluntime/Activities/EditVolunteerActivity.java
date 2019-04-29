@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -24,8 +25,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,8 +38,11 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Domains.Charity;
+import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Utilities;
 
 public class EditVolunteerActivity extends AppCompatActivity {
 
@@ -45,6 +52,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private boolean animated = false;
+    private Volunteer volunteer;
 
     @BindView(R.id.volunteerNameET)
     EditText volunteerNameET;
@@ -61,6 +69,12 @@ public class EditVolunteerActivity extends AppCompatActivity {
     @BindView(R.id.volunteerGenderRG)
     RadioGroup volunteerGenderRG;
 
+    @BindView(R.id.volunteerMaleRB)
+    RadioButton volunteerMaleRB;
+
+    @BindView(R.id.volunteerFemaleRB)
+    RadioButton volunteerFemaleRB;
+
     @BindView(R.id.editVolunteerSV)
     ScrollView editVolunteerSV;
 
@@ -76,9 +90,50 @@ public class EditVolunteerActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
+        reference = Utilities.getVolunteerReference(database, user.getUid());
+
         ButterKnife.bind(this);
 
         addListeners();
+
+
+        reference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                reference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        volunteer = dataSnapshot.getValue(Volunteer.class);
+                        volunteer.setId(user.getUid());
+                        volunteerNameET.setText(volunteer.getName());
+                        volunteerPhoneET.setText(volunteer.getPhoneNumber());
+                        volunteerDOBET.setText(volunteer.getDateOfBirth());
+                        volunteerAddressET.setText(volunteer.getAddress());
+
+                        if (volunteer.getGender().equals("Male")) {
+                            volunteerMaleRB.setChecked(true);
+                            volunteerFemaleRB.setChecked(false);
+                        } else {
+                            volunteerMaleRB.setChecked(false);
+                            volunteerFemaleRB.setChecked(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "The read failed: " + databaseError.getCode());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "The read failed: " + databaseError.getCode());
+            }
+
+        });
+
     }
 
     @OnClick(R.id.editFinishVolunteer)
@@ -93,18 +148,17 @@ public class EditVolunteerActivity extends AppCompatActivity {
             RadioButton radioButton = findViewById(volunteerGenderRG.getCheckedRadioButtonId());
             String gender = radioButton.getText().toString().trim();
 
-            reference.child("Profile").child("FullName").setValue(name);
-            reference.child("Profile").child("Email").setValue(email);
-            reference.child("Profile").child("PhoneNumber").setValue(phoneNumber);
-            reference.child("Profile").child("DateOfBirth").setValue(date);
-            reference.child("Profile").child("Address").setValue(address);
-            reference.child("Profile").child("Gender").setValue(gender);
+            reference.child("Profile").child("fullName").setValue(name);
+            reference.child("Profile").child("email").setValue(email);
+            reference.child("Profile").child("phoneNumber").setValue(phoneNumber);
+            reference.child("Profile").child("dateOfBirth").setValue(date);
+            reference.child("Profile").child("address").setValue(address);
+            reference.child("Profile").child("gender").setValue(gender);
 
-            reference.child("SetupComplete").setValue(true);
-            reference.child("AccountType").setValue("Volunteer");
+            reference.child("accountType").setValue("Volunteer");
 
             Intent intent = new Intent(EditVolunteerActivity.this, MainActivity.class);
-            intent.putExtra("AccountType", "Volunteer");
+            intent.putExtra("accountType", "Volunteer");
             startActivity(intent);
             finish();
         }
@@ -239,7 +293,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("AccountType", "Volunteer");
+        intent.putExtra("accountType", "Volunteer");
         startActivity(intent);
         finish();
     }
@@ -247,7 +301,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
     @OnClick(R.id.editDetailsBackTV)
     public void editDetailsBackOnClick() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("AccountType", "Volunteer");
+        intent.putExtra("accountType", "Volunteer");
         startActivity(intent);
         finish();
     }

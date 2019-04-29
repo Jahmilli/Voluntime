@@ -1,26 +1,15 @@
 package team7.voluntime.Activities;
 
-import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,14 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Domains.Charity;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
-import team7.voluntime.Domains.Charity;
 
 
 public class EditCharityActivity extends AppCompatActivity {
@@ -98,9 +85,8 @@ public class EditCharityActivity extends AppCompatActivity {
 
         charityPhoneET.addTextChangedListener(phoneNumberTextWatcher(charityPhoneET));
 
-        DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference("Charities");
 
-        typeRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -133,7 +119,7 @@ public class EditCharityActivity extends AppCompatActivity {
 
     public boolean isValidPhoneNumber(String phoneET) {
         phoneET = phoneET.replaceAll(" ", "");
-        return (phoneET.length() == 8 || phoneET.length() == 10) && StringUtils.isNumericSpace(phoneET.toString());
+        return (phoneET.length() == 8 || phoneET.length() == 10) && StringUtils.isNumericSpace(phoneET);
     }
 
     @OnClick(R.id.editFinishCharityTV)
@@ -146,17 +132,14 @@ public class EditCharityActivity extends AppCompatActivity {
             String description = charityDescriptionET.getText().toString().trim();
             String category = charityCategoryET.getText().toString().trim();
 
-            reference.child("Profile").child("Name").setValue(name);
-            reference.child("Profile").child("Address").setValue(address);
-            reference.child("Profile").child("PhoneNumber").setValue(phoneNumber);
-            reference.child("Profile").child("Description").setValue(description);
-            reference.child("Profile").child("Category").setValue(category);
+            reference.child("Profile").child("name").setValue(name);
+            reference.child("Profile").child("address").setValue(address);
+            reference.child("Profile").child("phoneNumber").setValue(phoneNumber);
+            reference.child("Profile").child("description").setValue(description);
+            reference.child("Profile").child("category").setValue(category);
 
-            reference.child("SetupComplete").setValue(true);
-            reference.child("AccountType").setValue("Charity");
-
-            Intent intent = new Intent(EditCharityActivity.this, MainActivity.class);
-            intent.putExtra("AccountType", "Charity");
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("accountType", "charity");
             startActivity(intent);
             finish();
         }
@@ -217,7 +200,7 @@ public class EditCharityActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("AccountType", "Charity");
+        intent.putExtra("accountType", "Charity");
         startActivity(intent);
         finish();
     }
@@ -225,7 +208,7 @@ public class EditCharityActivity extends AppCompatActivity {
     @OnClick(R.id.editDetailsBackTV)
     public void editDetailsBackOnClick() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("AccountType", "Charity");
+        intent.putExtra("accountType", "Charity");
         startActivity(intent);
         finish();
     }
