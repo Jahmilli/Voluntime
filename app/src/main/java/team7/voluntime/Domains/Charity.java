@@ -1,6 +1,7 @@
 package team7.voluntime.Domains;
 
 /*
+
 Charities:
   <CharityID>:
     Profile:
@@ -73,4 +74,3 @@ public class Charity {
     }
 
 }
-
