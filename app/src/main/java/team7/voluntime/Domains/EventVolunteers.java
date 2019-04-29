@@ -9,6 +9,18 @@ public class EventVolunteers {
     private ArrayList<String> registeredVolunteers;
     private ArrayList<String> attendedVolunteers;
 
+    public EventVolunteers() {
+
+    }
+
+    public EventVolunteers(int minimum, int maximum, ArrayList<String> pendingVolunteers, ArrayList<String> registeredVolunteers, ArrayList<String> attendedVolunteers) {
+        this.minimum = minimum;
+        this.maximum = maximum;
+        this.pendingVolunteers = pendingVolunteers;
+        this.registeredVolunteers = registeredVolunteers;
+        this.attendedVolunteers = attendedVolunteers;
+    }
+
     public int getMinimum() {
         return minimum;
     }
@@ -46,18 +58,6 @@ public class EventVolunteers {
     }
 
     public void setAttendedVolunteers(ArrayList<String> attendedVolunteers) {
-        this.attendedVolunteers = attendedVolunteers;
-    }
-
-    public EventVolunteers() {
-
-    }
-
-    public EventVolunteers(int minimum, int maximum, ArrayList<String> pendingVolunteers, ArrayList<String> registeredVolunteers, ArrayList<String> attendedVolunteers) {
-        this.minimum = minimum;
-        this.maximum = maximum;
-        this.pendingVolunteers = pendingVolunteers;
-        this.registeredVolunteers = registeredVolunteers;
         this.attendedVolunteers = attendedVolunteers;
     }
 
