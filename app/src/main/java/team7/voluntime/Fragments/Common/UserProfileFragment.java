@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,11 +26,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.Activities.EditCharityActivity;
 import team7.voluntime.Activities.EditVolunteerActivity;
-import team7.voluntime.Activities.LoginActivity;
 import team7.voluntime.Activities.MainActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Volunteer;
-import team7.voluntime.Activities.SetupActivity;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 

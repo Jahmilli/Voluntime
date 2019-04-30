@@ -57,16 +57,6 @@ public class EditCharityActivity extends AppCompatActivity {
     @BindView(R.id.editCharitySV)
     ScrollView editCharitySV;
 
-    private String name;
-    private String address;
-    private String phone;
-    private String description;
-    private String category;
-
-
-
-
-
     private final String TAG = "EditCharityActivity";
 
     @Override
@@ -139,7 +129,7 @@ public class EditCharityActivity extends AppCompatActivity {
             reference.child("Profile").child("category").setValue(category);
 
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("accountType", "charity");
+            intent.putExtra("accountType", "Charity");
             startActivity(intent);
             finish();
         }
