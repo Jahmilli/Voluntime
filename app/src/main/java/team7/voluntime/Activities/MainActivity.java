@@ -282,6 +282,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String getAccountType() {
-       return accountType;
+        return accountType;
     }
 }

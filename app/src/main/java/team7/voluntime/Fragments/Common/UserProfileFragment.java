@@ -2,6 +2,7 @@ package team7.voluntime.Fragments.Common;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,9 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import team7.voluntime.Activities.EditCharityActivity;
+import team7.voluntime.Activities.EditVolunteerActivity;
+import team7.voluntime.Activities.LoginActivity;
 import team7.voluntime.Activities.MainActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Volunteer;
+import team7.voluntime.Activities.SetupActivity;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -162,8 +167,9 @@ public class UserProfileFragment extends Fragment {
     }
 
     @OnClick(R.id.userprofileEditBtn)
-    public void onClick(View arg0) {
-        Toast.makeText(getContext(), "Function Not Complete", Toast.LENGTH_LONG).show();
+    public void onClick() {
+        Intent intent = new Intent(getContext(), getEditActivity());
+        startActivity(intent);
 
     }
 
@@ -177,5 +183,12 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-
+    public Class getEditActivity() {
+        String type = MainActivity.getAccountType();
+        if (type.equals("Volunteer")) {
+            return EditVolunteerActivity.class;
+        } else {
+            return EditCharityActivity.class;
+        }
+    }
 }
