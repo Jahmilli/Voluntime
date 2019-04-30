@@ -39,7 +39,7 @@
                 android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/charityNameET"
+                android:id="@+id/editCharityNameET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="50sp"
                 android:ems="10"
@@ -47,7 +47,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/charityAddressET"
+                android:id="@+id/editCharityAddressET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
                 android:ems="10"
@@ -55,7 +55,7 @@
                 android:inputType="textPostalAddress" />
 
             <EditText
-                android:id="@+id/charityPhoneET"
+                android:id="@+id/editCharityPhoneET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
                 android:ems="10"
@@ -64,7 +64,7 @@
                 android:maxLength="12" />
 
             <EditText
-                android:id="@+id/charityDescriptionET"
+                android:id="@+id/editCharityDescriptionET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
                 android:ems="10"
@@ -72,7 +72,7 @@
                 android:inputType="text" />
 
             <EditText
-                android:id="@+id/charityCategoryET"
+                android:id="@+id/editCharityCategoryET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
                 android:ems="10"

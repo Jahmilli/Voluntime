@@ -39,19 +39,19 @@ public class EditCharityActivity extends AppCompatActivity {
     private Charity charity;
     private boolean animated = false;
 
-    @BindView(R.id.charityNameET)
+    @BindView(R.id.editCharityNameET)
     EditText charityNameET;
 
-    @BindView(R.id.charityAddressET)
+    @BindView(R.id.editCharityAddressET)
     EditText charityAddressET;
 
-    @BindView(R.id.charityPhoneET)
+    @BindView(R.id.editCharityPhoneET)
     EditText charityPhoneET;
 
-    @BindView(R.id.charityDescriptionET)
+    @BindView(R.id.editCharityDescriptionET)
     EditText charityDescriptionET;
 
-    @BindView(R.id.charityCategoryET)
+    @BindView(R.id.editCharityCategoryET)
     EditText charityCategoryET;
 
     @BindView(R.id.editCharitySV)

@@ -48,25 +48,25 @@ public class EditVolunteerActivity extends AppCompatActivity {
     private boolean animated = false;
     private Volunteer volunteer;
 
-    @BindView(R.id.volunteerNameET)
+    @BindView(R.id.editVolunteerNameET)
     EditText volunteerNameET;
 
-    @BindView(R.id.volunteerPhoneET)
+    @BindView(R.id.editVolunteerPhoneET)
     EditText volunteerPhoneET;
 
-    @BindView(R.id.volunteerDOBET)
+    @BindView(R.id.editVolunteerDOBET)
     EditText volunteerDOBET;
 
-    @BindView(R.id.volunteerAddressET)
+    @BindView(R.id.editVolunteerAddressET)
     EditText volunteerAddressET;
 
-    @BindView(R.id.volunteerGenderRG)
+    @BindView(R.id.editVolunteerGenderRG)
     RadioGroup volunteerGenderRG;
 
-    @BindView(R.id.volunteerMaleRB)
+    @BindView(R.id.editVolunteerMaleRB)
     RadioButton volunteerMaleRB;
 
-    @BindView(R.id.volunteerFemaleRB)
+    @BindView(R.id.editVolunteerFemaleRB)
     RadioButton volunteerFemaleRB;
 
     @BindView(R.id.editVolunteerSV)
