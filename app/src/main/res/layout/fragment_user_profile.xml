@@ -1,14 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userprofile_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.Common.UserProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="User Profile Fragment" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header Layout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/userprofileBack"
+                    android:layout_width="433dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_weight="1"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/userprofileEditBtn"
+                    android:layout_width="198dp"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginRight="2sp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:padding="2sp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <!-- Main Layout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40sp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/userprofileNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:textColor="#444"
+                    android:textSize="33sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/userprofileTypeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20sp"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic"
+                    android:textColorHighlight="@android:color/black"/>
+
+
+                <!-- Shared Attributes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/userprofileEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:text="Email: "
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/userprofileEmailTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/userprofilePhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:text="Phone: "
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/userprofilePhoneTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/userprofileAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:text="Address: "
+                    android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/userprofileAddressTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <!-- Individual Volunteer Attributes -->
+                <LinearLayout
+                    android:id="@+id/userprofileVolunteerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/userprofileDob"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="20sp"
+                            android:text="Born: "
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/userprofileDobTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="20sp"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/userprofileGen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="20sp"
+                            android:text="Gender: "
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/userprofileGenTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="20sp"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/userprofileVolHisBtn"
+                        android:layout_width="200sp"
+                        android:layout_height="50sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="30sp"
+                        android:text="Volunteer History" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/userprofileCharityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/userprofileCat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:text="Category: "
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/userprofileCatTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/userprofileDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:text="Description: "
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/userprofileDescTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>
