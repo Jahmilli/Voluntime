@@ -1,14 +1,12 @@
 package team7.voluntime.Activities;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,11 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,9 +34,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Volunteer;
-import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -54,25 +48,25 @@ public class EditVolunteerActivity extends AppCompatActivity {
     private boolean animated = false;
     private Volunteer volunteer;
 
-    @BindView(R.id.volunteerNameET)
+    @BindView(R.id.editVolunteerNameET)
     EditText volunteerNameET;
 
-    @BindView(R.id.volunteerPhoneET)
+    @BindView(R.id.editVolunteerPhoneET)
     EditText volunteerPhoneET;
 
-    @BindView(R.id.volunteerDOBET)
+    @BindView(R.id.editVolunteerDOBET)
     EditText volunteerDOBET;
 
-    @BindView(R.id.volunteerAddressET)
+    @BindView(R.id.editVolunteerAddressET)
     EditText volunteerAddressET;
 
-    @BindView(R.id.volunteerGenderRG)
+    @BindView(R.id.editVolunteerGenderRG)
     RadioGroup volunteerGenderRG;
 
-    @BindView(R.id.volunteerMaleRB)
+    @BindView(R.id.editVolunteerMaleRB)
     RadioButton volunteerMaleRB;
 
-    @BindView(R.id.volunteerFemaleRB)
+    @BindView(R.id.editVolunteerFemaleRB)
     RadioButton volunteerFemaleRB;
 
     @BindView(R.id.editVolunteerSV)

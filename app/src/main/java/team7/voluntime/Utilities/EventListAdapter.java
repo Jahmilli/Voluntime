@@ -1,6 +1,8 @@
 package team7.voluntime.Utilities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import team7.voluntime.Activities.EventDetailsActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.Fragments.Charities.ViewEventsFragment;
@@ -61,16 +64,19 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 
         // createDeclineAlertDialog(); // Creates the decline alert dialog
 
-        if (adapterEventIV2 != null)
+        if (adapterEventIV2 != null) {
             adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (view != null) {
-                        Log.d("ViewEvent", event.toString());
+                        Log.d("Event Details on Click", event.toString());
+                        Intent intent = new Intent(mContext, EventDetailsActivity.class);
+                        intent.putExtra("event", (Parcelable) event);
+                        mContext.startActivity(intent);
                     }
                 }
             });
-
+        }
 
 
         dateTV.setText(date);

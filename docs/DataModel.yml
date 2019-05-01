@@ -26,7 +26,7 @@ Events:
     title: String
     description: String
     category: [String]
-    location: [String] # See if we can use [Location] if we can use Java Objects
+    location: [String] # String representing GPS coords
     date: String
     createdTime: String
     organisers: CharityID
