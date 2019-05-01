@@ -21,11 +21,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +40,7 @@ import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
 
 
-public class ViewEventsFragment extends Fragment {
+public class CharityViewEventsFragment extends Fragment {
     FirebaseUser mUser;
     private FirebaseDatabase database;
     private DatabaseReference charityReference;
@@ -61,10 +62,10 @@ public class ViewEventsFragment extends Fragment {
     @BindView(R.id.createEventIV)
     ImageView createEventIV;
 
-    private final static String TAG = "ViewEventsFragment";
+    private final static String TAG = "CharityViewEvents";
 
 
-    public ViewEventsFragment() {
+    public CharityViewEventsFragment() {
         // Required empty public constructor
     }
 
@@ -94,8 +95,8 @@ public class ViewEventsFragment extends Fragment {
         final HashMap<String, String> upcomingEvents = new HashMap<>();
         final HashMap<String, String> previousEvents = new HashMap<>();
 
-        EventListAdapter upcomingEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, ViewEventsFragment.this);
-        EventListAdapter previousEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, previousEventList, ViewEventsFragment.this);
+        EventListAdapter upcomingEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, CharityViewEventsFragment.this);
+        EventListAdapter previousEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, previousEventList, CharityViewEventsFragment.this);
         listOfUpcomingEvents.setAdapter(upcomingEventListAdapter);
         listOfPreviousEvents.setAdapter(previousEventListAdapter);
 
@@ -166,30 +167,21 @@ public class ViewEventsFragment extends Fragment {
                                 String eventId = child.getKey();
                                 Log.d(TAG, "Event id is " + eventId);
 
-                                String minimum = (child.child("EventVolunteers").child("minimum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("minimum").getValue().toString() : null;
-                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("maximum").getValue().toString() : null;
-
-                                // TODO: Create pending, registered and attended
-//                                if (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null) {
-//                                    Map map = child.child("EventVolunteers").child("pendingVolunteers").getValue(Map.class);
-//                                    Log.d(TAG, "map is " + map.toString());
-//                                }
-//                                ArrayList<String> pendingVolunteers = (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null)
-//                                        ? child.child("pendingVolunteers").getValue() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-
+                                String minimum = (Objects.requireNonNull(child.child("EventVolunteers").child("minimum").getValue()).toString());
+                                String maximum = (Objects.requireNonNull(child.child("EventVolunteers").child("maximum").getValue()).toString());
+                                LinkedList<String> pendingVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("pendingVolunteers"), TAG);
+                                LinkedList<String> registeredVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("registeredVolunteers"), TAG);
+                                LinkedList<String> attendedVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("attendedVolunteers"), TAG);
 
                                 EventVolunteers eventVolunteers = new EventVolunteers();
                                 int intMin = minimum == null ? 0 : Integer.parseInt(minimum);
                                 int intMax = maximum == null ? 0 : Integer.parseInt(maximum);
                                 eventVolunteers.setMinimum(intMin);
                                 eventVolunteers.setMaximum(intMax);
-
+                                eventVolunteers.setPendingVolunteers(pendingVolunteers);
+                                eventVolunteers.setRegisteredVolunteers(registeredVolunteers);
+                                eventVolunteers.setAttendedVolunteers(attendedVolunteers);
+                                Log.d(TAG, "Event Volunteers " + eventVolunteers.getAttendedVolunteers().toString());
 
                                 Event event = child.getValue(Event.class);
                                 event.setId(eventId);

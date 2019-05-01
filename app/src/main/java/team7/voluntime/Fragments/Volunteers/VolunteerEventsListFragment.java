@@ -1,7 +1,6 @@
 package team7.voluntime.Fragments.Volunteers;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,21 +20,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Activities.CreateEventActivity;
-import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.Domains.Volunteer;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
@@ -122,29 +116,20 @@ public class VolunteerEventsListFragment extends Fragment {
                                 String eventId = child.getKey();
                                 Log.d(TAG, "Event id is " + eventId);
 
-                                String minimum = (child.child("EventVolunteers").child("minimum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("minimum").getValue().toString() : null;
-                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("maximum").getValue().toString() : null;
-
-                                // TODO: Create pending, registered and attended
-//                                if (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null) {
-//                                    Map map = child.child("EventVolunteers").child("pendingVolunteers").getValue(Map.class);
-//                                    Log.d(TAG, "map is " + map.toString());
-//                                }
-//                                ArrayList<String> pendingVolunteers = (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null)
-//                                        ? child.child("pendingVolunteers").getValue() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-
+                                String minimum = (Objects.requireNonNull(child.child("EventVolunteers").child("minimum").getValue()).toString());
+                                String maximum = (Objects.requireNonNull(child.child("EventVolunteers").child("maximum").getValue()).toString());
+                                LinkedList<String> pendingVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("pendingVolunteers"), TAG);
+                                LinkedList<String> registeredVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("registeredVolunteers"), TAG);
+                                LinkedList<String> attendedVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("attendedVolunteers"), TAG);
 
                                 EventVolunteers eventVolunteers = new EventVolunteers();
                                 int intMin = minimum == null ? 0 : Integer.parseInt(minimum);
                                 int intMax = maximum == null ? 0 : Integer.parseInt(maximum);
                                 eventVolunteers.setMinimum(intMin);
                                 eventVolunteers.setMaximum(intMax);
+                                eventVolunteers.setPendingVolunteers(pendingVolunteers);
+                                eventVolunteers.setRegisteredVolunteers(registeredVolunteers);
+                                eventVolunteers.setAttendedVolunteers(attendedVolunteers);
 
 
                                 Event event = child.getValue(Event.class);

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import team7.voluntime.Activities.EventDetailsActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.EventVolunteers;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.R;
 
 
@@ -73,6 +72,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
                         Log.d("Event Details on Click", event.toString());
                         Intent intent = new Intent(mContext, EventDetailsActivity.class);
                         intent.putExtra("event", (Parcelable) event);
+                        intent.putExtra("eventVolunteers", (Parcelable) event.getEventVolunteers());
                         mContext.startActivity(intent);
                     }
                 }

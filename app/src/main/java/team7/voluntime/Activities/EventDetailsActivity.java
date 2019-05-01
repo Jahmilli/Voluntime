@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
+import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -53,6 +54,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Event event = (Event) intent.getParcelableExtra("event");
+        EventVolunteers eventVolunteers = (EventVolunteers) intent.getParcelableExtra("eventVolunteers");
 
         if (event != null) {
             coords = event.getLocation().split(" ");
@@ -76,6 +78,11 @@ public class EventDetailsActivity extends AppCompatActivity {
                 Log.e(TAG, e.toString());
             }
             locationTV.setText(address);
+        }
+        if (eventVolunteers != null) {
+            Log.d(TAG, "Event Volunteers is: " + eventVolunteers.toString());
+        } else {
+            Log.d(TAG, "Event Volunteers is null");
         }
     }
 

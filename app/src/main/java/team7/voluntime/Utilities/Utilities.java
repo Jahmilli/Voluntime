@@ -3,18 +3,24 @@ package team7.voluntime.Utilities;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /* Any common functions for the application should be stored here */
 public class Utilities {
@@ -59,4 +65,20 @@ public class Utilities {
         // TODO: Determine whether we can pass back something better than null :p
         return null;
     }
+
+    public static LinkedList<String> getVolunteers(DataSnapshot dataSnapshot, String TAG) {
+        LinkedList<String> volunteers = new LinkedList<>();
+        for (DataSnapshot volunteersChild : dataSnapshot.getChildren()) {
+            String volunteerID = Objects.requireNonNull(volunteersChild.getValue()).toString();
+            if (volunteersChild.exists()) {
+                if (!StringUtils.isEmpty(volunteerID)) {
+                    volunteers.add(volunteerID);
+                } else {
+                    Log.d(TAG, "Pending Volunteer is Empty???");
+                }
+            }
+        }
+        return volunteers;
+    }
+
 }

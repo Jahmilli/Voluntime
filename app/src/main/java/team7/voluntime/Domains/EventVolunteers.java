@@ -1,19 +1,35 @@
 package team7.voluntime.Domains;
 
-import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class EventVolunteers {
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class EventVolunteers implements Parcelable {
     private int minimum;
     private int maximum;
-    private ArrayList<String> pendingVolunteers;
-    private ArrayList<String> registeredVolunteers;
-    private ArrayList<String> attendedVolunteers;
+    private LinkedList<String> pendingVolunteers;
+    private LinkedList<String> registeredVolunteers;
+    private LinkedList<String> attendedVolunteers;
 
     public EventVolunteers() {
 
     }
 
-    public EventVolunteers(int minimum, int maximum, ArrayList<String> pendingVolunteers, ArrayList<String> registeredVolunteers, ArrayList<String> attendedVolunteers) {
+    // example constructor that takes a Parcel and gives you an object populated with it's values
+    private EventVolunteers(Parcel in) {
+        pendingVolunteers = new LinkedList<>();
+        registeredVolunteers = new LinkedList<>();
+        attendedVolunteers = new LinkedList<>();
+        minimum = in.readInt();
+        maximum = in.readInt();
+        in.readStringList(pendingVolunteers);
+        in.readStringList(registeredVolunteers);
+        in.readStringList(attendedVolunteers);
+    }
+
+    public EventVolunteers(int minimum, int maximum, LinkedList<String> pendingVolunteers, LinkedList<String> registeredVolunteers, LinkedList<String> attendedVolunteers) {
         this.minimum = minimum;
         this.maximum = maximum;
         this.pendingVolunteers = pendingVolunteers;
@@ -37,36 +53,61 @@ public class EventVolunteers {
         this.maximum = maximum;
     }
 
-    public ArrayList<String> getPendingVolunteers() {
+    public LinkedList<String> getPendingVolunteers() {
         return pendingVolunteers;
     }
 
-    public void setPendingVolunteers(ArrayList<String> pendingVolunteers) {
+    public void setPendingVolunteers(LinkedList<String> pendingVolunteers) {
         this.pendingVolunteers = pendingVolunteers;
     }
 
-    public ArrayList<String> getRegisteredVolunteers() {
+    public LinkedList<String> getRegisteredVolunteers() {
         return registeredVolunteers;
     }
 
-    public void setRegisteredVolunteers(ArrayList<String> registeredVolunteers) {
+    public void setRegisteredVolunteers(LinkedList<String> registeredVolunteers) {
         this.registeredVolunteers = registeredVolunteers;
     }
 
-    public ArrayList<String> getAttendedVolunteers() {
+    public LinkedList<String> getAttendedVolunteers() {
         return attendedVolunteers;
     }
 
-    public void setAttendedVolunteers(ArrayList<String> attendedVolunteers) {
+    public void setAttendedVolunteers(LinkedList<String> attendedVolunteers) {
         this.attendedVolunteers = attendedVolunteers;
     }
 
     @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(minimum);
+        parcel.writeInt(maximum);
+        parcel.writeStringList(pendingVolunteers);
+        parcel.writeStringList(registeredVolunteers);
+        parcel.writeStringList(attendedVolunteers);
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<EventVolunteers> CREATOR = new Parcelable.Creator<EventVolunteers>() {
+        public EventVolunteers createFromParcel(Parcel in) {
+            return new EventVolunteers(in);
+        }
+
+        public EventVolunteers[] newArray(int size) {
+            return new EventVolunteers[size];
+        }
+    };
+
+    @Override
     public String toString() {
         return "Minimum: " + minimum +
-                "\nMaximum: " + maximum;
-//                "\nPending Volunteers: " + pendingVolunteers.toString() +
-//                "\nRegistered Volunteers: " + registeredVolunteers.toString() +
-//                "\nAttended Volunteers: " + attendedVolunteers.toString();
+                "\nMaximum: " + maximum +
+                "\nPending Volunteers: " + pendingVolunteers.toString() +
+                "\nRegistered Volunteers: " + registeredVolunteers.toString() +
+                "\nAttended Volunteers: " + attendedVolunteers.toString();
     }
 }

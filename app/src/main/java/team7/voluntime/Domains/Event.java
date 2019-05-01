@@ -76,18 +76,6 @@ public class Event implements Parcelable {
     }
 
     @Override
-    public String toString() {
-        return "ID: " + getId() +
-                "\nTitle: " + getTitle() +
-                "\nDescription: " + getDescription() +
-                "\nCategory: " + getCategory() +
-                "\nLocation: " + getLocation() +
-                "\nDate: " + getDate() +
-                "\nCreatedTime: " + getCreatedTime() +
-                "\nOrganisers: " + getOrganisers();
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
@@ -101,7 +89,6 @@ public class Event implements Parcelable {
         parcel.writeString(location);
         parcel.writeString(date);
         parcel.writeString(organisers);
-        // TODO: Add Event Volunteers here
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -127,5 +114,17 @@ public class Event implements Parcelable {
         organisers = in.readString();
         // TODO: Add Event Volunteers here
 
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + getId() +
+                "\nTitle: " + getTitle() +
+                "\nDescription: " + getDescription() +
+                "\nCategory: " + getCategory() +
+                "\nLocation: " + getLocation() +
+                "\nDate: " + getDate() +
+                "\nCreatedTime: " + getCreatedTime() +
+                "\nOrganisers: " + getOrganisers();
     }
 }
