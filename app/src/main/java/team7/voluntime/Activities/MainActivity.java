@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import butterknife.ButterKnife;
 import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
+import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        EVENT, LOGOUT, PROFILE
+        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE
     }
 
     /**
@@ -101,15 +102,13 @@ public class MainActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         if (accountType != null && accountType.equals("Volunteer")) {
-//            reference = database.getReference("Volunteers").child(mUser.getUid());
             reference = Utilities.getVolunteerReference(database, mUser.getUid());
             Log.d(TAG, "User " + mUser.getEmail() + "is registered as a: " + accountType);
         } else if (accountType != null && accountType.equals("Charity")) {
             Log.d(TAG, "User " + mUser.getEmail() + "is registered as a: " + accountType);
-//            reference = database.getReference("Charities").child(mUser.getUid());
             reference = Utilities.getCharityReference(database, mUser.getUid());
         } else {
-            // Handle this
+            // TODO: Could log the user out if the account type isnt correct and post a toast message
             Log.d(TAG, "Incorrect account type: " + accountType);
         }
 
@@ -128,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        // the default fragment on display is the volunteer information
+        // The default fragment on display is the volunteer information
         currentState = MenuStates.PROFILE;
 
-        // go look for the main drawer layout
+        // Go look for the main drawer layout
         mDrawerLayout = findViewById(R.id.main_drawer_layout);
 
         toolbar = findViewById(R.id.toolbar);
@@ -179,6 +178,12 @@ public class MainActivity extends AppCompatActivity {
                                 if (currentState != MenuStates.PROFILE) {
                                     ChangeFragment(new UserProfileFragment());
                                     currentState = MenuStates.PROFILE;
+                                }
+                                break;
+                            case R.id.nav_volunteer_events:
+                                if (currentState != MenuStates.VOLUNTEER_EVENTS_LIST) {
+                                    ChangeFragment(new VolunteerEventsListFragment());
+                                    currentState = MenuStates.VOLUNTEER_EVENTS_LIST;
                                 }
                                 break;
                             case R.id.nav_logout:

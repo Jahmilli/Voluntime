@@ -1,5 +1,6 @@
 package team7.voluntime.Utilities;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -25,13 +26,13 @@ import team7.voluntime.R;
 public class EventListAdapter extends ArrayAdapter<Event> {
     private static final String TAG = "EventListAdapter";
     private Context mContext;
-    private ViewEventsFragment fragment;
+    private Fragment fragment;
     int mResource;
     private String eventId;
     private AlertDialog.Builder declineAlertBuilder;
     private AlertDialog declineAlert;
 
-    public EventListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> objects, ViewEventsFragment fragment) {
+    public EventListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> objects, Fragment fragment) {
         super(context, resource, objects);
         this.mContext = context;
         this.fragment = fragment;
