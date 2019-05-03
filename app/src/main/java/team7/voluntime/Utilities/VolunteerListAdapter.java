@@ -2,10 +2,7 @@ package team7.voluntime.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +14,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
 
@@ -29,8 +24,6 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
     private Activity activity;
     int mResource;
     private String eventId;
-    private AlertDialog.Builder declineAlertBuilder;
-    private AlertDialog declineAlert;
 
     public VolunteerListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Volunteer> objects, Activity activity) {
         super(context, resource, objects);
@@ -62,14 +55,9 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         if (volunteerAdapterIV1 != null) {
             volunteerAdapterIV1.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    if (view != null) {
-                        Log.d(TAG, "Volunteer list " + volunteer.toString());
-//                        Intent intent = new Intent(mContext, EventDetailsActivity.class);
-//                        intent.putExtra("event", (Parcelable) event);
-//                        intent.putExtra("eventVolunteers", (Parcelable) event.getEventVolunteers());
-//                        mContext.startActivity(intent);
-                    }
+                public void onClick(@NonNull View view) {
+                    Log.d(TAG, "Volunteer list " + volunteer.toString());
+
                 }
             });
         }

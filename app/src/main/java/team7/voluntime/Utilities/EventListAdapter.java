@@ -65,17 +65,15 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         if (adapterEventIV2 != null) {
             adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    if (view != null) {
-                        Log.d(TAG, eventVolunteers.toString() + "Max: " + eventVolunteers.getMaximum() + " Min " + eventVolunteers.getMinimum());
-                        Intent intent = new Intent(mContext, EventDetailsActivity.class);
-                        intent.putExtra("event", (Parcelable) event);
-                        intent.putExtra("volunteers", eventVolunteers.getVolunteers());
-//                        intent.putExtra("minimum", eventVolunteers.getMinimum());
-//                        intent.putExtra("maximum", eventVolunteers.getMaximum());
-                        mContext.startActivity(intent);
-                    }
+                public void onClick(@NonNull View view) {
+                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
+                    intent.putExtra("event", (Parcelable) event);
+                    intent.putExtra("volunteers", eventVolunteers.getVolunteers());
+//                    intent.putExtra("minimum", eventVolunteers.getMinimum());
+//                    intent.putExtra("maximum", eventVolunteers.getMaximum());
+                    mContext.startActivity(intent);
                 }
+
             });
         }
 

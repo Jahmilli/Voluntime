@@ -6,9 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,17 +18,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
-import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
 import team7.voluntime.Utilities.VolunteerListAdapter;
 
@@ -78,8 +72,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Event event = (Event) intent.getParcelableExtra("event");
         final HashMap<String, String> volunteers = (HashMap<String,String>) intent.getExtras().get("volunteers");
-//        int minimum = intent.getIntExtra("minimum", 0);
-//        int maximum = intent.getIntExtra("maximum", 0);
+//        int minimum = intent.getExtras().getInt("minimum", 0);
+//        int maximum = intent.getExtras().getInt("maximum", 0);
         pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
         mDatabase = FirebaseDatabase.getInstance();
         volunteersReference = mDatabase.getReference().child("Volunteers");
@@ -149,13 +143,13 @@ public class EventDetailsActivity extends AppCompatActivity {
         }
     }
 
-//    @OnClick(R.id.eventDetailsMapIV)
-//    public void mapOnClick() {
-//        Intent intent = new Intent(this, LocationActivity.class);
-//        intent.putExtra("latitude", Double.parseDouble(coords[0]));
-//        intent.putExtra("longitude", Double.parseDouble(coords[1]));
-//        intent.putExtra("address", locationTV.getText().toString());
-//        startActivity(intent);
-//    }
+    @OnClick(R.id.eventDetailsMapIV)
+    public void mapOnClick() {
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra("latitude", Double.parseDouble(coords[0]));
+        intent.putExtra("longitude", Double.parseDouble(coords[1]));
+        intent.putExtra("address", locationTV.getText().toString());
+        startActivity(intent);
+    }
 
 }
