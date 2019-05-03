@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
 import team7.voluntime.Domains.Event;
@@ -41,7 +42,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        eventId = getItem(position).getId();
+        eventId = Objects.requireNonNull(getItem(position)).getId();
 
         String title = getItem(position).getTitle();
         String description = getItem(position).getDescription();
@@ -50,7 +51,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         String date = getItem(position).getDate();
         String createdTime = getItem(position).getCreatedTime();
         String organisers = getItem(position).getOrganisers();
-        EventVolunteers eventVolunteers = getItem(position).getEventVolunteers();
+        final EventVolunteers eventVolunteers = getItem(position).getEventVolunteers();
 
         final Event event = new Event(eventId, title, description, category, location, date, createdTime, organisers, eventVolunteers);
 
@@ -61,18 +62,17 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView titleTV = (TextView) convertView.findViewById(R.id.adapterEventTitleTV);
         ImageView adapterEventIV2 = (ImageView) convertView.findViewById(R.id.adapterEventIV2);
 
-
-        // createDeclineAlertDialog(); // Creates the decline alert dialog
-
         if (adapterEventIV2 != null) {
             adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (view != null) {
-                        Log.d("Event Details on Click", event.toString());
+                        Log.d(TAG, eventVolunteers.toString() + "Max: " + eventVolunteers.getMaximum() + " Min " + eventVolunteers.getMinimum());
                         Intent intent = new Intent(mContext, EventDetailsActivity.class);
                         intent.putExtra("event", (Parcelable) event);
-                        intent.putExtra("eventVolunteers", (Parcelable) event.getEventVolunteers());
+                        intent.putExtra("volunteers", eventVolunteers.getVolunteers());
+//                        intent.putExtra("minimum", eventVolunteers.getMinimum());
+//                        intent.putExtra("maximum", eventVolunteers.getMaximum());
                         mContext.startActivity(intent);
                     }
                 }

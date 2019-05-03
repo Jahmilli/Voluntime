@@ -87,6 +87,20 @@
                 android:layout_marginTop="20dp"
                 android:text="organisers" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pending"/>
+
+            <ListView
+                android:id="@+id/eventPendingVolunteersLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

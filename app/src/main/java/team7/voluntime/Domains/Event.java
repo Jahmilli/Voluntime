@@ -112,8 +112,6 @@ public class Event implements Parcelable {
         date = in.readString();
         createdTime = in.readString();
         organisers = in.readString();
-        // TODO: Add Event Volunteers here
-
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -118,19 +119,13 @@ public class VolunteerEventsListFragment extends Fragment {
 
                                 String minimum = (Objects.requireNonNull(child.child("EventVolunteers").child("minimum").getValue()).toString());
                                 String maximum = (Objects.requireNonNull(child.child("EventVolunteers").child("maximum").getValue()).toString());
-                                LinkedList<String> pendingVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("pendingVolunteers"), TAG);
-                                LinkedList<String> registeredVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("registeredVolunteers"), TAG);
-                                LinkedList<String> attendedVolunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("attendedVolunteers"), TAG);
-
+                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("Volunteers"), TAG);
                                 EventVolunteers eventVolunteers = new EventVolunteers();
                                 int intMin = minimum == null ? 0 : Integer.parseInt(minimum);
                                 int intMax = maximum == null ? 0 : Integer.parseInt(maximum);
                                 eventVolunteers.setMinimum(intMin);
                                 eventVolunteers.setMaximum(intMax);
-                                eventVolunteers.setPendingVolunteers(pendingVolunteers);
-                                eventVolunteers.setRegisteredVolunteers(registeredVolunteers);
-                                eventVolunteers.setAttendedVolunteers(attendedVolunteers);
-
+                                eventVolunteers.setVolunteers(volunteers);
 
                                 Event event = child.getValue(Event.class);
                                 event.setId(eventId);

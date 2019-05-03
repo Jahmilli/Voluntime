@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -25,14 +26,18 @@ import java.util.Objects;
 /* Any common functions for the application should be stored here */
 public class Utilities {
     private static final String TAG = "Utilities";
+
+    // Return DatabaseReference to specific Charity
     public static DatabaseReference getCharityReference(FirebaseDatabase firebaseDatabase, String id) {
         return firebaseDatabase.getReference("Charities").child(id);
     }
 
+    // Return DatabaseReference to specific Volunteer
     public static DatabaseReference getVolunteerReference(FirebaseDatabase firebaseDatabase, String id) {
         return firebaseDatabase.getReference("Volunteers").child(id);
     }
 
+    // Return DatabaseReference to Events
     public static DatabaseReference getEventsReference(FirebaseDatabase firebaseDatabase) {
         return firebaseDatabase.getReference("Events");
     }
@@ -66,15 +71,16 @@ public class Utilities {
         return null;
     }
 
-    public static LinkedList<String> getVolunteers(DataSnapshot dataSnapshot, String TAG) {
-        LinkedList<String> volunteers = new LinkedList<>();
+    public static HashMap<String, String> getVolunteers(DataSnapshot dataSnapshot, String TAG) {
+        HashMap<String, String> volunteers = new HashMap<>();
         for (DataSnapshot volunteersChild : dataSnapshot.getChildren()) {
-            String volunteerID = Objects.requireNonNull(volunteersChild.getValue()).toString();
+            String volunteerID = Objects.requireNonNull(volunteersChild.getKey());
+            String status = Objects.requireNonNull(volunteersChild.getValue()).toString();
             if (volunteersChild.exists()) {
                 if (!StringUtils.isEmpty(volunteerID)) {
-                    volunteers.add(volunteerID);
+                    volunteers.put(volunteerID, status);
                 } else {
-                    Log.d(TAG, "Pending Volunteer is Empty???");
+                    Log.d(TAG, "Volunteer is Empty???");
                 }
             }
         }
