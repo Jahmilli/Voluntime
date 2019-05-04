@@ -1,7 +1,6 @@
 package team7.voluntime.Fragments.Volunteers;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,21 +20,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Activities.CreateEventActivity;
-import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.Domains.Volunteer;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
@@ -84,7 +76,7 @@ public class VolunteerEventsListFragment extends Fragment {
         volunteerReference = Utilities.getVolunteerReference(database, mUser.getUid());
         eventsReference = Utilities.getEventsReference(database);
 
-        listOfUpcomingEvents = (ListView) v.findViewById(R.id.volunteerListOfUpcomingEventsLV);
+        listOfUpcomingEvents = v.findViewById(R.id.volunteerListOfUpcomingEventsLV);
 
         final ArrayList<Event> upcomingEventList = new ArrayList<>();
 
@@ -178,10 +170,10 @@ public class VolunteerEventsListFragment extends Fragment {
 
     @OnClick(R.id.volunteerCreateEventIV)
     public void createEventOnClick() {
-//        Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
-//        createEventIntent.putExtra("id", volunteer.getId());
-//        createEventIntent.putExtra("categories", volunteer.getCategory());
-//        startActivity(createEventIntent);
+//        Intent eventRegisterIntent = new Intent(getActivity(), EventRegisterActivity.class);
+////        createEventIntent.putExtra("id", volunteer.getId());
+////        createEventIntent.putExtra("categories", volunteer.getCategory());
+//        startActivity(eventRegisterIntent);
         Log.d(TAG, "Event Button Clicked");
     }
 

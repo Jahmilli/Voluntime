@@ -3,7 +3,6 @@ package team7.voluntime.Utilities;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -17,9 +16,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import team7.voluntime.Activities.EventDetailsActivity;
+import team7.voluntime.Activities.EventRegisterActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.EventVolunteers;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.R;
 
 
@@ -58,9 +57,11 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
-        TextView dateTV = (TextView) convertView.findViewById(R.id.adapterEventDateTV);
-        TextView titleTV = (TextView) convertView.findViewById(R.id.adapterEventTitleTV);
-        ImageView adapterEventIV2 = (ImageView) convertView.findViewById(R.id.adapterEventIV2);
+        TextView dateTV = convertView.findViewById(R.id.adapterEventDateTV);
+        TextView titleTV = convertView.findViewById(R.id.adapterEventTitleTV);
+        ImageView adapterEventIV2 = convertView.findViewById(R.id.adapterEventIV2);
+        ImageView adapterEventIV1 = convertView.findViewById(R.id.adapterEventIV1);
+
 
 
         // createDeclineAlertDialog(); // Creates the decline alert dialog
@@ -72,13 +73,24 @@ public class EventListAdapter extends ArrayAdapter<Event> {
                     if (view != null) {
                         Log.d("Event Details on Click", event.toString());
                         Intent intent = new Intent(mContext, EventDetailsActivity.class);
-                        intent.putExtra("event", (Parcelable) event);
+                        intent.putExtra("event", event);
                         mContext.startActivity(intent);
                     }
                 }
             });
         }
 
+        if (adapterEventIV1 != null) {
+            adapterEventIV1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view != null) {
+                        Intent intent = new Intent(getContext(), EventRegisterActivity.class);
+                        getContext().startActivity(intent);
+                    }
+                }
+            });
+        }
 
         dateTV.setText(date);
         titleTV.setText(title);
