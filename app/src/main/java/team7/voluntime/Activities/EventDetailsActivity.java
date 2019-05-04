@@ -33,6 +33,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     private String[] coords;
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteersReference;
+    private DatabaseReference eventVolunteersReference;
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
@@ -42,6 +43,12 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.eventDetailsCategoryTV)
     TextView categoryTV;
+
+    @BindView(R.id.eventDetailsMinimumTV)
+    TextView minimumTV;
+
+    @BindView(R.id.eventDetailsMaximumTV)
+    TextView maximumTV;
 
     @BindView(R.id.eventDetailsLocationTV)
     TextView locationTV;
@@ -72,18 +79,20 @@ public class EventDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Event event = (Event) intent.getParcelableExtra("event");
         final HashMap<String, String> volunteers = (HashMap<String,String>) intent.getExtras().get("volunteers");
-//        int minimum = intent.getExtras().getInt("minimum", 0);
-//        int maximum = intent.getExtras().getInt("maximum", 0);
         pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
         mDatabase = FirebaseDatabase.getInstance();
         volunteersReference = mDatabase.getReference().child("Volunteers");
+        eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
 
         if (event != null) {
+            Log.d(TAG, "Minimum is " + event.getMinimum() + " and max is " + event.getMaximum());
             coords = event.getLocation().split(" ");
 
             titleTV.setText(event.getTitle());
             descriptionTV.setText(event.getDescription());
             categoryTV.setText(event.getCategory());
+            minimumTV.setText(event.getMinimum() + "");
+            maximumTV.setText(event.getMaximum() + "");
             dateTV.setText(event.getDate());
             createdTimeTV.setText(event.getCreatedTime());
             organisersTV.setText(event.getOrganisers());
@@ -102,45 +111,59 @@ public class EventDetailsActivity extends AppCompatActivity {
             locationTV.setText(address);
         }
 
-
-        if (!volunteers.isEmpty()) {
-            Log.d(TAG, "Event Volunteers is: " + volunteers.toString());
             final ArrayList<Volunteer> pendingVolunteersList = new ArrayList<>();
             final ArrayList<Volunteer> registeredVolunteersList = new ArrayList<>();
+            final HashMap<String, String> tempVolunteers = new HashMap<>();
 
             final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, pendingVolunteersList, this);
             pendingVolunteersLV.setAdapter(pendingVolunteersAdapter);
 
 
-            volunteersReference
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            pendingVolunteersList.clear();
+            eventVolunteersReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    pendingVolunteersList.clear();
 //                            registeredVolunteersList.clear();
 //                            upcomingEventsTV.setVisibility(View.VISIBLE);
 //                            previousEventsTV.setVisibility(View.VISIBLE);
 
-                            for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                if (child.exists()) {
-                                    if (volunteers.containsKey(child.getKey())) {
-                                        Volunteer tempVolunteer = child.child("Profile").getValue(Volunteer.class);
+                    for (final DataSnapshot child : dataSnapshot.getChildren()) {
+                        if (child.exists()) {
+                            volunteersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.hasChild(child.getKey())) {
+                                        Volunteer tempVolunteer = dataSnapshot.child(child.getKey()).child("Profile").getValue(Volunteer.class);
                                         tempVolunteer.setId(child.getKey());
                                         Log.d(TAG, "Volunteer is : " + tempVolunteer.toString());
                                         pendingVolunteersList.add(tempVolunteer);
+                                        tempVolunteers.put(child.getKey(), child.getValue().toString());
+                                        pendingVolunteersLV.invalidateViews();
                                     }
-                                    pendingVolunteersLV.invalidateViews();
                                 }
-                            }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+
+                            });
+//                            if (!tempVolunteers.containsKey(child.getKey())) {
+//                                tempVolunteers.put(child.getKey(), child.getValue().toString());
+//                                pendingVolunteersLV.invalidateViews();
+//                            }
                         }
+//                        pendingVolunteersLV.invalidateViews();
+                    }
+                }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
+                }
+            });
 
-                    });
-        }
     }
 
     @OnClick(R.id.eventDetailsMapIV)

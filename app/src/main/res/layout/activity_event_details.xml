@@ -45,6 +45,20 @@
                 android:layout_marginTop="20dp"
                 android:text="category" />
 
+            <TextView
+                android:id="@+id/eventDetailsMinimumTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Minimum" />
+
+            <TextView
+                android:id="@+id/eventDetailsMaximumTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Maximum" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +109,7 @@
             <ListView
                 android:id="@+id/eventPendingVolunteersLV"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="500dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"

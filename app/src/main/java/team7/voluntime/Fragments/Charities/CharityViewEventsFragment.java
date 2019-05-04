@@ -23,8 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +30,6 @@ import butterknife.OnClick;
 import team7.voluntime.Activities.CreateEventActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
@@ -165,21 +162,11 @@ public class CharityViewEventsFragment extends Fragment {
                                 String eventId = child.getKey();
                                 Log.d(TAG, "Event id is " + eventId);
 
-                                String minimum = (Objects.requireNonNull(child.child("EventVolunteers").child("minimum").getValue()).toString());
-                                String maximum = (Objects.requireNonNull(child.child("EventVolunteers").child("maximum").getValue()).toString());
-                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("Volunteers"), TAG);
-
-                                EventVolunteers eventVolunteers = new EventVolunteers();
-                                int intMin = minimum == null ? 0 : Integer.parseInt(minimum);
-                                int intMax = maximum == null ? 0 : Integer.parseInt(maximum);
-                                eventVolunteers.setMinimum(intMin);
-                                eventVolunteers.setMaximum(intMax);
-                                eventVolunteers.setVolunteers(volunteers);
-
+                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
                                 Event event = child.getValue(Event.class);
+                                event.setVolunteers(volunteers);
                                 event.setId(eventId);
-                                event.setVolunteers(eventVolunteers);
 
                                 // Will only display events that the charity has created
                                 if (event.getOrganisers().equals(mUser.getUid())) {

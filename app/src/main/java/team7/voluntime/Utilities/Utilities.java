@@ -78,6 +78,7 @@ public class Utilities {
             String status = Objects.requireNonNull(volunteersChild.getValue()).toString();
             if (volunteersChild.exists()) {
                 if (!StringUtils.isEmpty(volunteerID)) {
+                    Log.d(TAG, "Putting volunteer " + volunteerID);
                     volunteers.put(volunteerID, status);
                 } else {
                     Log.d(TAG, "Volunteer is Empty???");

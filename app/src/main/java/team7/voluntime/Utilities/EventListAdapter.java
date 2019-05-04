@@ -14,12 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
 import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.R;
 
 
@@ -51,9 +53,11 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         String date = getItem(position).getDate();
         String createdTime = getItem(position).getCreatedTime();
         String organisers = getItem(position).getOrganisers();
-        final EventVolunteers eventVolunteers = getItem(position).getEventVolunteers();
+        int minimum = getItem(position).getMinimum();
+        int maximum = getItem(position).getMaximum();
+        final HashMap<String, String> volunteers =  getItem(position).getVolunteers();
 
-        final Event event = new Event(eventId, title, description, category, location, date, createdTime, organisers, eventVolunteers);
+        final Event event = new Event(eventId, title, description, category, location, date, createdTime, organisers, minimum, maximum, volunteers);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -68,9 +72,8 @@ public class EventListAdapter extends ArrayAdapter<Event> {
                 public void onClick(@NonNull View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
                     intent.putExtra("event", (Parcelable) event);
-                    intent.putExtra("volunteers", eventVolunteers.getVolunteers());
-//                    intent.putExtra("minimum", eventVolunteers.getMinimum());
-//                    intent.putExtra("maximum", eventVolunteers.getMaximum());
+                    intent.putExtra("volunteers", event.getVolunteers());
+                    Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
 
