@@ -14,30 +14,29 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
+import team7.voluntime.Activities.VolunteerDetailsActivity;
 import team7.voluntime.Domains.Event;
+import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.R;
 
 
-public class EventListAdapter extends ArrayAdapter<Event> {
+public class EventListAdapter<T> extends ArrayAdapter<Event> {
     private static final String TAG = "EventListAdapter";
     private Context mContext;
-    private Fragment fragment;
+    private T screen;
     int mResource;
     private String eventId;
-    private AlertDialog.Builder declineAlertBuilder;
-    private AlertDialog declineAlert;
 
-    public EventListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> objects, Fragment fragment) {
+
+    public EventListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> objects, T screen) {
         super(context, resource, objects);
         this.mContext = context;
-        this.fragment = fragment;
+        this.screen = screen;
         mResource = resource;
     }
 
@@ -66,7 +65,8 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView titleTV = (TextView) convertView.findViewById(R.id.adapterEventTitleTV);
         ImageView adapterEventIV2 = (ImageView) convertView.findViewById(R.id.adapterEventIV2);
 
-        if (adapterEventIV2 != null) {
+
+        if (screen.getClass().equals(CharityViewEventsFragment.class)) {
             adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
@@ -75,6 +75,18 @@ public class EventListAdapter extends ArrayAdapter<Event> {
                     intent.putExtra("volunteers", event.getVolunteers());
                     Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
+                }
+
+            });
+        } else if (screen.getClass().equals(VolunteerDetailsActivity.class)) {
+            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+//                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
+//                    intent.putExtra("event", (Parcelable) event);
+//                    intent.putExtra("volunteers", event.getVolunteers());
+//                    Log.d(TAG, "Event is: " + event.toString());
+//                    mContext.startActivity(intent);
                 }
 
             });

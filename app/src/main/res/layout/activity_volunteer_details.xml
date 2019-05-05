@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_login_bg"
     tools:context=".Activities.VolunteerDetailsActivity">
 
     <LinearLayout
@@ -58,18 +59,6 @@
                 android:textSize="33sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/volunteerDetailsTypeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20sp"
-                android:textSize="20sp"
-                android:textStyle="bold|italic"
-                android:textColorHighlight="@android:color/black"/>
-
-
-            <!-- Shared Attributes -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -195,13 +184,34 @@
                         android:textSize="20sp" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/volunteerDetailsHistoryBtn"
-                    android:layout_width="200sp"
-                    android:layout_height="50sp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="30sp"
-                    android:text="Volunteer History" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Volunteer History: "
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/volunteerDetailsHistoryTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="None"/>
+
+                </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/volunteerDetailsHistoryLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
         </LinearLayout>

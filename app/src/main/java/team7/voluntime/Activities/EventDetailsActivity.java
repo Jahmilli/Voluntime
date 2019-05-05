@@ -69,8 +69,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.eventDetailsRegisteredVolunteersTV)
     TextView registeredVolunteersTV;
-
-
+    
     private final static String TAG = "EventDetails";
 
     @Override
@@ -81,7 +80,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Event event = (Event) intent.getParcelableExtra("event");
-        final HashMap<String, String> volunteers = (HashMap<String,String>) intent.getExtras().get("volunteers");
+
         pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
         registeredVolunteersLV = (ListView) findViewById(R.id.eventRegisteredVolunteersLV);
         mDatabase = FirebaseDatabase.getInstance();
@@ -116,7 +115,6 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             final ArrayList<Volunteer> pendingVolunteersList = new ArrayList<>();
             final ArrayList<Volunteer> registeredVolunteersList = new ArrayList<>();
-            final HashMap<String, String> tempVolunteers = new HashMap<>();
 
             final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, pendingVolunteersList, this);
             final VolunteerListAdapter registeredVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, registeredVolunteersList, this);
@@ -148,7 +146,6 @@ public class EventDetailsActivity extends AppCompatActivity {
                                                 pendingVolunteersTV.setVisibility(View.INVISIBLE);
                                             }
                                             pendingVolunteersList.add(tempVolunteer);
-//                                            pendingVolunteersAdapter.notifyDataSetChanged();
                                             pendingVolunteersLV.invalidateViews();
                                             Utilities.setDynamicHeight(pendingVolunteersLV);
                                             if (registeredVolunteersList.isEmpty()) {
@@ -160,7 +157,6 @@ public class EventDetailsActivity extends AppCompatActivity {
                                                 registeredVolunteersTV.setVisibility(View.INVISIBLE);
                                             }
                                             registeredVolunteersList.add(tempVolunteer);
-//                                            registeredVolunteersAdapter.notifyDataSetChanged();
                                             registeredVolunteersLV.invalidateViews();
                                             Utilities.setDynamicHeight(registeredVolunteersLV);
                                             if (pendingVolunteersList.isEmpty()) {

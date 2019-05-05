@@ -47,13 +47,10 @@ public class CharityViewEventsFragment extends Fragment {
 
     @BindView(R.id.upcomingEventsTV)
     TextView upcomingEventsTV;
-
     @BindView(R.id.previousEventsTV)
     TextView previousEventsTV;
-
     @BindView(R.id.viewEventTitleTV)
     TextView viewEventTitleTV;
-
     @BindView(R.id.createEventIV)
     ImageView createEventIV;
 
@@ -67,7 +64,6 @@ public class CharityViewEventsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
         getActivity().setTitle("View Events");
     }
 
@@ -90,8 +86,8 @@ public class CharityViewEventsFragment extends Fragment {
         final HashMap<String, String> upcomingEvents = new HashMap<>();
         final HashMap<String, String> previousEvents = new HashMap<>();
 
-        EventListAdapter upcomingEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, CharityViewEventsFragment.this);
-        EventListAdapter previousEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, previousEventList, CharityViewEventsFragment.this);
+        EventListAdapter<CharityViewEventsFragment> upcomingEventListAdapter = new EventListAdapter<>(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, CharityViewEventsFragment.this);
+        EventListAdapter<CharityViewEventsFragment> previousEventListAdapter = new EventListAdapter<>(getActivity(), R.layout.adapter_view_event_layout, previousEventList, CharityViewEventsFragment.this);
         listOfUpcomingEvents.setAdapter(upcomingEventListAdapter);
         listOfPreviousEvents.setAdapter(previousEventListAdapter);
 
