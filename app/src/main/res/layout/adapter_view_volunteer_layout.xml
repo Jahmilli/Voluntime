@@ -29,14 +29,14 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/adapterEventIV1"
+            android:id="@+id/volunteerAdapterIV1"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
             android:src="@drawable/ic_lock_outline" />
 
         <ImageView
-            android:id="@+id/volunteerAdapterIV1"
+            android:id="@+id/volunteerAdapterIV2"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"

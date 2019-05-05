@@ -2,6 +2,8 @@ package team7.voluntime.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import team7.voluntime.Activities.VolunteerDetailsActivity;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
 
@@ -50,14 +53,16 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
-        ImageView volunteerAdapterIV1 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV1);
+        ImageView volunteerAdapterIV2 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV2);
 
-        if (volunteerAdapterIV1 != null) {
-            volunteerAdapterIV1.setOnClickListener(new View.OnClickListener() {
+        if (volunteerAdapterIV2 != null) {
+            volunteerAdapterIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                     Log.d(TAG, "Volunteer list " + volunteer.toString());
-
+                    Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
+                    intent.putExtra("volunteer", (Parcelable) volunteer);
+                    mContext.startActivity(intent);
                 }
             });
         }

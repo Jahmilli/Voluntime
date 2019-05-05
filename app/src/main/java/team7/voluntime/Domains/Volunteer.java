@@ -1,5 +1,8 @@
 package team7.voluntime.Domains;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /*
 
 Volunteers:
@@ -12,7 +15,7 @@ Volunteers:
       dateOfBirth: String
       email: String
  */
-public class Volunteer {
+public class Volunteer implements Parcelable {
     private String id;
     private String dateOfBirth;
     private String name;
@@ -78,4 +81,42 @@ public class Volunteer {
                 "\nEmail: " + this.getEmail();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(dateOfBirth);
+        parcel.writeString(name);
+        parcel.writeString(address);
+        parcel.writeString(phoneNumber);
+        parcel.writeString(gender);
+        parcel.writeString(email);
+
+    }
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+
+    public static final Parcelable.Creator<Volunteer> CREATOR = new Parcelable.Creator<Volunteer>() {
+        public Volunteer createFromParcel(Parcel in) {
+            return new Volunteer(in);
+        }
+
+        public Volunteer[] newArray(int size) {
+            return new Volunteer[size];
+        }
+    };
+
+    private Volunteer(Parcel in) {
+        id = in.readString();
+        dateOfBirth = in.readString();
+        name = in.readString();
+        address = in.readString();
+        phoneNumber = in.readString();
+        gender = in.readString();
+        email = in.readString();
+
+    }
 }
