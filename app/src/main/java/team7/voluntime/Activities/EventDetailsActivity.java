@@ -194,4 +194,9 @@ public class EventDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.eventDetailsBackTV)
+    public void backButtonOnClick() {
+        finish();
+    }
+
 }

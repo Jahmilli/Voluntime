@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
@@ -42,6 +43,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     // Bindings
     @BindView(R.id.volunteerDetailsVolunteerLayout)
     LinearLayout volunteerLayout;
+
     @BindView(R.id.volunteerDetailsNameTV)
     TextView nameTV;
     @BindView(R.id.volunteerDetailsEmailTV)
@@ -134,5 +136,10 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    @OnClick(R.id.volunteerDetailsBackTV)
+    public void backButtonOnClick() {
+        finish();
     }
 }
