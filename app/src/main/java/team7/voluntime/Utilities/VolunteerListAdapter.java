@@ -57,17 +57,29 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
-        ImageView volunteerAdapterIV1 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV1);
+        ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
+        ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
         ImageView volunteerAdapterIV2 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV2);
 
 
-        if (volunteerAdapterIV1 != null) {
-            volunteerAdapterIV1.setOnClickListener(new View.OnClickListener() {
+        if (volunteerAdapterAddIV != null) {
+            volunteerAdapterAddIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                 DatabaseReference reference = activity.getDatabaseReference();
                 reference.child("Volunteers").child(volunteerId).child("Events").child(eventId).setValue("registered");
                 reference.child("Events").child(eventId).child("Volunteers").child(volunteerId).setValue("registered");
+                }
+            });
+        }
+
+        if (volunteerAdapterRemoveIV != null) {
+            volunteerAdapterRemoveIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    DatabaseReference reference = activity.getDatabaseReference();
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(eventId).setValue("pending");
+                    reference.child("Events").child(eventId).child("Volunteers").child(volunteerId).setValue("pending");
                 }
             });
         }

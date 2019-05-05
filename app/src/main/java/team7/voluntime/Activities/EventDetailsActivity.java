@@ -119,8 +119,8 @@ public class EventDetailsActivity extends AppCompatActivity {
     private void setVolunteers() {
         final ArrayList<Volunteer> pendingVolunteersList = new ArrayList<>();
         final ArrayList<Volunteer> registeredVolunteersList = new ArrayList<>();
-        final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, pendingVolunteersList, this);
-        final VolunteerListAdapter registeredVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, registeredVolunteersList, this);
+        final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_pending_volunteer_layout, pendingVolunteersList, this);
+        final VolunteerListAdapter registeredVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_registered_volunteer_layout, registeredVolunteersList, this);
         pendingVolunteersLV.setAdapter(pendingVolunteersAdapter);
         registeredVolunteersLV.setAdapter(registeredVolunteersAdapter);
         eventVolunteersReference.addValueEventListener(new ValueEventListener() {
@@ -132,6 +132,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                 // These is needed to stop application crashing when either list is updated and becomes empty
                 pendingVolunteersAdapter.notifyDataSetChanged();
                 registeredVolunteersAdapter.notifyDataSetChanged();
+//                Utilities.setDynamicHeight(registeredVolunteersLV);
+//                Utilities.setDynamicHeight(pendingVolunteersLV);
 
                 for (final DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.exists()) {
