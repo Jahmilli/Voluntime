@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/gradient_login_bg"
     android:fillViewport="true"
     tools:context=".Activities.EventDetailsActivity">
@@ -100,11 +100,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Upcoming Events:"
+                    android:text="Pending Volunteers:"
                     android:layout_gravity="center_horizontal" />
 
                 <TextView
-                    android:id="@+id/upcomingEventsTV"
+                    android:id="@+id/eventDetailsPendingVolunteersTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -130,11 +130,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Previous Events:"
+                    android:text="Registered Volunteers: "
                     android:layout_gravity="center_horizontal" />
 
                 <TextView
-                    android:id="@+id/previousEventsTV"
+                    android:id="@+id/eventDetailsRegisteredVolunteersTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

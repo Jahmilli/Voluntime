@@ -64,6 +64,12 @@ public class EventDetailsActivity extends AppCompatActivity {
     @BindView(R.id.eventDetailsMapIV)
     ImageView mapIV;
 
+    @BindView(R.id.eventDetailsPendingVolunteersTV)
+    TextView pendingVolunteersTV;
+
+    @BindView(R.id.eventDetailsRegisteredVolunteersTV)
+    TextView registeredVolunteersTV;
+
 
     private final static String TAG = "EventDetails";
 
@@ -121,11 +127,12 @@ public class EventDetailsActivity extends AppCompatActivity {
             eventVolunteersReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                     pendingVolunteersList.clear();
                     registeredVolunteersList.clear();
-//                            upcomingEventsTV.setVisibility(View.VISIBLE);
-//                            previousEventsTV.setVisibility(View.VISIBLE);
+
+                    // These is needed to stop application crashing when either list is updated and becomes empty
+                    pendingVolunteersAdapter.notifyDataSetChanged();
+                    registeredVolunteersAdapter.notifyDataSetChanged();
 
                     for (final DataSnapshot child : dataSnapshot.getChildren()) {
                         if (child.exists()) {
@@ -137,14 +144,28 @@ public class EventDetailsActivity extends AppCompatActivity {
                                         tempVolunteer.setId(child.getKey());
                                         Log.d(TAG, "Volunteer is : " + tempVolunteer.toString());
                                         if (child.getValue().toString().equals("pending")) {
+                                            if (pendingVolunteersTV.getVisibility() != View.INVISIBLE) {
+                                                pendingVolunteersTV.setVisibility(View.INVISIBLE);
+                                            }
                                             pendingVolunteersList.add(tempVolunteer);
+//                                            pendingVolunteersAdapter.notifyDataSetChanged();
                                             pendingVolunteersLV.invalidateViews();
                                             Utilities.setDynamicHeight(pendingVolunteersLV);
+                                            if (registeredVolunteersList.isEmpty()) {
+                                                registeredVolunteersTV.setVisibility(View.VISIBLE);
+                                            }
 
                                         } else if (child.getValue().toString().equals("registered")) {
+                                            if (registeredVolunteersTV.getVisibility() != View.INVISIBLE) {
+                                                registeredVolunteersTV.setVisibility(View.INVISIBLE);
+                                            }
                                             registeredVolunteersList.add(tempVolunteer);
+//                                            registeredVolunteersAdapter.notifyDataSetChanged();
                                             registeredVolunteersLV.invalidateViews();
                                             Utilities.setDynamicHeight(registeredVolunteersLV);
+                                            if (pendingVolunteersList.isEmpty()) {
+                                                pendingVolunteersTV.setVisibility(View.VISIBLE);
+                                            }
                                         }
                                     }
                                 }
@@ -157,7 +178,6 @@ public class EventDetailsActivity extends AppCompatActivity {
                             });
                         }
                     }
-
                 }
 
                 @Override
