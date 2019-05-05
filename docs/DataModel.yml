@@ -28,8 +28,7 @@ Events:
     date: String
     createdTime: String
     organisers: CharityID
-    EventVolunteers:
-      minimum: Integer
-      maximum: Integer
-      Volunteers:
-        <VolunteerID  >: String # pending/registered/attended
+    minimum: Integer
+    maximum: Integer
+    Volunteers:
+      <VolunteerID  >: String # pending/registered/attended
