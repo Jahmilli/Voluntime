@@ -30,6 +30,7 @@ import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
+import team7.voluntime.Utilities.Utilities;
 
 public class VolunteerDetailsActivity extends AppCompatActivity {
     private static String TAG = "VolunteerDetailsActivity";
@@ -104,6 +105,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
                                 }
                                 volunteerHistoryList.add(tempEvent);
                                 volunteerHistoryLV.invalidateViews();
+                                Utilities.setDynamicHeight(volunteerHistoryLV);
                             }
 
                             @Override
