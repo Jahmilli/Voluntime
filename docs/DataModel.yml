@@ -31,4 +31,4 @@ Events:
     minimum: Integer
     maximum: Integer
     Volunteers:
-      <VolunteerID  >: String # pending/registered/attended
+      <VolunteerID>: String # pending/registered/attended

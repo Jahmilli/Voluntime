@@ -71,7 +71,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
                     intent.putExtra("event", (Parcelable) event);
                     intent.putExtra("parentActivity", CharityViewEventsFragment.class.toString());
-//                    intent.putExtra("volunteers", event.getVolunteers());
+                    intent.putExtra("volunteers", event.getVolunteers());
                     Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
