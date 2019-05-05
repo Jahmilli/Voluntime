@@ -18,6 +18,7 @@ import team7.voluntime.Utilities.Utilities;
 public class EventDetailsActivity extends AppCompatActivity {
 
     private String[] coords;
+    public static String eventaddress;
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
@@ -52,7 +53,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Event event = (Event) intent.getParcelableExtra("event");
+        Event event = intent.getParcelableExtra("event");
 
         if (event != null) {
             coords = event.getLocation().split(" ");

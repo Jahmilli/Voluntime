@@ -85,12 +85,29 @@ public class EventListAdapter extends ArrayAdapter<Event> {
                 @Override
                 public void onClick(View view) {
                     if (view != null) {
-                        Intent intent = new Intent(getContext(), EventRegisterActivity.class);
-                        getContext().startActivity(intent);
+                        Log.d("Event Details on Click", event.toString());
+                        Intent intent = new Intent(mContext, EventRegisterActivity.class);
+                        intent.putExtra("event", event);
+                        mContext.startActivity(intent);
                     }
                 }
             });
         }
+//        if (adapterEventIV1 != null) {
+//            adapterEventIV1.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (MainActivity.getAccountType().equals("Volunteer")) {
+//                        if (view != null) {
+//                            Log.d("Event Details on Click", event.toString());
+//                            Intent intent = new Intent(getContext(), EventRegisterActivity.class);
+//                            intent.putExtra("event", event);
+//                            getContext().startActivity(intent);
+//                        }
+//                    }
+//                }
+//            });
+//      }
 
         dateTV.setText(date);
         titleTV.setText(title);

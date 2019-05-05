@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
             android:paddingTop="20dp"
             android:paddingBottom="20dp">
@@ -28,15 +28,101 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:text="Register" />
+                android:paddingTop="10dp"
+                android:text="Review Registration"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventRegisterEventName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Event Name:  " />
+
+                <TextView
+                    android:id="@+id/eventRegisterEventNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <!--TODO: Implement Map-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventRegisterEventAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Event Address:  " />
+
+                <TextView
+                    android:id="@+id/eventRegisterEventAddressTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventRegisterEventDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Event Description:  " />
+
+                <TextView
+                    android:id="@+id/eventRegisterEventDescriptionTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventRegisterEventDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Event Date:  " />
+
+                <TextView
+                    android:id="@+id/eventRegisterEventDateTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/eventRegisterButton"
+                android:layout_marginTop="200dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:onClick="eventRegisterConfirm"
-                android:text="Register" />/
+                android:text="Register" />
 
         </LinearLayout>
     </ScrollView>

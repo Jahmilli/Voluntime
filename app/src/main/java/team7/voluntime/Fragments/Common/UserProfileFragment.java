@@ -87,6 +87,12 @@ public class UserProfileFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().setTitle("Profile");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
