@@ -61,6 +61,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
 
         TextView dateTV = convertView.findViewById(R.id.adapterEventDateTV);
         TextView titleTV = convertView.findViewById(R.id.adapterEventTitleTV);
+        ImageView adapterEventIV1 = convertView.findViewById(R.id.adapterEventIV1);
         ImageView adapterEventIV2 = convertView.findViewById(R.id.adapterEventIV2);
 
 

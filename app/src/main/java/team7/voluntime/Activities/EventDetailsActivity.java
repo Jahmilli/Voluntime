@@ -16,9 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +36,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     private DatabaseReference eventVolunteersReference;
     private ListView pendingVolunteersLV;
     private ListView registeredVolunteersLV;
+    private Event event;
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
@@ -75,7 +74,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Event event = (Event) intent.getParcelableExtra("event");
+        event = (Event) intent.getParcelableExtra("event");
         pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
         registeredVolunteersLV = (ListView) findViewById(R.id.eventRegisteredVolunteersLV);
 
@@ -113,8 +112,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             volunteersReference = mDatabase.getReference().child("Volunteers");
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
             setVolunteers();
-        }
-
+        };
 
     }
 
@@ -183,6 +181,15 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    public String getEventId() {
+        return event.getId();
+    }
+
+    public DatabaseReference getDatabaseReference() {
+        return mDatabase.getReference();
     }
 
     @OnClick(R.id.eventDetailsMapIV)
