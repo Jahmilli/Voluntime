@@ -132,8 +132,6 @@ public class EventDetailsActivity extends AppCompatActivity {
                 // These is needed to stop application crashing when either list is updated and becomes empty
                 pendingVolunteersAdapter.notifyDataSetChanged();
                 registeredVolunteersAdapter.notifyDataSetChanged();
-//                Utilities.setDynamicHeight(registeredVolunteersLV);
-//                Utilities.setDynamicHeight(pendingVolunteersLV);
 
                 for (final DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.exists()) {
