@@ -152,7 +152,6 @@ public class Event implements Parcelable {
                 "\nCreatedTime: " + getCreatedTime() +
                 "\nOrganisers: " + getOrganisers() +
                 "\nMinimum: " + getMinimum() +
-                "\nMaximum: " + getMaximum() +
-                "\nVolunteers: " + getVolunteers().toString();
+                "\nMaximum: " + getMaximum();
     }
 }

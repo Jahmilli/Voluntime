@@ -1,11 +1,9 @@
 package team7.voluntime.Utilities;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,9 +59,9 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
-        TextView dateTV = (TextView) convertView.findViewById(R.id.adapterEventDateTV);
-        TextView titleTV = (TextView) convertView.findViewById(R.id.adapterEventTitleTV);
-        ImageView adapterEventIV2 = (ImageView) convertView.findViewById(R.id.adapterEventIV2);
+        TextView dateTV = convertView.findViewById(R.id.adapterEventDateTV);
+        TextView titleTV = convertView.findViewById(R.id.adapterEventTitleTV);
+        ImageView adapterEventIV2 = convertView.findViewById(R.id.adapterEventIV2);
 
 
         if (screen.getClass().equals(CharityViewEventsFragment.class)) {
@@ -72,7 +70,8 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                 public void onClick(@NonNull View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
                     intent.putExtra("event", (Parcelable) event);
-                    intent.putExtra("volunteers", event.getVolunteers());
+                    intent.putExtra("parentActivity", CharityViewEventsFragment.class.toString());
+//                    intent.putExtra("volunteers", event.getVolunteers());
                     Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
@@ -82,11 +81,11 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
             adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
-//                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
-//                    intent.putExtra("event", (Parcelable) event);
-//                    intent.putExtra("volunteers", event.getVolunteers());
-//                    Log.d(TAG, "Event is: " + event.toString());
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
+                    intent.putExtra("event", (Parcelable) event);
+                    intent.putExtra("parentActivity", VolunteerDetailsActivity.class.toString());
+                    Log.d(TAG, "Event is: " + event.toString());
+                    mContext.startActivity(intent);
                 }
 
             });

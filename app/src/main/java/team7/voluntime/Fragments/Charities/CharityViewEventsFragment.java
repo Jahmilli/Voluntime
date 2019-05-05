@@ -157,7 +157,6 @@ public class CharityViewEventsFragment extends Fragment {
                             if (child.exists()) {
                                 String eventId = child.getKey();
                                 Log.d(TAG, "Event id is " + eventId);
-
                                 HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
                                 Event event = child.getValue(Event.class);

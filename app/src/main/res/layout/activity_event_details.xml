@@ -92,6 +92,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/eventDetailsPendingVolunteersLabelTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pending Volunteers:"
@@ -122,6 +123,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/eventDetailsRegisteredVolunteersLabelTV"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Registered Volunteers: "

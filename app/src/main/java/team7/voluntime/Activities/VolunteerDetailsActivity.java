@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,17 +31,12 @@ import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
 
 public class VolunteerDetailsActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private ProgressDialog progressDialog;
-    
     private static String TAG = "VolunteerDetailsActivity";
 
-    FirebaseUser mUser;
+    Volunteer volunteer;
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteerHistoryReference;
     private DatabaseReference eventsReference;
-    private Charity charity;
-    private Volunteer volunteer;
     private ListView volunteerHistoryLV;
 
     // Bindings
@@ -72,7 +68,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         volunteerHistoryLV = (ListView) findViewById(R.id.volunteerDetailsHistoryLV);
 
         Intent intent = getIntent();
-        final Volunteer volunteer = (Volunteer) intent.getParcelableExtra("volunteer");
+        volunteer = (Volunteer) intent.getParcelableExtra("volunteer");
         nameTV.setText(volunteer.getName());
         emailTV.setText(volunteer.getEmail());
         phoneTV.setText(volunteer.getPhoneNumber());
@@ -100,6 +96,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Event tempEvent = dataSnapshot.getValue(Event.class);
+                                tempEvent.setVolunteers(new HashMap<String, String>());
                                 if (historyTV.getVisibility() != View.INVISIBLE) {
                                     historyTV.setVisibility(View.INVISIBLE);
                                 }
@@ -124,6 +121,9 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
 
     }
 
+    public String getVolunteerID() {
+        return volunteer.getId();
+    }
 
     @Override
     protected void onStart() {
