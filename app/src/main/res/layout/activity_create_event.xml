@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_login_bg"
-    tools:context="team7.voluntime.Activities.LoginActivity">
+    tools:context=".Activities.CreateEventActivity">
 
     <ScrollView
         android:layout_width="match_parent"

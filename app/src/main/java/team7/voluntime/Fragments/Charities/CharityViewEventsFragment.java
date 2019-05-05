@@ -75,7 +75,7 @@ public class CharityViewEventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_view_events, container, false);
+        View v = inflater.inflate(R.layout.fragment_charity_view_events, container, false);
         ButterKnife.bind(this, v);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();

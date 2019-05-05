@@ -34,6 +34,8 @@ public class EventDetailsActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteersReference;
     private DatabaseReference eventVolunteersReference;
+    private ListView pendingVolunteersLV;
+    private ListView registeredVolunteersLV;
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
@@ -59,14 +61,9 @@ public class EventDetailsActivity extends AppCompatActivity {
     @BindView(R.id.eventDetailsCreatedTimeTV)
     TextView createdTimeTV;
 
-    @BindView(R.id.eventDetailsOrganisersTV)
-    TextView organisersTV;
-
     @BindView(R.id.eventDetailsMapIV)
     ImageView mapIV;
 
-//    @BindView(R.id.eventPendingVolunteersLV)
-    private ListView pendingVolunteersLV;
 
     private final static String TAG = "EventDetails";
 
@@ -80,6 +77,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         Event event = (Event) intent.getParcelableExtra("event");
         final HashMap<String, String> volunteers = (HashMap<String,String>) intent.getExtras().get("volunteers");
         pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
+        registeredVolunteersLV = (ListView) findViewById(R.id.eventRegisteredVolunteersLV);
         mDatabase = FirebaseDatabase.getInstance();
         volunteersReference = mDatabase.getReference().child("Volunteers");
         eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
@@ -95,7 +93,6 @@ public class EventDetailsActivity extends AppCompatActivity {
             maximumTV.setText(event.getMaximum() + "");
             dateTV.setText(event.getDate());
             createdTimeTV.setText(event.getCreatedTime());
-            organisersTV.setText(event.getOrganisers());
             String address = "Location Unavailable";
             try {
                  address = Utilities.getLocation(
@@ -116,7 +113,9 @@ public class EventDetailsActivity extends AppCompatActivity {
             final HashMap<String, String> tempVolunteers = new HashMap<>();
 
             final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, pendingVolunteersList, this);
+            final VolunteerListAdapter registeredVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_volunteer_layout, registeredVolunteersList, this);
             pendingVolunteersLV.setAdapter(pendingVolunteersAdapter);
+            registeredVolunteersLV.setAdapter(registeredVolunteersAdapter);
 
 
             eventVolunteersReference.addValueEventListener(new ValueEventListener() {
@@ -124,7 +123,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     pendingVolunteersList.clear();
-//                            registeredVolunteersList.clear();
+                    registeredVolunteersList.clear();
 //                            upcomingEventsTV.setVisibility(View.VISIBLE);
 //                            previousEventsTV.setVisibility(View.VISIBLE);
 
@@ -137,9 +136,16 @@ public class EventDetailsActivity extends AppCompatActivity {
                                         Volunteer tempVolunteer = dataSnapshot.child(child.getKey()).child("Profile").getValue(Volunteer.class);
                                         tempVolunteer.setId(child.getKey());
                                         Log.d(TAG, "Volunteer is : " + tempVolunteer.toString());
-                                        pendingVolunteersList.add(tempVolunteer);
-                                        tempVolunteers.put(child.getKey(), child.getValue().toString());
-                                        pendingVolunteersLV.invalidateViews();
+                                        if (child.getValue().toString().equals("pending")) {
+                                            pendingVolunteersList.add(tempVolunteer);
+                                            pendingVolunteersLV.invalidateViews();
+                                            Utilities.setDynamicHeight(pendingVolunteersLV);
+
+                                        } else if (child.getValue().toString().equals("registered")) {
+                                            registeredVolunteersList.add(tempVolunteer);
+                                            registeredVolunteersLV.invalidateViews();
+                                            Utilities.setDynamicHeight(registeredVolunteersLV);
+                                        }
                                     }
                                 }
 
@@ -149,13 +155,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 }
 
                             });
-//                            if (!tempVolunteers.containsKey(child.getKey())) {
-//                                tempVolunteers.put(child.getKey(), child.getValue().toString());
-//                                pendingVolunteersLV.invalidateViews();
-//                            }
                         }
-//                        pendingVolunteersLV.invalidateViews();
                     }
+
                 }
 
                 @Override

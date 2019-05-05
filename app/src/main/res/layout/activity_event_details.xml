@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/gradient_login_bg"
-    tools:context=".Activities.ForgotPasswordActivity">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:scrollbars="none">
+    android:fillViewport="true"
+    tools:context=".Activities.EventDetailsActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,6 +51,12 @@
                 android:layout_marginTop="20dp"
                 android:text="Maximum" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:text="Maximum" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,27 +92,69 @@
                 android:layout_marginTop="20dp"
                 android:text="created date time" />
 
-            <TextView
-                android:id="@+id/eventDetailsOrganisersTV"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="organisers" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pending"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upcoming Events:"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/upcomingEventsTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="None" />
+
+            </LinearLayout>
+
 
             <ListView
                 android:id="@+id/eventPendingVolunteersLV"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp" />
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Previous Events:"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/previousEventsTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="None"/>
+
+            </LinearLayout>
+
+
+            <ListView
+                android:id="@+id/eventRegisteredVolunteersLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" />
+
+
         </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+</ScrollView>
+
+
+
