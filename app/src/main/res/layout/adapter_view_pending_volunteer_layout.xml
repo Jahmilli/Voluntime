@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="66.6">
+
+        <TextView
+            android:id="@+id/volunteerAdapterNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="33.3"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/volunteerAdapterAddIV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_tick_icon" />
+
+        <ImageView
+            android:id="@+id/volunteerAdapterIV2"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_view_profile_icon" />
+
+    </LinearLayout>
+
+</LinearLayout>
