@@ -1,7 +1,6 @@
 package team7.voluntime.Fragments.Volunteers;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,21 +20,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Activities.CreateEventActivity;
-import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.Domains.Volunteer;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
@@ -122,36 +114,12 @@ public class VolunteerEventsListFragment extends Fragment {
                                 String eventId = child.getKey();
                                 Log.d(TAG, "Event id is " + eventId);
 
-                                String minimum = (child.child("EventVolunteers").child("minimum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("minimum").getValue().toString() : null;
-                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("maximum").getValue().toString() : null;
-
-                                // TODO: Create pending, registered and attended
-//                                if (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null) {
-//                                    Map map = child.child("EventVolunteers").child("pendingVolunteers").getValue(Map.class);
-//                                    Log.d(TAG, "map is " + map.toString());
-//                                }
-//                                ArrayList<String> pendingVolunteers = (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null)
-//                                        ? child.child("pendingVolunteers").getValue() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-
-
-                                EventVolunteers eventVolunteers = new EventVolunteers();
-                                int intMin = minimum == null ? 0 : Integer.parseInt(minimum);
-                                int intMax = maximum == null ? 0 : Integer.parseInt(maximum);
-                                eventVolunteers.setMinimum(intMin);
-                                eventVolunteers.setMaximum(intMax);
-
-
+                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("Volunteers"), TAG);
                                 Event event = child.getValue(Event.class);
+                                event.setVolunteers(volunteers);
                                 event.setId(eventId);
-                                event.setVolunteers(eventVolunteers);
 
-                                // Will only display events that the charity has createdif (event.getOrganisers().equals(mUser.getUid())) {
+                                // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
                                 Log.d(TAG, event.toString());
                                 upcomingEventList.add(event);
                                 if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {

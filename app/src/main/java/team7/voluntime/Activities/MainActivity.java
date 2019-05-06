@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
+import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
 import team7.voluntime.R;
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                             // You can find these id's at: res -> menu -> drawer_view.xml
                             case R.id.nav_event:
                                 if (currentState != MenuStates.EVENT) {
-                                    ChangeFragment(new ViewEventsFragment());
+                                    ChangeFragment(new CharityViewEventsFragment());
                                     currentState = MenuStates.EVENT;
                                 }
                                 break;

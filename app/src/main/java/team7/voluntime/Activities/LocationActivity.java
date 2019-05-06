@@ -140,15 +140,10 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                                         .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                             } else {
-                                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(mLastKnownLocation.getLatitude(),
-                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-
+                                // TODO: Determine if anything is needed here
                             }
 
                         } else {
-                            mGoogleMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(LocationDefaults.mDefaultLocation, DEFAULT_ZOOM));
                             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
@@ -213,7 +208,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 final List<Address> addresses = Utilities.getLocation(getApplicationContext(), latLng.latitude, latLng.longitude);
                 // Setting the title for the marker.
                 // This will be displayed on taping the marker
-                 markerOptions.title(addresses.get(0).getAddressLine(0));
+                markerOptions.title(addresses.get(0).getAddressLine(0));
 
                 // Clears the previously touched position
                 mGoogleMap.clear();

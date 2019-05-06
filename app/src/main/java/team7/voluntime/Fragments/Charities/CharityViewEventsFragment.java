@@ -21,11 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,13 +30,12 @@ import butterknife.OnClick;
 import team7.voluntime.Activities.CreateEventActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.EventVolunteers;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
 
 
-public class ViewEventsFragment extends Fragment {
+public class CharityViewEventsFragment extends Fragment {
     FirebaseUser mUser;
     private FirebaseDatabase database;
     private DatabaseReference charityReference;
@@ -51,27 +47,23 @@ public class ViewEventsFragment extends Fragment {
 
     @BindView(R.id.upcomingEventsTV)
     TextView upcomingEventsTV;
-
     @BindView(R.id.previousEventsTV)
     TextView previousEventsTV;
-
     @BindView(R.id.viewEventTitleTV)
     TextView viewEventTitleTV;
-
     @BindView(R.id.createEventIV)
     ImageView createEventIV;
 
-    private final static String TAG = "ViewEventsFragment";
+    private final static String TAG = "CharityViewEvents";
 
 
-    public ViewEventsFragment() {
+    public CharityViewEventsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
         getActivity().setTitle("View Events");
     }
 
@@ -79,7 +71,7 @@ public class ViewEventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_view_events, container, false);
+        View v = inflater.inflate(R.layout.fragment_charity_view_events, container, false);
         ButterKnife.bind(this, v);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
@@ -94,8 +86,8 @@ public class ViewEventsFragment extends Fragment {
         final HashMap<String, String> upcomingEvents = new HashMap<>();
         final HashMap<String, String> previousEvents = new HashMap<>();
 
-        EventListAdapter upcomingEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, ViewEventsFragment.this);
-        EventListAdapter previousEventListAdapter = new EventListAdapter(getActivity(), R.layout.adapter_view_event_layout, previousEventList, ViewEventsFragment.this);
+        EventListAdapter<CharityViewEventsFragment> upcomingEventListAdapter = new EventListAdapter<>(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, CharityViewEventsFragment.this);
+        EventListAdapter<CharityViewEventsFragment> previousEventListAdapter = new EventListAdapter<>(getActivity(), R.layout.adapter_view_event_layout, previousEventList, CharityViewEventsFragment.this);
         listOfUpcomingEvents.setAdapter(upcomingEventListAdapter);
         listOfPreviousEvents.setAdapter(previousEventListAdapter);
 
@@ -165,35 +157,11 @@ public class ViewEventsFragment extends Fragment {
                             if (child.exists()) {
                                 String eventId = child.getKey();
                                 Log.d(TAG, "Event id is " + eventId);
-
-                                String minimum = (child.child("EventVolunteers").child("minimum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("minimum").getValue().toString() : null;
-                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-                                        ? child.child("EventVolunteers").child("maximum").getValue().toString() : null;
-
-                                // TODO: Create pending, registered and attended
-//                                if (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null) {
-//                                    Map map = child.child("EventVolunteers").child("pendingVolunteers").getValue(Map.class);
-//                                    Log.d(TAG, "map is " + map.toString());
-//                                }
-//                                ArrayList<String> pendingVolunteers = (child.child("EventVolunteers").child("pendingVolunteers").getValue() != null)
-//                                        ? child.child("pendingVolunteers").getValue() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-//                                String maximum = (child.child("EventVolunteers").child("maximum").getValue() != null)
-//                                        ? child.child("maximum").getValue().toString() : null;
-
-
-                                EventVolunteers eventVolunteers = new EventVolunteers();
-                                int intMin = minimum == null ? 0 : Integer.parseInt(minimum);
-                                int intMax = maximum == null ? 0 : Integer.parseInt(maximum);
-                                eventVolunteers.setMinimum(intMin);
-                                eventVolunteers.setMaximum(intMax);
-
+                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
                                 Event event = child.getValue(Event.class);
+                                event.setVolunteers(volunteers);
                                 event.setId(eventId);
-                                event.setVolunteers(eventVolunteers);
 
                                 // Will only display events that the charity has created
                                 if (event.getOrganisers().equals(mUser.getUid())) {
