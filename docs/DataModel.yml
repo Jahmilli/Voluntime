@@ -7,9 +7,7 @@ Volunteers:
       address: String
       gender: String
     Events:
-      pending: [EventID]
-      registered: [EventID]
-      previous: [EventID]
+      <EventID>: String # pending/registered/previous
 Charities:
   <CharityID>:
     Profile:
@@ -26,13 +24,11 @@ Events:
     title: String
     description: String
     category: [String]
-    location: [String] # See if we can use [Location] if we can use Java Objects
+    location: [String] # String representing GPS coords
     date: String
     createdTime: String
     organisers: CharityID
-    EventVolunteers:
-      minimum: Integer
-      maximum: Integer
-      pendingVolunteers: [UserID]
-      registeredVolunteers: [UserID]
-      attendedVolunteers: [UserID]
+    minimum: Integer
+    maximum: Integer
+    Volunteers:
+      <VolunteerID>: String # pending/registered/attended

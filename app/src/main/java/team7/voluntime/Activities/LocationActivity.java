@@ -24,11 +24,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -43,16 +46,21 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
     private AlertDialog.Builder helpAlertBuilder;
     private AlertDialog helpAlert;
-    private LatLng latLng;
     private GoogleMap mGoogleMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private Button setEventLocationBtn;
 
     private boolean mLocationPermissionGranted;
     private Location mLastKnownLocation;
     private LatLng mDefaultLocation = new LatLng(-33.86, 151.2);
+    private LatLng latLng;
+
+    // Only used when viewing existing event
+    private double latitude = 0;
+    private double longitude = 0;
+    private String address = "";
 
     private final String TAG = "LocationActivity";
-    private Button setEventLocationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,12 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+        Intent intent = getIntent();
+        latitude = intent.getDoubleExtra("latitude", 0);
+        longitude = getIntent().getDoubleExtra("longitude", 0);
+        address = getIntent().getStringExtra("address");
+
+
     }
 
     @Override
@@ -88,8 +102,20 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         updateLocationUI();
         getDeviceLocation();
 
-        // Setting a click event handler for the map
-        setEventLocation();
+        if (latitude > 0 || longitude > 0) {
+            Log.d(TAG, "Setting event location, lat is: " + latitude + " long is: " + longitude);
+            LatLng eventLocation = new LatLng(latitude, longitude);
+            mGoogleMap.addMarker(new MarkerOptions().position(eventLocation).title(address)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 15));
+        } else {
+            // Setting a click event handler for the map
+            Log.d(TAG, "Setting event handler, lat is: " + latitude + " long is: " + longitude);
+            setEventLocation();
+
+        }
+
+
     }
 
     /**
@@ -114,19 +140,11 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                                         .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                             } else {
-                                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(mLastKnownLocation.getLatitude(),
-                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-
+                                // TODO: Determine if anything is needed here
                             }
 
                         } else {
-                            mGoogleMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(LocationDefaults.mDefaultLocation, DEFAULT_ZOOM));
                             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-                            // get nearby places using default location
-//                            getMedicalPlaces(LocationDefaults.mDefaultLocation.latitude, LocationDefaults.mDefaultLocation.longitude);
                         }
                     }
                 });
@@ -190,7 +208,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                 final List<Address> addresses = Utilities.getLocation(getApplicationContext(), latLng.latitude, latLng.longitude);
                 // Setting the title for the marker.
                 // This will be displayed on taping the marker
-                 markerOptions.title(addresses.get(0).getAddressLine(0));
+                markerOptions.title(addresses.get(0).getAddressLine(0));
 
                 // Clears the previously touched position
                 mGoogleMap.clear();
@@ -206,7 +224,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                     @Override
                     public void onClick(View v) {
                         setEventLocationBtn.setVisibility(View.GONE);
-                        // Adds the location into the packet info to be sent when the doctor clicks reply
+                        // Adds the gps coordinates and address to the create events page
                         Intent intent = new Intent(LocationActivity.this, CreateEventActivity.class);
                         intent.putExtra("longitude", markerOptions.getPosition().longitude);
                         intent.putExtra("latitude", markerOptions.getPosition().latitude);
