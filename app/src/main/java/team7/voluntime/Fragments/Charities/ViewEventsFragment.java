@@ -114,6 +114,8 @@ public class ViewEventsFragment extends Fragment {
             }
         });
 
+
+
         charityReference.child("Events").child("Upcoming").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

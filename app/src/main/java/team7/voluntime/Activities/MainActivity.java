@@ -23,7 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.R;
@@ -279,5 +281,10 @@ public class MainActivity extends AppCompatActivity {
     public void initVolunteer() {
         navigationView.inflateMenu(R.menu.drawer_view_volunteer);
         navigationView.setCheckedItem(R.id.nav_profile);
+    }
+
+    @OnClick(R.id.searchCharityTV)
+    public void onClick() {
+        Intent intent = new Intent(this, SearchCharityActivity.class);
     }
 }
