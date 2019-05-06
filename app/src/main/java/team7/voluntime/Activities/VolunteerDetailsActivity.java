@@ -1,18 +1,14 @@
 package team7.voluntime.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +21,6 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
@@ -68,10 +63,10 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         volunteerHistoryReference = mDatabase.getReference().child("Volunteers");
         eventsReference = mDatabase.getReference().child("Events");
-        volunteerHistoryLV = (ListView) findViewById(R.id.volunteerDetailsHistoryLV);
+        volunteerHistoryLV = findViewById(R.id.volunteerDetailsHistoryLV);
 
         Intent intent = getIntent();
-        volunteer = (Volunteer) intent.getParcelableExtra("volunteer");
+        volunteer = intent.getParcelableExtra("volunteer");
         nameTV.setText(volunteer.getName());
         emailTV.setText(volunteer.getEmail());
         phoneTV.setText(volunteer.getPhoneNumber());
@@ -94,7 +89,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
                 volunteerHistoryAdapter.notifyDataSetChanged();
 
                 for (final DataSnapshot event : dataSnapshot.getChildren()) {
-                    if (event.exists()) {
+                    if (event.exists() && event.getValue().toString().equals("previous")) {
                         eventsReference.child(event.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
