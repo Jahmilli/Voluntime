@@ -8,10 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
@@ -23,7 +23,12 @@ import team7.voluntime.Utilities.Utilities;
 public class EventRegisterActivity extends AppCompatActivity {
 
     private final static String TAG = "EventRegister";
-    FirebaseUser mUser;
+
+    protected String[] coords;
+    private FirebaseDatabase database;
+    private DatabaseReference eReference;
+    private DatabaseReference vReference;
+
     @BindView(R.id.eventRegisterEventNameTV)
     TextView eventRegisterEventNameTV;
     @BindView(R.id.eventRegisterEventDescriptionTV)
@@ -32,9 +37,8 @@ public class EventRegisterActivity extends AppCompatActivity {
     TextView eventRegisterEventAddressTV;
     @BindView(R.id.eventRegisterEventDateTV)
     TextView eventRegisterEventDateTV;
-    private FirebaseDatabase database;
-    private String[] coords;
-    private String eventName;
+    private FirebaseUser mUser;
+    private String eventID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +47,12 @@ public class EventRegisterActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
+        database = FirebaseDatabase.getInstance();
 
         Intent intent = getIntent();
         Event event = intent.getParcelableExtra("event");
-        //eventName.equals(event.getTitle());
+
+        eventID = event.getId();
 
         coords = event.getLocation().split(" ");
         eventRegisterEventNameTV.setText(event.getTitle());
@@ -59,13 +65,11 @@ public class EventRegisterActivity extends AppCompatActivity {
                     Double.parseDouble(coords[0]),
                     Double.parseDouble(coords[1]))
                     .get(0).getAddressLine(0);
-            //mapIV.setVisibility(View.VISIBLE);
         } catch (IndexOutOfBoundsException e) {
             Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
             Log.e(TAG, e.toString());
         }
         eventRegisterEventAddressTV.setText(address);
-
     }
 
     @Override
@@ -80,13 +84,16 @@ public class EventRegisterActivity extends AppCompatActivity {
         builder.setMessage("Are you sure you wish to register for ");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getBaseContext(), mUser.getUid(), Toast.LENGTH_SHORT).show();
-                //TODO: Add ID to Database
+                //Toast.makeText(getBaseContext(), eventID, Toast.LENGTH_SHORT).show();
+                vReference = database.getReference("Volunteers").child(mUser.getUid());
+                vReference.child("Events").child(eventID).setValue("pending");
+                eReference = database.getReference("Events").child(eventID);
+                eReference.child("Volunteers").child(mUser.getUid()).setValue("pending");
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //  Action for 'NO' Button
+                //TODO: Go back correctly
                 //Toast.makeText(getBaseContext(), "negative button", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }

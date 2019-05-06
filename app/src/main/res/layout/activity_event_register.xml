@@ -28,10 +28,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:paddingTop="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:text="Review Registration"
                 android:textSize="30dp"
                 android:textStyle="bold" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -118,6 +120,7 @@
             <Button
                 android:id="@+id/eventRegisterButton"
                 android:layout_marginTop="200dp"
+                android:paddingTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
