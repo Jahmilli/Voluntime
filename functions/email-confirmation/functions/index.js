@@ -27,8 +27,8 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     const val = snapshot.val();
     let email = undefined;
     let eventData = undefined;
+    let charityData = undefined;
 
-    console.log('val is ', val);
     if (val === PENDING) {
         return;
     }
@@ -43,24 +43,18 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     eventData = admin.database()
     .ref(`/Events/${context.params.eventID}`)
     .once('value', res => {
-        console.log(`res is `, res);
-        res.forEach(child => {
-            eventData[child.key] = child.val();
-            console.log(child.val());
-        });
-        console.log('event data is ', eventData);
+        eventData = res.val();
     });
-  
 
     await Promise.all([email, eventData])
-    .then(res => {
-        console.log('in promise all email: ', email);
-        console.log('in promise all eventData: ', eventData);
-        return null;
-    })
-    .catch(err => {
-        console.log(err);
-    })
+        .then(res => res)
+        .catch(err => err);
+
+    await admin.database()
+    .ref(`/Charities/${eventData.organisers}/Profile`)
+    .once('value', res => {
+        charityData = res.val();
+    });
 
     const mailOptions = {
         from: '"Voluntime." <noreply@firebase.com>',
@@ -69,20 +63,26 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
 
     // Building Email message.
     if (val === REGISTERED) {
-        mailOptions.subject = 'You\'ve been selected to help out with an event!';
-        mailOptions.text = `Thanks for registering for an event, the details are as follows: \n 
-        Title: ${eventData.title}\n
-        Date: ${eventData.date}\n
+        mailOptions.subject = 'You have been selected to help out with our event!';
+        mailOptions.text = `Thanks for registering for an event, the details are as follows:
+        Title: ${eventData.title}
+        Date: ${eventData.date}
         Time: TBA\n
-        Description: ${eventData.description}\n
-        Category: ${eventData.category}\n
-        Location: ${eventData.location}\n
-        Organisation: ${eventData.organisers}`;
+        Description: ${eventData.description}
+        Category: ${eventData.category}
+        Location: ${eventData.location}\n\n\n
+        Looking forward to seeing you,
+        ${charityData.name}
+        ${charityData.phoneNumber}
+        ${charityData.address}`;
 
     } else if (val === PREVIOUS) {
         mailOptions.subject = "Thank you for your support";
-        mailOptions.text = `All of ${eventData.organisers}\n
-        Would just like to thank you for your help and hope to see you at our future events. `;
+        mailOptions.text = `All of ${eventData.organisers}
+        Would just like to thank you for your help and hope to see you at our future events.\n\n\n
+        ${charityData.name}
+        ${charityData.phoneNumber}
+        ${charityData.address}`;
         // Potentially list future events from the charity here.
     }
 
@@ -92,5 +92,4 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     } catch(error) {
         console.error('There was an error while sending the email:', error);
     }
-    return null;
 });
