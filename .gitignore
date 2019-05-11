@@ -111,5 +111,9 @@ fabric.properties
 
 # node_modules
 functions/email-confirmation/functions/node_modules/
+functions/email-confirmation/*node_modules/
+
+#env
+functions/email-confirmation/.env.yml
 
 # End of https://www.gitignore.io/api/androidstudio

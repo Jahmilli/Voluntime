@@ -4,6 +4,9 @@ const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
+// const googleMapsClient = require('@google/maps').createClient({
+//     key: process.env.GOOGLE_MAPS_API_KEY
+// });
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
@@ -26,6 +29,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     const snapshot = change.after;
     const val = snapshot.val();
     let email = undefined;
+    let location = undefined;
     let eventData = undefined;
     let charityData = undefined;
 
@@ -55,6 +59,10 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     .once('value', res => {
         charityData = res.val();
     });
+    // eventData.location = eventData.location.split(" ");
+    // console.log(eventData.location);
+    // location = googleMapsClient.reverseGeocode(eventData.location);
+    // await location;
 
     const mailOptions = {
         from: '"Voluntime." <noreply@firebase.com>',

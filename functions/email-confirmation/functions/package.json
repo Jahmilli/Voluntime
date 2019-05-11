@@ -2,9 +2,10 @@
   "name": "email-confirmation-functions",
   "description": "Send Email confirmation upon sign up to a Mailing list Firebase Functions sample",
   "dependencies": {
-    "nodemailer": "^2.4.1",
+    "@google/maps": "^0.5.5",
     "firebase-admin": "~7.1.1",
-    "firebase-functions": "^2.2.1"
+    "firebase-functions": "^2.2.1",
+    "nodemailer": "^2.4.1"
   },
   "devDependencies": {
     "eslint": "^4.13.1",
