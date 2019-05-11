@@ -23,6 +23,7 @@ const mailTransport = nodemailer.createTransport({
 const PENDING = 'pending';
 const REGISTERED = 'registered';
 const PREVIOUS = 'previous';
+const CANCELLED = 'cancelled';
 
 // Sends an email confirmation when a user changes his mailing list subscription.
 exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events/{eventID}').onWrite(async (change, context) => {
@@ -72,26 +73,33 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     // Building Email message.
     if (val === REGISTERED) {
         mailOptions.subject = 'You have been selected to help out with our event!';
-        mailOptions.text = `Thanks for registering for an event, the details are as follows:
-        Title: ${eventData.title}
-        Date: ${eventData.date}
-        Time: TBA\n
-        Description: ${eventData.description}
-        Category: ${eventData.category}
-        Location: ${eventData.location}\n\n\n
-        Looking forward to seeing you,
-        ${charityData.name}
-        ${charityData.phoneNumber}
-        ${charityData.address}`;
+        mailOptions.text = "Thanks for registering for an event, the details are as follows: " + 
+        "\nTitle: " + eventData.title +
+        "\nDate: " + eventData.date +
+        "\nTime: " + "TBA" +
+        "\nDescription: " + eventData.description
+        "\nCategory: " + eventData.category
+        "\nLocation: " + eventData.location + "\n\n\n" +
+        "Looking forward to seeing you,\n"
+        charityData.name + "\n"
+        charityData.phoneNumber + "\n"
+        charityData.address;
 
     } else if (val === PREVIOUS) {
         mailOptions.subject = "Thank you for your support";
-        mailOptions.text = `All of ${eventData.organisers}
-        Would just like to thank you for your help and hope to see you at our future events.\n\n\n
+        mailOptions.text = `Hey there,
+        All of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n
         ${charityData.name}
         ${charityData.phoneNumber}
         ${charityData.address}`;
         // Potentially list future events from the charity here.
+    } else if (val === CANCELLED) {
+        mailOptions.subject = "Our event has been cancelled";
+        mailOptions.text = `Unfortunately, we have had to cancel our event.
+        All of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n
+        ${charityData.name}
+        ${charityData.phoneNumber}
+        ${charityData.address}`;
     }
 
     try {
