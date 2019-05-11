@@ -74,32 +74,34 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     if (val === REGISTERED) {
         mailOptions.subject = 'You have been selected to help out with our event!';
         mailOptions.text = "Thanks for registering for an event, the details are as follows: " + 
-        "\nTitle: " + eventData.title +
-        "\nDate: " + eventData.date +
-        "\nTime: " + "TBA" +
-        "\nDescription: " + eventData.description
-        "\nCategory: " + eventData.category
-        "\nLocation: " + eventData.location + "\n\n\n" +
-        "Looking forward to seeing you,\n"
-        charityData.name + "\n"
-        charityData.phoneNumber + "\n"
-        charityData.address;
+        `\nTitle:  ${eventData.title}` +
+        `\nDate: ${eventData.date}` +
+        `\nTime:  TBA` +
+        `\nDescription: ${eventData.description}` +
+        `\nCategory: ${eventData.category}` +
+        `\nLocation: ${eventData.location} \n\n\n` +
+        `Looking forward to seeing you,\n` +
+        `${charityData.name} \n` +
+        `${charityData.phoneNumber} \n` +
+        `${charityData.address}`;
 
     } else if (val === PREVIOUS) {
         mailOptions.subject = "Thank you for your support";
-        mailOptions.text = `Hey there,
-        All of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n
-        ${charityData.name}
-        ${charityData.phoneNumber}
-        ${charityData.address}`;
+        mailOptions.text = `Hey there,` +
+        `\nAll of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n` +
+        `Looking forward to seeing you,\n` +
+        `\n${charityData.name}` +
+        `\n${charityData.phoneNumber}` +
+        `\n${charityData.address}`;
         // Potentially list future events from the charity here.
     } else if (val === CANCELLED) {
         mailOptions.subject = "Our event has been cancelled";
-        mailOptions.text = `Unfortunately, we have had to cancel our event.
-        All of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n
-        ${charityData.name}
-        ${charityData.phoneNumber}
-        ${charityData.address}`;
+        mailOptions.text = `Unfortunately, we have had to cancel our event.` +
+        `\nAll of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n` +
+        `Looking forward to seeing you,\n` +
+        `\n${charityData.name}` +
+        `\n${charityData.phoneNumber}` +
+        `\n${charityData.address}`;
     }
 
     try {
