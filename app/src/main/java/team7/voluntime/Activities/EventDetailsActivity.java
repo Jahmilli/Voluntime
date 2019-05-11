@@ -74,9 +74,9 @@ public class EventDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        event = (Event) intent.getParcelableExtra("event");
-        pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
-        registeredVolunteersLV = (ListView) findViewById(R.id.eventRegisteredVolunteersLV);
+        event = intent.getParcelableExtra("event");
+        pendingVolunteersLV = findViewById(R.id.eventPendingVolunteersLV);
+        registeredVolunteersLV = findViewById(R.id.eventRegisteredVolunteersLV);
 
         coords = event.getLocation().split(" ");
 
@@ -102,17 +102,17 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationTV.setText(address);
 
 
-        if (intent.getStringExtra("parentActivity").equals(VolunteerDetailsActivity.class.toString())) {
-            pendingVolunteersLabelTV.setVisibility(View.INVISIBLE);
-            pendingVolunteersTV.setVisibility(View.INVISIBLE);
-            registeredVolunteersLabelTV.setVisibility(View.INVISIBLE);
-            registeredVolunteersTV.setVisibility(View.INVISIBLE);
-        } else if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
+        if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
             mDatabase = FirebaseDatabase.getInstance();
             volunteersReference = mDatabase.getReference().child("Volunteers");
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
             setVolunteers();
-        };
+        } else {
+            pendingVolunteersLabelTV.setVisibility(View.INVISIBLE);
+            pendingVolunteersTV.setVisibility(View.INVISIBLE);
+            registeredVolunteersLabelTV.setVisibility(View.INVISIBLE);
+            registeredVolunteersTV.setVisibility(View.INVISIBLE);
+        }
 
     }
 

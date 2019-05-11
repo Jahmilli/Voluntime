@@ -2,7 +2,6 @@ package team7.voluntime.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +16,11 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
+import team7.voluntime.Activities.EventRegisterActivity;
 import team7.voluntime.Activities.VolunteerDetailsActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
+import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
 import team7.voluntime.R;
 
 
@@ -52,7 +53,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         String organisers = getItem(position).getOrganisers();
         int minimum = getItem(position).getMinimum();
         int maximum = getItem(position).getMaximum();
-        final HashMap<String, String> volunteers =  getItem(position).getVolunteers();
+        final HashMap<String, String> volunteers = getItem(position).getVolunteers();
 
         final Event event = new Event(eventId, title, description, category, location, date, createdTime, organisers, minimum, maximum, volunteers);
 
@@ -70,7 +71,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                 @Override
                 public void onClick(@NonNull View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
-                    intent.putExtra("event", (Parcelable) event);
+                    intent.putExtra("event", event);
                     intent.putExtra("parentActivity", CharityViewEventsFragment.class.toString());
                     intent.putExtra("volunteers", event.getVolunteers());
                     Log.d(TAG, "Event is: " + event.toString());
@@ -81,20 +82,42 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         } else if (screen.getClass().equals(VolunteerDetailsActivity.class)) {
             adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(@NonNull View view) {
+                public void onClick(View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
-                    intent.putExtra("event", (Parcelable) event);
+                    intent.putExtra("event", event);
                     intent.putExtra("parentActivity", VolunteerDetailsActivity.class.toString());
                     Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
-
             });
-        }
+        } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
+            adapterEventIV1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view != null) {
+                        Log.d("Event Details on Click", event.toString());
+                        Intent intent = new Intent(mContext, EventRegisterActivity.class);
+                        intent.putExtra("event", event);
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
+                    intent.putExtra("event", event);
+                    intent.putExtra("parentActivity", VolunteerEventsListFragment.class.toString());
+                    Log.d(TAG, "Event is: " + event.toString());
+                    mContext.startActivity(intent);
+                }
+            });
 
+        }
 
         dateTV.setText(date);
         titleTV.setText(title);
         return convertView;
     }
 }
+
