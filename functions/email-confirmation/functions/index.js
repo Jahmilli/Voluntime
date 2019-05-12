@@ -4,9 +4,9 @@ const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
-// const googleMapsClient = require('@google/maps').createClient({
-//     key: process.env.GOOGLE_MAPS_API_KEY
-// });
+const googleMapsClient = require('@google/maps').createClient({
+    key: functions.config().googlemaps.key
+});
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
@@ -55,15 +55,27 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         .then(res => res)
         .catch(err => err);
 
-    await admin.database()
+    eventData.location = eventData.location.split(" ");
+    eventData.location = new Promise((resolve, reject) => {
+        googleMapsClient.reverseGeocode({latlng: [parseFloat(eventData.location[0]),parseFloat(eventData.location[1])]}, (err, res) => {
+            if (err) {
+                console.error('an error occurred', err);
+                return reject(err);
+            } else {
+                console.log(res.json.results[0].formatted_address);
+                return resolve(res.json.results[0].formatted_address);
+            }
+        });
+    }); 
+
+    charityData = admin.database()
     .ref(`/Charities/${eventData.organisers}/Profile`)
     .once('value', res => {
         charityData = res.val();
     });
-    // eventData.location = eventData.location.split(" ");
-    // console.log(eventData.location);
-    // location = googleMapsClient.reverseGeocode(eventData.location);
-    // await location;
+
+    location = await eventData.location;
+    charityData = await charityData;
 
     const mailOptions = {
         from: '"Voluntime." <noreply@firebase.com>',
@@ -79,7 +91,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         `\nTime:  TBA` +
         `\nDescription: ${eventData.description}` +
         `\nCategory: ${eventData.category}` +
-        `\nLocation: ${eventData.location} \n\n\n` +
+        `\nLocation: ${location} \n\n\n` +
         `Looking forward to seeing you,\n` +
         `${charityData.name} \n` +
         `${charityData.phoneNumber} \n` +
