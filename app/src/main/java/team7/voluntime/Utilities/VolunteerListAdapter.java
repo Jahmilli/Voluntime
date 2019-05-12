@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
+import team7.voluntime.Activities.RateVolunteerActivity;
 import team7.voluntime.Activities.VolunteerDetailsActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
@@ -61,7 +62,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
         ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
         ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
-        ImageView volunteerAdapterIV2 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV2);
+        ImageView volunteerAdapterProfileIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterProfileIV);
+        ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
         final boolean isRegistered = volunteerAdapterAddIV == null;
 
 
@@ -88,8 +90,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
             });
         }
 
-        if (volunteerAdapterIV2 != null) {
-            volunteerAdapterIV2.setOnClickListener(new View.OnClickListener() {
+        if (volunteerAdapterProfileIV != null) {
+            volunteerAdapterProfileIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                 Log.d(TAG, "Volunteer list " + volunteer.toString());
@@ -102,15 +104,18 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
             });
         }
 
-//        if (volunteerAdapterRatingIV != null) {
-//            volunteerAdapterRatingIV.setOnContextClickListener(new View.OnContextClickListener() {
-//                @Override
-//                public boolean onContextClick(View view) {
-//                    return false;
-//                }
-//            });
-//        }
-
+        if (volunteerAdapterRatingIV != null) {
+            volunteerAdapterRatingIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    Log.d(TAG, "Volunteer list " + volunteer.toString());
+                    Intent intent = new Intent(mContext, RateVolunteerActivity.class);
+                    intent.putExtra("volunteer", (Parcelable) volunteer);
+                    intent.putExtra("event", event);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
 
         nameTV.setText(name);
         return convertView;

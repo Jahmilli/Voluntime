@@ -53,8 +53,6 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     TextView addressTV;
     @BindView(R.id.volunteerDetailsGenderTV)
     TextView genderTV;
-    @BindView(R.id.volunteerDetailsRateBtn)
-    Button rateBtn;
     @BindView(R.id.volunteerDetailsDobTV)
     TextView dobTV;
     @BindView(R.id.volunteerDetailsHistoryTV)
@@ -75,10 +73,6 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         volunteer = intent.getParcelableExtra("volunteer");
         event = intent.getParcelableExtra("event"); // This will likely only be used from Charity viewing Volunteer profile
-        canBeRated = intent.getExtras().getBoolean("canBeRated", false);
-        if (canBeRated) {
-            rateBtn.setVisibility(View.VISIBLE);
-        }
 
         nameTV.setText(volunteer.getName());
         emailTV.setText(volunteer.getEmail());
@@ -153,11 +147,4 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         finish();
     }
 
-    @OnClick(R.id.volunteerDetailsRateBtn)
-    public void rateVolunteerOnClick() {
-        Intent intent = new Intent(this, RateVolunteerActivity.class);
-        intent.putExtra("volunteer", volunteer);
-        intent.putExtra("event", event);
-        startActivity(intent);
-    }
 }
