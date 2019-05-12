@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,10 +32,12 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     private static String TAG = "VolunteerDetailsActivity";
 
     Volunteer volunteer;
+    Event event;
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteerHistoryReference;
     private DatabaseReference eventsReference;
     private ListView volunteerHistoryLV;
+    private boolean canBeRated;
 
     // Bindings
     @BindView(R.id.volunteerDetailsVolunteerLayout)
@@ -50,10 +53,13 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     TextView addressTV;
     @BindView(R.id.volunteerDetailsGenderTV)
     TextView genderTV;
+    @BindView(R.id.volunteerDetailsRateBtn)
+    Button rateBtn;
     @BindView(R.id.volunteerDetailsDobTV)
     TextView dobTV;
     @BindView(R.id.volunteerDetailsHistoryTV)
     TextView historyTV;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +72,14 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         volunteerHistoryLV = findViewById(R.id.volunteerDetailsHistoryLV);
 
         Intent intent = getIntent();
+        Bundle extra = getIntent().getExtras();
         volunteer = intent.getParcelableExtra("volunteer");
+        event = intent.getParcelableExtra("event"); // This will likely only be used from Charity viewing Volunteer profile
+        canBeRated = intent.getExtras().getBoolean("canBeRated", false);
+        if (canBeRated) {
+            rateBtn.setVisibility(View.VISIBLE);
+        }
+
         nameTV.setText(volunteer.getName());
         emailTV.setText(volunteer.getEmail());
         phoneTV.setText(volunteer.getPhoneNumber());
@@ -138,5 +151,13 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.volunteerDetailsBackTV)
     public void backButtonOnClick() {
         finish();
+    }
+
+    @OnClick(R.id.volunteerDetailsRateBtn)
+    public void rateVolunteerOnClick() {
+        Intent intent = new Intent(this, RateVolunteerActivity.class);
+        intent.putExtra("volunteer", volunteer);
+        intent.putExtra("event", event);
+        startActivity(intent);
     }
 }

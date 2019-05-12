@@ -3,6 +3,7 @@ package team7.voluntime.Utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
 import team7.voluntime.Activities.VolunteerDetailsActivity;
+import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
 
@@ -43,7 +45,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
     public View getView(int position, View convertView, ViewGroup parent) {
         eventId = Objects.requireNonNull(getItem(position)).getId();
 
-        final String eventId = this.activity.getEventId();
+        final Event event = activity.getEvent();
         final String volunteerId = getItem(position).getId();
         String dateOfBirth = getItem(position).getDateOfBirth();
         String name = getItem(position).getName();
@@ -60,6 +62,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
         ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
         ImageView volunteerAdapterIV2 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV2);
+        final boolean isRegistered = volunteerAdapterAddIV == null;
+
 
 
         if (volunteerAdapterAddIV != null) {
@@ -67,8 +71,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                 DatabaseReference reference = activity.getDatabaseReference();
-                reference.child("Volunteers").child(volunteerId).child("Events").child(eventId).setValue("registered");
-                reference.child("Events").child(eventId).child("Volunteers").child(volunteerId).setValue("registered");
+                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue("registered");
+                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue("registered");
                 }
             });
         }
@@ -78,8 +82,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                     DatabaseReference reference = activity.getDatabaseReference();
-                    reference.child("Volunteers").child(volunteerId).child("Events").child(eventId).setValue("pending");
-                    reference.child("Events").child(eventId).child("Volunteers").child(volunteerId).setValue("pending");
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue("pending");
+                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue("pending");
                 }
             });
         }
@@ -91,10 +95,21 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 Log.d(TAG, "Volunteer list " + volunteer.toString());
                 Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
                 intent.putExtra("volunteer", (Parcelable) volunteer);
+                intent.putExtra("event", event);
+                intent.putExtra("canBeRated", isRegistered);
                 mContext.startActivity(intent);
                 }
             });
         }
+
+//        if (volunteerAdapterRatingIV != null) {
+//            volunteerAdapterRatingIV.setOnContextClickListener(new View.OnContextClickListener() {
+//                @Override
+//                public boolean onContextClick(View view) {
+//                    return false;
+//                }
+//            });
+//        }
 
 
         nameTV.setText(name);

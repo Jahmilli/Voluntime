@@ -15,12 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_vt_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Activities.VolunteerDetailsActivity"></activity>
-
+        <activity android:name=".Activities.RateVolunteerActivity"></activity>
+        <activity android:name=".Activities.VolunteerDetailsActivity" />
         <activity
             android:name=".Activities.EventRegisterActivity"
             android:label="@string/title_activity_event_register"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.version"

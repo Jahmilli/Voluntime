@@ -184,13 +184,14 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
 
 
-    public String getEventId() {
-        return event.getId();
+    public Event getEvent() {
+        return event;
     }
 
     public DatabaseReference getDatabaseReference() {
         return mDatabase.getReference();
     }
+
 
     @OnClick(R.id.eventDetailsMapIV)
     public void mapOnClick() {

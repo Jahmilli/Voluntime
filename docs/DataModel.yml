@@ -8,6 +8,13 @@ Volunteers:
       gender: String
     Events:
       <EventID>: String # pending/registered/previous
+    Ratings:
+      <EventID>:
+        charityId: <CharityID>
+        eventId: <EventID>
+        rating: Integer
+        comment: String
+        dateRated: String
 Charities:
   <CharityID>:
     Profile:
