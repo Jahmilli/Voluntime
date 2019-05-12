@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,10 +32,12 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     private static String TAG = "VolunteerDetailsActivity";
 
     Volunteer volunteer;
+    Event event;
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteerHistoryReference;
     private DatabaseReference eventsReference;
     private ListView volunteerHistoryLV;
+    private boolean canBeRated;
 
     // Bindings
     @BindView(R.id.volunteerDetailsVolunteerLayout)
@@ -55,6 +58,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     @BindView(R.id.volunteerDetailsHistoryTV)
     TextView historyTV;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +70,10 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         volunteerHistoryLV = findViewById(R.id.volunteerDetailsHistoryLV);
 
         Intent intent = getIntent();
+        Bundle extra = getIntent().getExtras();
         volunteer = intent.getParcelableExtra("volunteer");
+        event = intent.getParcelableExtra("event"); // This will likely only be used from Charity viewing Volunteer profile
+
         nameTV.setText(volunteer.getName());
         emailTV.setText(volunteer.getEmail());
         phoneTV.setText(volunteer.getPhoneNumber());
@@ -139,4 +146,5 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     public void backButtonOnClick() {
         finish();
     }
+
 }

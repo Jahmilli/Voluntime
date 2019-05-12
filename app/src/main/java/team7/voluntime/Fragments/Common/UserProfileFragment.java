@@ -116,7 +116,7 @@ public class UserProfileFragment extends Fragment {
                     if (getType().equals("Volunteers")) {
                         volunteerLayout.setVisibility(VISIBLE);
                         volunteerReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 volunteer = dataSnapshot.getValue(Volunteer.class);
                                 volunteer.setId(mUser.getUid());
                                 nameTV.setText(volunteer.getName());
