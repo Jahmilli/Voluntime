@@ -91,7 +91,9 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                 }
             });
         } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
-            adapterEventIV1.setOnClickListener(new View.OnClickListener() {
+            adapterEventIV1.setVisibility(View.GONE);
+            adapterEventIV2.setImageResource(R.drawable.ic_plus);
+            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (view != null) {
@@ -102,17 +104,6 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                     }
                 }
             });
-            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
-                    intent.putExtra("event", event);
-                    intent.putExtra("parentActivity", VolunteerEventsListFragment.class.toString());
-                    Log.d(TAG, "Event is: " + event.toString());
-                    mContext.startActivity(intent);
-                }
-            });
-
         }
 
         dateTV.setText(date);

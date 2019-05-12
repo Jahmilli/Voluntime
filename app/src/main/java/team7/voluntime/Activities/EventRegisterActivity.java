@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
@@ -75,6 +76,15 @@ public class EventRegisterActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @OnClick(R.id.eventRegisterMapIV)
+    public void mapOnClick() {
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra("latitude", Double.parseDouble(coords[0]));
+        intent.putExtra("longitude", Double.parseDouble(coords[1]));
+        intent.putExtra("address", eventRegisterEventAddressTV.getText().toString());
+        startActivity(intent);
     }
 
 
