@@ -1,10 +1,7 @@
 package team7.voluntime.Utilities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,11 +56,11 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
-        TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
-        ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
-        ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
-        ImageView volunteerAdapterProfileIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterProfileIV);
-        ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
+        TextView nameTV = convertView.findViewById(R.id.volunteerAdapterNameTV);
+        ImageView volunteerAdapterAddIV = convertView.findViewById(R.id.volunteerAdapterAddIV);
+        ImageView volunteerAdapterRemoveIV = convertView.findViewById(R.id.volunteerAdapterRemoveIV);
+        ImageView volunteerAdapterProfileIV = convertView.findViewById(R.id.volunteerAdapterProfileIV);
+        ImageView volunteerAdapterRatingIV = convertView.findViewById(R.id.volunteerAdapterRatingIV);
         final boolean isRegistered = volunteerAdapterAddIV == null;
 
 
@@ -94,12 +91,12 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
             volunteerAdapterProfileIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
-                Log.d(TAG, "Volunteer list " + volunteer.toString());
-                Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
-                intent.putExtra("volunteer", (Parcelable) volunteer);
-                intent.putExtra("event", event);
-                intent.putExtra("canBeRated", isRegistered);
-                mContext.startActivity(intent);
+                    Log.d(TAG, "Volunteer list " + volunteer.toString());
+                    Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
+                    intent.putExtra("volunteer", volunteer);
+                    intent.putExtra("event", event);
+                    intent.putExtra("canBeRated", isRegistered);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -110,7 +107,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 public void onClick(@NonNull View view) {
                     Log.d(TAG, "Volunteer list " + volunteer.toString());
                     Intent intent = new Intent(mContext, RateVolunteerActivity.class);
-                    intent.putExtra("volunteer", (Parcelable) volunteer);
+                    intent.putExtra("volunteer", volunteer);
                     intent.putExtra("event", event);
                     mContext.startActivity(intent);
                 }
