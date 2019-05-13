@@ -34,6 +34,11 @@ public class EventRegisterActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference eReference;
     private DatabaseReference vReference;
+    private DatabaseReference reference;
+    private FirebaseUser mUser;
+    private String eventID;
+    private String charityID;
+    private String charityName;
     @BindView(R.id.eventRegisterEventHostTV)
     TextView eventRegisterEventHostTV;
     @BindView(R.id.eventRegisterStatusTV)
@@ -53,11 +58,7 @@ public class EventRegisterActivity extends AppCompatActivity {
     TextView eventRegisterEventDateTV;
     @BindView(R.id.eventCancelRegisterButton)
     Button eventCancelButton;
-    private DatabaseReference reference;
-    private FirebaseUser mUser;
-    private String eventID;
-    private String charityID;
-    private String charityName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +131,30 @@ public class EventRegisterActivity extends AppCompatActivity {
 
             }
         });
+
+
+//        ////////////////////////////////////////////////////////
+//        int path = R.drawable.ic_plus;
+//        reference = database.getReference("Volunteers").child(mUser.getUid());
+//        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.child("Events").child(event.getId()).getValue() != null) {
+//                    if (dataSnapshot.child("Events").child(event.getId()).getValue().toString().equals("pending") || dataSnapshot.child("Events").child(eventID).getValue().toString().equals("registered")) {
+//                        adapterEventIV2.setImageResource( R.drawable.ic_tick_icon);
+//                    }
+//                    if (dataSnapshot.child("Events").child(event.getId()).getValue().toString().equals("cancelled")) {
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NotNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        ////////////////////////////////////////////////////////
     }
 
     @Override

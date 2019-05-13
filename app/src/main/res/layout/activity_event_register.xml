@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="100dp"
                 android:onClick="eventRegisterConfirm"
                 android:text="Register" />
 
@@ -169,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="100dp"
                 android:onClick="eventRegisterCancel"
                 android:text="Cancel Registration"
                 android:visibility="gone" />
