@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,6 +70,7 @@ public class EventRegisterActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Event event = intent.getParcelableExtra("event");
+
 
         eventID = event.getId();
         charityID = event.getOrganisers();
@@ -193,9 +193,9 @@ public class EventRegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.eventRegisterEventHostTV)
     public void onClickHost() {
-//        Intent intent = new Intent(getContext(), getEditActivity());
-//        startActivity(intent);
-        Toast.makeText(getBaseContext(), "clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getBaseContext(), CharityDetailsActivity.class);
+        intent.putExtra("ID", charityID);
+        startActivity(intent);
     }
 
 }
