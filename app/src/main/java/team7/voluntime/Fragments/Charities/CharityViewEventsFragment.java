@@ -153,11 +153,13 @@ public class CharityViewEventsFragment extends Fragment {
                                 if (event.getOrganisers().equals(mUser.getUid())) {
                                     Log.d(TAG, event.toString());
                                     if (upcomingEvents.containsKey(eventId)) {
+                                        event.setEventStatus("upcoming");
                                         upcomingEventList.add(event);
                                         if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
                                             upcomingEventsTV.setVisibility(View.INVISIBLE);
                                         }
                                     } else if (previousEvents.containsKey(eventId)) {
+                                        event.setEventStatus("previous");
                                         previousEventList.add(event);
                                         if (previousEventsTV.getVisibility() != View.INVISIBLE) {
                                             previousEventsTV.setVisibility(View.INVISIBLE);

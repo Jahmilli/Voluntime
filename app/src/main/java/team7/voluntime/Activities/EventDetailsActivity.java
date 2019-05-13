@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +86,19 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         event = intent.getParcelableExtra("event");
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            Date eventDate = format.parse(event.getDate());
+            Date currentDate = format.parse(Utilities.getCurrentDate());
+            if (eventDate.compareTo(currentDate) <= 0) {
+                concludeEventTV.setVisibility(View.VISIBLE);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         pendingVolunteersLV = findViewById(R.id.eventPendingVolunteersLV);
         registeredVolunteersLV = findViewById(R.id.eventRegisteredVolunteersLV);
 
@@ -113,6 +128,10 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         // Check if event details is being viewed as a charity or something else
         if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
+            // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
+            if (intent.getStringExtra("eventStatus") != null && intent.getStringExtra("eventStatus").equals("previous")) {
+
+            }
             mDatabase = FirebaseDatabase.getInstance();
             volunteersReference = mDatabase.getReference().child("Volunteers");
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
