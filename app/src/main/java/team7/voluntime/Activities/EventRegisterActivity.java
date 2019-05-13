@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.Utilities;
 
 public class EventRegisterActivity extends AppCompatActivity {
@@ -71,7 +72,6 @@ public class EventRegisterActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Event event = intent.getParcelableExtra("event");
-
 
         eventID = event.getId();
         charityID = event.getOrganisers();
@@ -172,7 +172,6 @@ public class EventRegisterActivity extends AppCompatActivity {
     }
 
     public void eventRegisterConfirm(View view) {
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Registration");
         builder.setMessage("Are you sure you wish to register for ");
@@ -180,14 +179,15 @@ public class EventRegisterActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 //Toast.makeText(getBaseContext(), eventID, Toast.LENGTH_SHORT).show();
                 vReference = database.getReference("Volunteers").child(mUser.getUid());
-                vReference.child("Events").child(eventID).setValue("pending");
+                vReference.child("Events").child(eventID).setValue(Constants.EVENT_PENDING);
                 eReference = database.getReference("Events").child(eventID);
-                eReference.child("Volunteers").child(mUser.getUid()).setValue("pending");
-                finish();
+                eReference.child("Volunteers").child(mUser.getUid()).setValue(Constants.EVENT_PENDING);
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                //TODO: Go back correctly
+                //Toast.makeText(getBaseContext(), "negative button", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });

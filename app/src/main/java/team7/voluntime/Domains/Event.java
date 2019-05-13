@@ -18,6 +18,7 @@ public class Event implements Parcelable {
     private int minimum;
     private int maximum;
     private HashMap<String, String> volunteers;
+    private String eventStatus;
 
     public Event() {
 
@@ -96,6 +97,14 @@ public class Event implements Parcelable {
 
     public void setVolunteers(HashMap<String, String> volunteers) {
         this.volunteers = volunteers;
+    }
+
+    public String getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(String eventStatus) {
+        this.eventStatus = eventStatus;
     }
 
     @Override
