@@ -7,7 +7,7 @@ Volunteers:
       address: String
       gender: String
     Events:
-      <EventID>: String # pending/registered/previous
+      <EventID>: String # pending/registered/previous/cancelled
     Ratings:
       <EventID>:
         charityId: <CharityID>

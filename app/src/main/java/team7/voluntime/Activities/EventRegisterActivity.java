@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,15 +34,23 @@ public class EventRegisterActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference eReference;
     private DatabaseReference vReference;
+    @BindView(R.id.eventRegisterStatusTV)
+    TextView eventRegisterStatusTV;
+
 
     @BindView(R.id.eventRegisterEventNameTV)
     TextView eventRegisterEventNameTV;
+    @BindView(R.id.eventRegisterButton)
+    Button eventRegisterButton;
     @BindView(R.id.eventRegisterEventDescriptionTV)
     TextView eventRegisterEventDescriptionTV;
     @BindView(R.id.eventRegisterEventAddressTV)
     TextView eventRegisterEventAddressTV;
     @BindView(R.id.eventRegisterEventDateTV)
     TextView eventRegisterEventDateTV;
+    @BindView(R.id.eventCancelRegisterButton)
+    Button eventCancelButton;
+    private DatabaseReference reference;
     private FirebaseUser mUser;
     private String eventID;
 
@@ -71,6 +84,31 @@ public class EventRegisterActivity extends AppCompatActivity {
             Log.e(TAG, e.toString());
         }
         eventRegisterEventAddressTV.setText(address);
+
+        reference = database.getReference("Volunteers").child(mUser.getUid());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("Events").child(eventID).getValue() != null) {
+                    eventRegisterStatusTV.setText("You are not registered for this event");
+                    eventRegisterButton.setVisibility(View.GONE);
+                    if (dataSnapshot.child("Events").child(eventID).getValue().toString().equals("pending") || dataSnapshot.child("Events").child(eventID).getValue().toString().equals("registered")) {
+                        eventRegisterStatusTV.setText("You have registered for this event");
+                        eventCancelButton.setVisibility(View.VISIBLE);
+                    }
+                    if (dataSnapshot.child("Events").child(eventID).getValue().toString().equals("cancelled")) {
+                        eventRegisterStatusTV.setText("You have canceled your registration for this event");
+                        eventCancelButton.setVisibility(View.GONE);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -87,8 +125,8 @@ public class EventRegisterActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void eventRegisterConfirm(View view) {
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Registration");
         builder.setMessage("Are you sure you wish to register for ");
@@ -99,12 +137,33 @@ public class EventRegisterActivity extends AppCompatActivity {
                 vReference.child("Events").child(eventID).setValue("pending");
                 eReference = database.getReference("Events").child(eventID);
                 eReference.child("Volunteers").child(mUser.getUid()).setValue("pending");
+                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO: Go back correctly
-                //Toast.makeText(getBaseContext(), "negative button", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    public void eventRegisterCancel(View view) {
+        vReference = database.getReference("Volunteers").child(mUser.getUid());
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Cancellation");
+        builder.setMessage("Once cancelled you will NO longer be able to re-register for this event ");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                vReference.child("Events").child(eventID).setValue("cancelled");
+                eReference = database.getReference("Events").child(eventID);
+                eReference.child("Volunteers").child(mUser.getUid()).setValue("cancelled");
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
         });
