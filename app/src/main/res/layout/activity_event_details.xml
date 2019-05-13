@@ -29,6 +29,15 @@
                     android:textSize="20sp"
                     android:text="Back"/>
 
+                <TextView
+                    android:id="@+id/eventDetalsConcludeEventTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginTop="20sp"
+                    android:textSize="20sp"
+                    android:text="Conclude Event"/>
+
             </LinearLayout>
 
 

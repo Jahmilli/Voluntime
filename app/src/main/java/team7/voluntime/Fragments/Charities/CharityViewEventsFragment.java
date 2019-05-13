@@ -106,33 +106,19 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        charityReference.child("Events").child("Upcoming").addValueEventListener(new ValueEventListener() {
+        charityReference.child("Events").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.exists()) {
                         if (child.getValue() != null) {
-                            String id = child.getValue().toString();
-                            upcomingEvents.put(id, ""); // Add the id which can then be searched later on
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        charityReference.child("Events").child("Previous").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.exists()) {
-                        if (child.getValue() != null) {
-                            String id = child.getValue().toString();
-                            previousEvents.put(id, ""); // Add the id which can then be searched later on
+                            String id = child.getKey().toString();
+                            String value = child.getValue().toString();
+                            if (value.equals("upcoming")) {
+                                upcomingEvents.put(id, "");
+                            } else if (value.equals("previous")) {
+                                previousEvents.put(id, ""); // Add the id which can then be searched later on
+                            }
                         }
                     }
                 }

@@ -73,8 +73,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                 DatabaseReference reference = activity.getDatabaseReference();
-                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue("registered");
-                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue("registered");
+                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
+                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
                 }
             });
         }
@@ -84,8 +84,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                     DatabaseReference reference = activity.getDatabaseReference();
-                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue("pending");
-                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue("pending");
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_PENDING);
+                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_PENDING);
                 }
             });
         }

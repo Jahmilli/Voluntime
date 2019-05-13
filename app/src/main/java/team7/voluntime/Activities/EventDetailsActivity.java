@@ -1,14 +1,18 @@
 package team7.voluntime.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +29,7 @@ import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.Utilities;
 import team7.voluntime.Utilities.VolunteerListAdapter;
 
@@ -34,12 +39,16 @@ public class EventDetailsActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteersReference;
     private DatabaseReference eventVolunteersReference;
+    ArrayList<Volunteer> pendingVolunteersList;
+    ArrayList<Volunteer> registeredVolunteersList;
     private ListView pendingVolunteersLV;
     private ListView registeredVolunteersLV;
     private Event event;
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
+    @BindView(R.id.eventDetalsConcludeEventTV)
+    TextView concludeEventTV;
     @BindView(R.id.eventDetailsDescriptionTV)
     TextView descriptionTV;
     @BindView(R.id.eventDetailsCategoryTV)
@@ -102,6 +111,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationTV.setText(address);
 
 
+        // Check if event details is being viewed as a charity or something else
         if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
             mDatabase = FirebaseDatabase.getInstance();
             volunteersReference = mDatabase.getReference().child("Volunteers");
@@ -117,8 +127,8 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
 
     private void setVolunteers() {
-        final ArrayList<Volunteer> pendingVolunteersList = new ArrayList<>();
-        final ArrayList<Volunteer> registeredVolunteersList = new ArrayList<>();
+        pendingVolunteersList = new ArrayList<>();
+        registeredVolunteersList = new ArrayList<>();
         final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_pending_volunteer_layout, pendingVolunteersList, this);
         final VolunteerListAdapter registeredVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_registered_volunteer_layout, registeredVolunteersList, this);
         pendingVolunteersLV.setAdapter(pendingVolunteersAdapter);
@@ -141,7 +151,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 if (dataSnapshot.hasChild(child.getKey())) {
                                     Volunteer tempVolunteer = dataSnapshot.child(child.getKey()).child("Profile").getValue(Volunteer.class);
                                     tempVolunteer.setId(child.getKey());
-                                    if (child.getValue().toString().equals("pending")) {
+                                    if (child.getValue().toString().equals(Constants.EVENT_PENDING)) {
                                         if (pendingVolunteersTV.getVisibility() != View.INVISIBLE) {
                                             pendingVolunteersTV.setVisibility(View.INVISIBLE);
                                         }
@@ -152,7 +162,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                             registeredVolunteersTV.setVisibility(View.VISIBLE);
                                         }
 
-                                    } else if (child.getValue().toString().equals("registered")) {
+                                    } else if (child.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
                                         if (registeredVolunteersTV.getVisibility() != View.INVISIBLE) {
                                             registeredVolunteersTV.setVisibility(View.INVISIBLE);
                                         }
@@ -192,6 +202,41 @@ public class EventDetailsActivity extends AppCompatActivity {
         return mDatabase.getReference();
     }
 
+    // Sets the event to previous for the charity and all volunteers registered with that event.
+    private void concludeEvent() {
+        mDatabase.getReference()
+                .child("Charities")
+                .child(event.getOrganisers())
+                .child("Events")
+                .child(event.getId())
+                .setValue(Constants.EVENT_PREVIOUS);
+
+        mDatabase.getReference().child("Volunteers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot volunteer : dataSnapshot.getChildren()) {
+                        DataSnapshot snapshotValue = volunteer.child("Events").child(event.getId());
+                        // Check if null AND check if the user was actually registered for the event
+                        if (snapshotValue.getValue() != null && snapshotValue.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
+                            mDatabase.getReference()
+                                    .child("Volunteers")
+                                    .child(volunteer.getKey())
+                                    .child("Events")
+                                    .child(event.getId())
+                                    .setValue(Constants.EVENT_PREVIOUS);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @OnClick(R.id.eventDetailsMapIV)
     public void mapOnClick() {
@@ -205,6 +250,29 @@ public class EventDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.eventDetailsBackTV)
     public void backButtonOnClick() {
         finish();
+    }
+
+    @OnClick(R.id.eventDetalsConcludeEventTV)
+    public void concludeOnClick() {
+        final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Event Conclusion");
+        builder.setMessage("Are you sure you wish to conclude the event?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (pendingVolunteersList.size() > 0) {
+                    Toast.makeText(EventDetailsActivity.this, "Please add or remove the pending volunteers", Toast.LENGTH_SHORT).show();
+                } else {
+                    concludeEvent();
+                    Toast.makeText(EventDetailsActivity.this, "Event has conclued, congratulations!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
 }

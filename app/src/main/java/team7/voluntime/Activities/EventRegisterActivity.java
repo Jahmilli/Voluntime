@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.Utilities;
 
 public class EventRegisterActivity extends AppCompatActivity {
@@ -86,9 +87,9 @@ public class EventRegisterActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 //Toast.makeText(getBaseContext(), eventID, Toast.LENGTH_SHORT).show();
                 vReference = database.getReference("Volunteers").child(mUser.getUid());
-                vReference.child("Events").child(eventID).setValue("pending");
+                vReference.child("Events").child(eventID).setValue(Constants.EVENT_PENDING);
                 eReference = database.getReference("Events").child(eventID);
-                eReference.child("Volunteers").child(mUser.getUid()).setValue("pending");
+                eReference.child("Volunteers").child(mUser.getUid()).setValue(Constants.EVENT_PENDING);
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
