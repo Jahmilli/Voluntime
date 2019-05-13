@@ -98,7 +98,6 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
                 intent.putExtra("volunteer", (Parcelable) volunteer);
                 intent.putExtra("event", event);
-                intent.putExtra("canBeRated", isRegistered);
                 mContext.startActivity(intent);
                 }
             });

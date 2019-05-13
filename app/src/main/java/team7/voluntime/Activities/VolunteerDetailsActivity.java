@@ -38,7 +38,6 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     private DatabaseReference volunteerHistoryReference;
     private DatabaseReference eventsReference;
     private ListView volunteerHistoryLV;
-    private boolean canBeRated;
 
     // Bindings
     @BindView(R.id.volunteerDetailsVolunteerLayout)
