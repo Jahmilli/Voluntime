@@ -89,12 +89,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         createdTimeTV.setText(event.getCreatedTime());
         String address = "Location Unavailable";
         try {
-             address = Utilities.getLocation(
+            address = Utilities.getLocation(
                     this,
                     Double.parseDouble(coords[0]),
                     Double.parseDouble(coords[1]))
                     .get(0).getAddressLine(0);
-             mapIV.setVisibility(View.VISIBLE);
+            mapIV.setVisibility(View.VISIBLE);
         } catch(IndexOutOfBoundsException e) {
             Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
             Log.e(TAG, e.toString());

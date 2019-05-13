@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +35,8 @@ public class EventRegisterActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference eReference;
     private DatabaseReference vReference;
+    @BindView(R.id.eventRegisterEventHostTV)
+    TextView eventRegisterEventHostTV;
     @BindView(R.id.eventRegisterStatusTV)
     TextView eventRegisterStatusTV;
 
@@ -44,6 +47,7 @@ public class EventRegisterActivity extends AppCompatActivity {
     Button eventRegisterButton;
     @BindView(R.id.eventRegisterEventDescriptionTV)
     TextView eventRegisterEventDescriptionTV;
+    private DatabaseReference nReference;
     @BindView(R.id.eventRegisterEventAddressTV)
     TextView eventRegisterEventAddressTV;
     @BindView(R.id.eventRegisterEventDateTV)
@@ -53,6 +57,8 @@ public class EventRegisterActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private FirebaseUser mUser;
     private String eventID;
+    private String charityID;
+    private String charityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,21 @@ public class EventRegisterActivity extends AppCompatActivity {
         Event event = intent.getParcelableExtra("event");
 
         eventID = event.getId();
+        charityID = event.getOrganisers();
+        nReference = database.getReference("Charities").child(charityID);
+        nReference.child("Profile").child("name").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                        charityName = dataSnapshot.getValue().toString();
+                        eventRegisterEventHostTV.setText(charityName);
+                    }
+
+                    @Override
+                    public void onCancelled(@NotNull DatabaseError databaseError) {
+                    }
+                }
+        );
 
         coords = event.getLocation().split(" ");
         eventRegisterEventNameTV.setText(event.getTitle());
@@ -84,20 +105,20 @@ public class EventRegisterActivity extends AppCompatActivity {
             Log.e(TAG, e.toString());
         }
         eventRegisterEventAddressTV.setText(address);
+        eventRegisterStatusTV.setText("You are not registered for this event");
 
         reference = database.getReference("Volunteers").child(mUser.getUid());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("Events").child(eventID).getValue() != null) {
-                    eventRegisterStatusTV.setText("You are not registered for this event");
                     eventRegisterButton.setVisibility(View.GONE);
                     if (dataSnapshot.child("Events").child(eventID).getValue().toString().equals("pending") || dataSnapshot.child("Events").child(eventID).getValue().toString().equals("registered")) {
                         eventRegisterStatusTV.setText("You have registered for this event");
                         eventCancelButton.setVisibility(View.VISIBLE);
                     }
                     if (dataSnapshot.child("Events").child(eventID).getValue().toString().equals("cancelled")) {
-                        eventRegisterStatusTV.setText("You have canceled your registration for this event");
+                        eventRegisterStatusTV.setText("You have cancelled your registration for this event");
                         eventCancelButton.setVisibility(View.GONE);
                     }
 
@@ -168,6 +189,13 @@ public class EventRegisterActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    @OnClick(R.id.eventRegisterEventHostTV)
+    public void onClickHost() {
+//        Intent intent = new Intent(getContext(), getEditActivity());
+//        startActivity(intent);
+        Toast.makeText(getBaseContext(), "clicked", Toast.LENGTH_SHORT).show();
     }
 
 }
