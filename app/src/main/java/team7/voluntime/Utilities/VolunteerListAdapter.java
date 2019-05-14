@@ -47,6 +47,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         eventId = Objects.requireNonNull(getItem(position)).getId();
 
         final Event event = activity.getEvent();
+        final boolean isPastEvent = activity.getIsPastEvent();
         final String volunteerId = getItem(position).getId();
         String dateOfBirth = getItem(position).getDateOfBirth();
         String name = getItem(position).getName();
@@ -111,6 +112,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                     Intent intent = new Intent(mContext, RateVolunteerActivity.class);
                     intent.putExtra("volunteer", (Parcelable) volunteer);
                     intent.putExtra("event", event);
+                    intent.putExtra("isPastEvent", isPastEvent);
                     mContext.startActivity(intent);
                 }
             });

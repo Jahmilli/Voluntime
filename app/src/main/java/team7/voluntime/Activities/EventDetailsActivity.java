@@ -183,6 +183,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                             attendedVolunteersTV.setVisibility(View.INVISIBLE);
                                         }
                                         Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
+                                        tempVolunteer.setId(attendedVolunteer.getKey());
                                         attendedVolunteersList.add(tempVolunteer);
                                         attendedVolunteersLV.invalidateViews();
                                         Utilities.setDynamicHeight(attendedVolunteersLV);
@@ -312,6 +313,10 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public boolean getIsPastEvent() {
+        return isPastEvent;
     }
 
     @OnClick(R.id.eventDetailsMapIV)
