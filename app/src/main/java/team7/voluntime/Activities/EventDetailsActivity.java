@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,12 +76,12 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView createdTimeTV;
     @BindView(R.id.eventDetailsMapIV)
     ImageView mapIV;
-    @BindView(R.id.eventDetailsPendingVolunteersLabelTV)
-    TextView pendingVolunteersLabelTV;
+    @BindView(R.id.eventDetailsPendingVolunteersLL)
+    LinearLayout pendingVolunteersLL;
     @BindView(R.id.eventDetailsPendingVolunteersTV)
     TextView pendingVolunteersTV;
-    @BindView(R.id.eventDetailsRegisteredVolunteersLabelTV)
-    TextView registeredVolunteersLabelTV;
+    @BindView(R.id.eventDetailsRegisteredVolunteersLL)
+    LinearLayout registeredVolunteersLL;
     @BindView(R.id.eventDetailsRegisteredVolunteersTV)
     TextView registeredVolunteersTV;
 
@@ -98,16 +99,6 @@ public class EventDetailsActivity extends AppCompatActivity {
 
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
-        try {
-            Date eventDate = format.parse(event.getDate());
-            Date currentDate = format.parse(Utilities.getCurrentDate());
-            if (eventDate.compareTo(currentDate) <= 0) {
-                concludeEventTV.setVisibility(View.VISIBLE);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         pendingVolunteersLV = findViewById(R.id.eventPendingVolunteersLV);
         registeredVolunteersLV = findViewById(R.id.eventRegisteredVolunteersLV);
@@ -143,13 +134,21 @@ public class EventDetailsActivity extends AppCompatActivity {
             volunteersReference = mDatabase.getReference().child("Volunteers");
             // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
+            try {
+                Date eventDate = format.parse(event.getDate());
+                Date currentDate = format.parse(Utilities.getCurrentDate());
+                if (eventDate.compareTo(currentDate) <= 0) {
+                    concludeEventTV.setVisibility(View.VISIBLE);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (isPastEvent) {
                 setAttendedVolunteers();
             } else {
-                pendingVolunteersLabelTV.setVisibility(View.VISIBLE);
-                pendingVolunteersTV.setVisibility(View.VISIBLE);
-                registeredVolunteersLabelTV.setVisibility(View.VISIBLE);
-                registeredVolunteersTV.setVisibility(View.VISIBLE);
+                registeredVolunteersLL.setVisibility(View.VISIBLE);
+                pendingVolunteersLL.setVisibility(View.VISIBLE);
                 setVolunteers();
             }
         }
@@ -157,7 +156,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     private void setAttendedVolunteers() {
         attendedVolunteersList = new ArrayList<>();
-        final VolunteerListAdapter attendedVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_pending_volunteer_layout, attendedVolunteersList, this);
+        final VolunteerListAdapter attendedVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_attended_volunteer_layout, attendedVolunteersList, this);
         attendedVolunteersLV.setAdapter(attendedVolunteersAdapter);
         eventVolunteersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

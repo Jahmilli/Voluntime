@@ -114,16 +114,16 @@
                 android:text="created date time" />
 
             <LinearLayout
+                android:id="@+id/eventDetailsPendingVolunteersLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/eventDetailsPendingVolunteersLabelTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pending Volunteers:"
-                    android:visibility="gone"
                     android:layout_gravity="center_horizontal" />
 
                 <TextView
@@ -131,7 +131,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:visibility="gone"
                     android:text="None" />
 
             </LinearLayout>
@@ -148,15 +147,15 @@
 
 
             <LinearLayout
+                android:id="@+id/eventDetailsRegisteredVolunteersLL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/eventDetailsRegisteredVolunteersLabelTV"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Registered Volunteers: "
-                    android:visibility="gone"
                     android:layout_gravity="center_horizontal" />
 
                 <TextView
@@ -164,7 +163,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:visibility="gone"
                     android:text="None"/>
 
             </LinearLayout>
