@@ -138,20 +138,20 @@ public class EventDetailsActivity extends AppCompatActivity {
             volunteersReference = mDatabase.getReference().child("Volunteers");
             // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
-            try {
-                Date eventDate = format.parse(event.getDate());
-                Date currentDate = format.parse(Utilities.getCurrentDate());
-                if (eventDate.compareTo(currentDate) <= 0) {
-                    concludeEventTV.setVisibility(View.VISIBLE);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
             if (isPastEvent) {
                 attendedVolunteersLL.setVisibility(View.VISIBLE);
                 setAttendedVolunteers();
             } else {
+                try {
+                    Date eventDate = format.parse(event.getDate());
+                    Date currentDate = format.parse(Utilities.getCurrentDate());
+                    if (eventDate.compareTo(currentDate) <= 0) {
+                        concludeEventTV.setVisibility(View.VISIBLE);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 registeredVolunteersLL.setVisibility(View.VISIBLE);
                 pendingVolunteersLL.setVisibility(View.VISIBLE);
                 setVolunteers();
