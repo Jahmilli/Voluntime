@@ -84,6 +84,10 @@ public class EventDetailsActivity extends AppCompatActivity {
     LinearLayout registeredVolunteersLL;
     @BindView(R.id.eventDetailsRegisteredVolunteersTV)
     TextView registeredVolunteersTV;
+    @BindView(R.id.eventDetailsAttendedVolunteersLL)
+    LinearLayout attendedVolunteersLL;
+    @BindView(R.id.eventDetailsAttendedVolunteersTV)
+    TextView attendedVolunteersTV;
 
     private final static String TAG = "EventDetails";
 
@@ -145,6 +149,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
 
             if (isPastEvent) {
+                attendedVolunteersLL.setVisibility(View.VISIBLE);
                 setAttendedVolunteers();
             } else {
                 registeredVolunteersLL.setVisibility(View.VISIBLE);
@@ -174,6 +179,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
+                                        if (attendedVolunteersTV.getVisibility() != View.INVISIBLE) {
+                                            attendedVolunteersTV.setVisibility(View.INVISIBLE);
+                                        }
                                         Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
                                         attendedVolunteersList.add(tempVolunteer);
                                         attendedVolunteersLV.invalidateViews();
@@ -219,12 +227,11 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                 for (final DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.exists()) {
-                        volunteersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        volunteersReference.child(child.getKey()).child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.hasChild(child.getKey())) {
-                                    // TODO: Fix this up, should be referring to the child when we add the value event listener.
-                                    Volunteer tempVolunteer = dataSnapshot.child(child.getKey()).child("Profile").getValue(Volunteer.class);
+                                if (dataSnapshot.exists()) {
+                                    Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
                                     tempVolunteer.setId(child.getKey());
                                     if (child.getValue().toString().equals(Constants.EVENT_PENDING)) {
                                         if (pendingVolunteersTV.getVisibility() != View.INVISIBLE) {
