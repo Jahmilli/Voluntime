@@ -55,7 +55,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         int maximum = getItem(position).getMaximum();
 
         // TODO: Check how this works with volunteer page
-        final String eventStatus = getItem(position).getEventStatus();
+        final boolean isPastEvent = getItem(position).isPastEvent();
 
         final HashMap<String, String> volunteers = getItem(position).getVolunteers();
 
@@ -78,7 +78,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                     intent.putExtra("event", event);
                     intent.putExtra("parentActivity", CharityViewEventsFragment.class.toString());
                     // TODO: Event status is being used on event details to remove pending and registered list and will just show the attended volunteers
-                    intent.putExtra("eventStatus", eventStatus);
+                    intent.putExtra("isPastEvent", isPastEvent);
 
                     intent.putExtra("volunteers", event.getVolunteers());
                     Log.d(TAG, "Event is: " + event.toString());
