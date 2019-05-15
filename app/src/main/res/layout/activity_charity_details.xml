@@ -6,7 +6,7 @@
     android:background="@drawable/gradient_login_bg"
     android:fillViewport="true"
     android:paddingLeft="20dp"
-    tools:context=".Activities.VolunteerDetailsActivity">
+    tools:context=".Activities.CharityDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

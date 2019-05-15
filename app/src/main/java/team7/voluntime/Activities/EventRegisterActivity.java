@@ -109,52 +109,30 @@ public class EventRegisterActivity extends AppCompatActivity {
         eventRegisterStatusTV.setText("You are not registered for this event");
 
         reference = database.getReference("Volunteers").child(mUser.getUid());
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child("Events").child(eventID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("Events").child(eventID).getValue() != null) {
-                    eventRegisterButton.setVisibility(View.GONE);
-                    if (dataSnapshot.child("Events").child(eventID).getValue().toString().equals("pending") || dataSnapshot.child("Events").child(eventID).getValue().toString().equals("registered")) {
+                if (dataSnapshot.getValue() != null) {
+                    String status = dataSnapshot.getValue().toString();
+                    if (status.equals("pending") || status.equals("pending")) {
                         eventRegisterStatusTV.setText("You have registered for this event");
+                        eventRegisterButton.setVisibility(View.GONE);
                         eventCancelButton.setVisibility(View.VISIBLE);
-                    }
-                    if (dataSnapshot.child("Events").child(eventID).getValue().toString().equals("cancelled")) {
+                    } else if (status.equals("cancelled")) {
                         eventRegisterStatusTV.setText("You have cancelled your registration for this event");
                         eventCancelButton.setVisibility(View.GONE);
+                        eventRegisterButton.setVisibility(View.VISIBLE);
+                    } else if (status.equals("previous")) {
+                        eventRegisterStatusTV.setText("Event Completed");
+                        eventCancelButton.setVisibility(View.GONE);
+                        eventRegisterButton.setVisibility(View.GONE);
                     }
-
                 }
             }
-
             @Override
             public void onCancelled(@NotNull DatabaseError databaseError) {
-
             }
         });
-
-
-//        ////////////////////////////////////////////////////////
-//        int path = R.drawable.ic_plus;
-//        reference = database.getReference("Volunteers").child(mUser.getUid());
-//        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.child("Events").child(event.getId()).getValue() != null) {
-//                    if (dataSnapshot.child("Events").child(event.getId()).getValue().toString().equals("pending") || dataSnapshot.child("Events").child(eventID).getValue().toString().equals("registered")) {
-//                        adapterEventIV2.setImageResource( R.drawable.ic_tick_icon);
-//                    }
-//                    if (dataSnapshot.child("Events").child(event.getId()).getValue().toString().equals("cancelled")) {
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NotNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        ////////////////////////////////////////////////////////
     }
 
     @Override
@@ -177,17 +155,15 @@ public class EventRegisterActivity extends AppCompatActivity {
         builder.setMessage("Are you sure you wish to register for ");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //Toast.makeText(getBaseContext(), eventID, Toast.LENGTH_SHORT).show();
                 vReference = database.getReference("Volunteers").child(mUser.getUid());
                 vReference.child("Events").child(eventID).setValue(Constants.EVENT_PENDING);
                 eReference = database.getReference("Events").child(eventID);
                 eReference.child("Volunteers").child(mUser.getUid()).setValue(Constants.EVENT_PENDING);
+                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO: Go back correctly
-                //Toast.makeText(getBaseContext(), "negative button", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
