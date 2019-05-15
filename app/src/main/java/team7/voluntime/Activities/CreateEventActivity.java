@@ -136,28 +136,6 @@ public class CreateEventActivity extends AppCompatActivity {
         };
     }
 
-    private void getUpcomingEvents(final String eventId) {
-        charityReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                        upcomingEvents = (ArrayList<String>) dataSnapshot.getValue();
-                        upcomingEvents.add(eventId);
-                        charityReference.setValue(upcomingEvents);
-                } else {
-                    upcomingEvents = new ArrayList<>();
-                    upcomingEvents.add(eventId);
-                    charityReference.setValue(upcomingEvents);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     // Will say a month before the current month is valid for whatever reason... too tired to look into
     private boolean isValidEventDate() {
         Calendar currentCal = Calendar.getInstance();
@@ -185,7 +163,7 @@ public class CreateEventActivity extends AppCompatActivity {
         if (checkValidFields()) {
             eventsReference = database.getReference("Events");
             String eventId = eventsReference.push().getKey();
-            charityReference = database.getReference("Charities").child(id).child("Events").child("Upcoming");
+            charityReference = database.getReference("Charities").child(id).child("Events");
             Map event = new HashMap();
 
             String title = titleET.getText().toString().trim();
@@ -206,7 +184,7 @@ public class CreateEventActivity extends AppCompatActivity {
             event.put("maximum", maxAttendees);
 
             eventsReference.child(eventId).setValue(event);
-            getUpcomingEvents(eventId);
+            charityReference.child(eventId).setValue("upcoming");
             Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT);
 
             Intent intent = new Intent(CreateEventActivity.this, MainActivity.class);

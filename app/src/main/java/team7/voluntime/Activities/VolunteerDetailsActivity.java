@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
 
@@ -37,7 +38,6 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     private DatabaseReference volunteerHistoryReference;
     private DatabaseReference eventsReference;
     private ListView volunteerHistoryLV;
-    private boolean canBeRated;
 
     // Bindings
     @BindView(R.id.volunteerDetailsVolunteerLayout)
@@ -96,7 +96,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
                 volunteerHistoryAdapter.notifyDataSetChanged();
 
                 for (final DataSnapshot event : dataSnapshot.getChildren()) {
-                    if (event.exists() && event.getValue().toString().equals("previous")) {
+                    if (event.exists() && event.getValue().toString().equals(Constants.EVENT_PREVIOUS)) {
                         eventsReference.child(event.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

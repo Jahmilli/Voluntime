@@ -47,6 +47,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         eventId = Objects.requireNonNull(getItem(position)).getId();
 
         final Event event = activity.getEvent();
+        final boolean isPastEvent = activity.getIsPastEvent();
         final String volunteerId = getItem(position).getId();
         String dateOfBirth = getItem(position).getDateOfBirth();
         String name = getItem(position).getName();
@@ -73,8 +74,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                 DatabaseReference reference = activity.getDatabaseReference();
-                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue("registered");
-                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue("registered");
+                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
+                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
                 }
             });
         }
@@ -84,8 +85,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                     DatabaseReference reference = activity.getDatabaseReference();
-                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue("pending");
-                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue("pending");
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_PENDING);
+                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_PENDING);
                 }
             });
         }
@@ -98,7 +99,6 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
                 intent.putExtra("volunteer", (Parcelable) volunteer);
                 intent.putExtra("event", event);
-                intent.putExtra("canBeRated", isRegistered);
                 mContext.startActivity(intent);
                 }
             });
@@ -112,6 +112,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                     Intent intent = new Intent(mContext, RateVolunteerActivity.class);
                     intent.putExtra("volunteer", (Parcelable) volunteer);
                     intent.putExtra("event", event);
+                    intent.putExtra("isPastEvent", isPastEvent);
                     mContext.startActivity(intent);
                 }
             });
