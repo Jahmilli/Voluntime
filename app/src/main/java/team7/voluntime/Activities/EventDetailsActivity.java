@@ -132,8 +132,11 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationTV.setText(address);
 
 
-        // Check if event details is being viewed as a charity or something else
         if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
+            // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
+            if (intent.getStringExtra("eventStatus") != null && intent.getStringExtra("eventStatus").equals("previous")) {
+
+            }
             mDatabase = FirebaseDatabase.getInstance();
             volunteersReference = mDatabase.getReference().child("Volunteers");
             // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
