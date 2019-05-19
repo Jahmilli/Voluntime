@@ -134,7 +134,6 @@ public class SetupActivity extends AppCompatActivity {
 
     @OnClick(R.id.setupFinishVolunteer)
     public void setVolunteerInfo() {
-        // TODO: Decide whether there will be a second screen
         if (checkPassedFirstVolunteer()) {
             reference = database.getReference("Volunteers").child(user.getUid());
             String name = volunteerNameET.getText().toString().trim();
@@ -205,17 +204,13 @@ public class SetupActivity extends AppCompatActivity {
             return false;
         }
         int day = Integer.parseInt(date.substring(0, 2));
-        int month = Integer.parseInt(date.substring(3, 5));
+        int month = Integer.parseInt(date.substring(3, 5)) - 1;
         int year = Integer.parseInt(date.substring(6, 10));
         dob.set(Calendar.DAY_OF_MONTH, day);
         dob.set(Calendar.MONTH, month);
         dob.set(Calendar.YEAR, year);
         Log.d(TAG, "IsValidDOB being called: " + dob);
-        if(dob.before(currentCal)) {
-            return true;
-        } else {
-            return false;
-        }
+        return dob.before(currentCal);
     }
 
     @OnClick(R.id.setupFinishCharity)
@@ -276,9 +271,16 @@ public class SetupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
                 int day, month, year;
-                day = 1;
-                month = 0;
-                year = cal.get(Calendar.YEAR);
+                if (volunteerDOBET.length() > 0) {
+                    String date = volunteerDOBET.getText().toString().trim();
+                    day = Integer.parseInt(date.substring(0, 2));
+                    month = Integer.parseInt(date.substring(3, 5)) - 1;
+                    year = Integer.parseInt(date.substring(6, 10));
+                } else {
+                    day = cal.get(Calendar.DAY_OF_MONTH);
+                    month = cal.get(Calendar.MONTH);
+                    year = cal.get(Calendar.YEAR);
+                }
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         SetupActivity.this,

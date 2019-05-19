@@ -36,12 +36,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="Give a rating to: "/>
-
-            <TextView
                 android:id="@+id/rateVolunteerNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
+            android:textSize="18sp"
             android:text="Comment:"/>
 
         <EditText
@@ -71,6 +66,15 @@
             style="@style/loginEditTexts"
             android:hint="Add a comment here"
             android:inputType="textMultiLine" />
+
+        <TextView
+            android:id="@+id/rateVolunteerCommentTV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:text="" />
 
         <Button
             android:id="@+id/rateVolunteerSubmitBtn"

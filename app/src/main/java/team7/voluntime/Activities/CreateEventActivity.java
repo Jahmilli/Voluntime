@@ -102,9 +102,16 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
                 int day, month, year;
-                day = 1;
-                month = 0;
-                year = cal.get(Calendar.YEAR);
+                if (eventDateET.length() > 0) {
+                    String date = eventDateET.getText().toString().trim();
+                    day = Integer.parseInt(date.substring(0, 2));
+                    month = Integer.parseInt(date.substring(3, 5)) - 1;
+                    year = Integer.parseInt(date.substring(6, 10));
+                } else {
+                    day = cal.get(Calendar.DAY_OF_MONTH);
+                    month = cal.get(Calendar.MONTH);
+                    year = cal.get(Calendar.YEAR);
+                }
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         CreateEventActivity.this,
@@ -139,23 +146,19 @@ public class CreateEventActivity extends AppCompatActivity {
     // Will say a month before the current month is valid for whatever reason... too tired to look into
     private boolean isValidEventDate() {
         Calendar currentCal = Calendar.getInstance();
-        Calendar dob = Calendar.getInstance();
+        Calendar eventDate = Calendar.getInstance();
         String date = eventDateET.getText().toString().trim();
         if (date.length() == 0) {
             return false;
         }
         int day = Integer.parseInt(date.substring(0, 2));
-        int month = Integer.parseInt(date.substring(3, 5));
+        int month = Integer.parseInt(date.substring(3, 5)) - 1;
         int year = Integer.parseInt(date.substring(6, 10));
-        dob.set(Calendar.DAY_OF_MONTH, day);
-        dob.set(Calendar.MONTH, month);
-        dob.set(Calendar.YEAR, year);
-        Log.d(TAG, "IsValidDOB being called: " + dob);
-        if(dob.after(currentCal)) {
-            return true;
-        } else {
-            return false;
-        }
+        eventDate.set(Calendar.DAY_OF_MONTH, day);
+        eventDate.set(Calendar.MONTH, month);
+        eventDate.set(Calendar.YEAR, year);
+        Log.d(TAG, "IsValidDOB being called: " + eventDate);
+        return eventDate.after(currentCal);
     }
 
     @OnClick(R.id.createEventSubmitBtn)

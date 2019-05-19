@@ -17,8 +17,11 @@ import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
 import team7.voluntime.Activities.EventRegisterActivity;
+import team7.voluntime.Activities.RateVolunteerActivity;
 import team7.voluntime.Activities.VolunteerDetailsActivity;
+import team7.voluntime.Activities.VolunteerHistoryActivity;
 import team7.voluntime.Domains.Event;
+import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
 import team7.voluntime.R;
@@ -26,6 +29,10 @@ import team7.voluntime.R;
 
 public class EventListAdapter<T> extends ArrayAdapter<Event> {
     private static final String TAG = "EventListAdapter";
+
+    private VolunteerHistoryActivity volunteerHistoryActivity; // Only accessed from VolunteerHistoryActivity
+    private VolunteerDetailsActivity volunteerDetailsActivity; // Only accessed from VolunteerDetailsActivity
+
     private Context mContext;
     private T screen;
     int mResource;
@@ -54,7 +61,6 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         int minimum = getItem(position).getMinimum();
         int maximum = getItem(position).getMaximum();
 
-        // TODO: Check how this works with volunteer page
         final boolean isPastEvent = getItem(position).isPastEvent();
 
         final HashMap<String, String> volunteers = getItem(position).getVolunteers();
@@ -67,50 +73,95 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         TextView dateTV = convertView.findViewById(R.id.adapterEventDateTV);
         TextView titleTV = convertView.findViewById(R.id.adapterEventTitleTV);
         ImageView adapterEventIV1 = convertView.findViewById(R.id.adapterEventIV1);
-        ImageView adapterEventIV2 = convertView.findViewById(R.id.adapterEventIV2);
+        ImageView adapterEventInfoIV = convertView.findViewById(R.id.adapterEventInfoIV);
+        ImageView adapterEventRatingIV = convertView.findViewById(R.id.adapterEventRatingIV);
 
 
         if (screen.getClass().equals(CharityViewEventsFragment.class)) {
-            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
+            adapterEventInfoIV.setVisibility(View.VISIBLE);
+
+            adapterEventInfoIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
                     intent.putExtra("event", event);
                     intent.putExtra("parentActivity", CharityViewEventsFragment.class.toString());
-                    // TODO: Event status is being used on event details to remove pending and registered list and will just show the attended volunteers
-                    intent.putExtra("isPastEvent", isPastEvent);
 
+                    // This is being used on event details to remove pending and registered list and will just show the attended volunteers
+                    intent.putExtra("isPastEvent", isPastEvent);
                     intent.putExtra("volunteers", event.getVolunteers());
-                    Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
 
             });
         } else if (screen.getClass().equals(VolunteerDetailsActivity.class)) {
-            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
+            adapterEventInfoIV.setVisibility(View.VISIBLE);
+            adapterEventRatingIV.setVisibility(View.VISIBLE);
+            adapterEventInfoIV.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(@NonNull  View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
                     intent.putExtra("event", event);
                     intent.putExtra("parentActivity", VolunteerDetailsActivity.class.toString());
-                    Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
             });
-        } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
-            adapterEventIV1.setVisibility(View.GONE);
-            adapterEventIV2.setImageResource(R.drawable.ic_plus);
-            adapterEventIV2.setOnClickListener(new View.OnClickListener() {
+
+            adapterEventRatingIV.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    if (view != null) {
-                        Log.d("Event Details on Click", event.toString());
-                        Intent intent = new Intent(mContext, EventRegisterActivity.class);
-                        intent.putExtra("event", event);
-                        mContext.startActivity(intent);
-                    }
+                public void onClick(@NonNull  View view) {
+                    volunteerDetailsActivity = (VolunteerDetailsActivity) screen;
+                    Intent intent = new Intent(mContext, RateVolunteerActivity.class);
+                    intent.putExtra("event", event);
+                    intent.putExtra("volunteer", volunteerDetailsActivity.getVolunteer());
+                    intent.putExtra("isPastEvent", isPastEvent);
+                    mContext.startActivity(intent);
+            }
+            });
+
+        } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
+            adapterEventIV1.setVisibility(View.VISIBLE);
+
+            adapterEventIV1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull  View view) {
+                    Intent intent = new Intent(mContext, EventRegisterActivity.class);
+                    intent.putExtra("event", event);
+                    mContext.startActivity(intent);
+
                 }
             });
+
+        } else if (screen.getClass().equals(VolunteerHistoryActivity.class)) {
+            adapterEventInfoIV.setVisibility(View.VISIBLE);
+            adapterEventRatingIV.setVisibility(View.VISIBLE);
+
+            adapterEventInfoIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    Intent intent = new Intent(mContext, EventDetailsActivity.class);
+                    intent.putExtra("event", event);
+                    intent.putExtra("parentActivity", VolunteerHistoryActivity.class.toString());
+
+                    // This is being used on event details to remove pending and registered list and will just show the attended volunteers
+                    intent.putExtra("isPastEvent", isPastEvent);
+                    mContext.startActivity(intent);
+
+
+                }
+            });
+            adapterEventRatingIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    volunteerHistoryActivity = (VolunteerHistoryActivity) screen;
+                    Intent intent = new Intent(mContext, RateVolunteerActivity.class);
+                    intent.putExtra("event", event);
+                    intent.putExtra("volunteer", volunteerHistoryActivity.getVolunteer());
+                    intent.putExtra("isPastEvent", isPastEvent);
+                    mContext.startActivity(intent);
+                }
+            });
+
         }
 
         dateTV.setText(date);

@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_vt_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".Activities.VolunteerHistoryActivity" />
         <activity android:name=".Activities.RateVolunteerActivity" />
         <activity android:name=".Activities.VolunteerDetailsActivity" />
         <activity

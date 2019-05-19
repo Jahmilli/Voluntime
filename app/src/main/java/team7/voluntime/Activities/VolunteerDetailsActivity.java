@@ -101,7 +101,9 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Event tempEvent = dataSnapshot.getValue(Event.class);
+                                tempEvent.setId(event.getKey());
                                 tempEvent.setVolunteers(new HashMap<String, String>());
+                                tempEvent.setPastEvent(true);
                                 if (historyTV.getVisibility() != View.INVISIBLE) {
                                     historyTV.setVisibility(View.INVISIBLE);
                                 }
@@ -127,8 +129,9 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
 
     }
 
-    public String getVolunteerID() {
-        return volunteer.getId();
+    // Used by EventListAdapter
+    public Volunteer getVolunteer() {
+        return volunteer;
     }
 
     @Override

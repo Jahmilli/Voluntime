@@ -48,6 +48,8 @@ public class RateVolunteerActivity extends AppCompatActivity {
     RatingBar ratingBar;
     @BindView(R.id.rateVolunteerCommentET)
     EditText commentET;
+    @BindView(R.id.rateVolunteerCommentTV)
+    TextView commentTV;
     @BindView(R.id.rateVolunteerSubmitBtn)
     Button submitBtn;
 
@@ -63,6 +65,9 @@ public class RateVolunteerActivity extends AppCompatActivity {
         event = intent.getParcelableExtra("event");
         isPastEvent = intent.getBooleanExtra("isPastEvent", false);
         if (isPastEvent) {
+            ratingBar.setEnabled(false);
+            commentET.setVisibility(View.GONE);
+            commentTV.setVisibility(View.VISIBLE);
             submitBtn.setVisibility(View.GONE);
         }
 
@@ -74,7 +79,11 @@ public class RateVolunteerActivity extends AppCompatActivity {
                 rating = dataSnapshot.getValue(Rating.class);
                 if (rating != null) {
                     ratingBar.setRating(rating.getRating());
-                    commentET.setText(rating.getComment());
+                    if (isPastEvent) {
+                        commentTV.setText(rating.getComment());
+                    } else {
+                        commentET.setText(rating.getComment());
+                    }
                 }
             }
 
