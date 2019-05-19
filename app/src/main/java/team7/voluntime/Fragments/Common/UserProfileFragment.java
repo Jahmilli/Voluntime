@@ -140,13 +140,15 @@ public class UserProfileFragment extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 int ratingsCount = 0;
                                 float sumOfRatings = 0;
+                                float average = 0;
                                 for (DataSnapshot rating : dataSnapshot.getChildren()) {
                                     if (rating.exists()) {
                                         ratingsCount++;
                                         sumOfRatings += Float.parseFloat(rating.child("rating").getValue().toString());
                                     }
                                 }
-                                ratingTV.setText("Current Rating is: " + sumOfRatings/ratingsCount);
+                                average = ratingsCount > 0 ? sumOfRatings/ratingsCount : 0;
+                                ratingTV.setText("Current Rating is: " + average);
                             }
 
                             @Override
