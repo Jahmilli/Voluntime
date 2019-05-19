@@ -109,76 +109,82 @@ public class UserProfileFragment extends Fragment {
         volunteerReference = Utilities.getVolunteerReference(database, mUser.getUid());
 
         // Get Account type and pass it into getType() method to return correct string path
-        DatabaseReference typeRef = FirebaseDatabase.getInstance().getReference(getType());
+        DatabaseReference typeRef = database.getReference(getType());
 
         typeRef.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    emailTV.setText(mUser.getEmail());
-                    if (getType().equals("Volunteers")) {
-                        volunteerLayout.setVisibility(VISIBLE);
-                        volunteerReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                volunteer = dataSnapshot.getValue(Volunteer.class);
-                                volunteer.setId(mUser.getUid());
-                                nameTV.setText(volunteer.getName());
-                                typeTV.setText("Volunteer");
-                                phoneTV.setText(volunteer.getPhoneNumber());
-                                addressTV.setText(volunteer.getAddress());
-                                genTV.setText(volunteer.getGender());
-                                dobTV.setText(volunteer.getDateOfBirth());
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.e(TAG, "The read failed: " + databaseError.getCode());
-                            }
-                        });
-                        volunteerReference.child("Ratings").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                int ratingsCount = 0;
-                                float sumOfRatings = 0;
-                                float average = 0;
-                                for (DataSnapshot rating : dataSnapshot.getChildren()) {
-                                    if (rating.exists()) {
-                                        ratingsCount++;
-                                        sumOfRatings += Float.parseFloat(rating.child("rating").getValue().toString());
+                    if (dataSnapshot.exists()) {
+                        emailTV.setText(mUser.getEmail());
+                        if (getType().equals("Volunteers")) {
+                            volunteerLayout.setVisibility(VISIBLE);
+                            volunteerReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        volunteer = dataSnapshot.getValue(Volunteer.class);
+                                        volunteer.setId(mUser.getUid());
+                                        nameTV.setText(volunteer.getName());
+                                        typeTV.setText("Volunteer");
+                                        phoneTV.setText(volunteer.getPhoneNumber());
+                                        addressTV.setText(volunteer.getAddress());
+                                        genTV.setText(volunteer.getGender());
+                                        dobTV.setText(volunteer.getDateOfBirth());
                                     }
                                 }
-                                average = ratingsCount > 0 ? sumOfRatings/ratingsCount : 0;
-                                ratingTV.setText("Current Rating is: " + average);
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e(TAG, "The read failed: " + databaseError.getCode());
+                                }
+                            });
+                            volunteerReference.child("Ratings").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    int ratingsCount = 0;
+                                    float sumOfRatings = 0;
+                                    float average = 0;
+                                    for (DataSnapshot rating : dataSnapshot.getChildren()) {
+                                        if (rating.exists()) {
+                                            ratingsCount++;
+                                            sumOfRatings += Float.parseFloat(rating.child("rating").getValue().toString());
+                                        }
+                                    }
+                                    average = ratingsCount > 0 ? sumOfRatings/ratingsCount : 0;
+                                    ratingTV.setText("Current Rating is: " + average);
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                        if (getType().equals("Charities")) {
+                            charityLayout.setVisibility(VISIBLE);
+                            charityReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull  DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        charity = dataSnapshot.getValue(Charity.class);
+                                        charity.setId(mUser.getUid());
+                                        nameTV.setText(charity.getName());
+                                        typeTV.setText("Charity");
+                                        phoneTV.setText(charity.getPhoneNumber());
+                                        addressTV.setText(charity.getAddress());
+                                        catTV.setText(charity.getCategory());
+                                        descTV.setText(charity.getDescription());
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e(TAG, "The read failed: " + databaseError.getCode());
+                                }
+                            });
+
+                        }
                     }
-                    if (getType().equals("Charities")) {
-                        charityLayout.setVisibility(VISIBLE);
-                        charityReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                charity = dataSnapshot.getValue(Charity.class);
-                                charity.setId(mUser.getUid());
-                                nameTV.setText(charity.getName());
-                                typeTV.setText("Charity");
-                                phoneTV.setText(charity.getPhoneNumber());
-                                addressTV.setText(charity.getAddress());
-                                catTV.setText(charity.getCategory());
-                                descTV.setText(charity.getDescription());
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.e(TAG, "The read failed: " + databaseError.getCode());
-                            }
-                        });
-
-                    }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
