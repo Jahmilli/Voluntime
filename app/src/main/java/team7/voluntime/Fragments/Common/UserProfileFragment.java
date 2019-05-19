@@ -62,6 +62,8 @@ public class UserProfileFragment extends Fragment {
     TextView nameTV;
     @BindView(R.id.userprofileTypeTV)
     TextView typeTV;
+    @BindView(R.id.userprofileRatingTV)
+    TextView ratingTV;
     @BindView(R.id.userprofileEmailTV)
     TextView emailTV;
     @BindView(R.id.userprofilePhoneTV)
@@ -131,6 +133,25 @@ public class UserProfileFragment extends Fragment {
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 Log.e(TAG, "The read failed: " + databaseError.getCode());
+                            }
+                        });
+                        volunteerReference.child("Ratings").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                int ratingsCount = 0;
+                                float sumOfRatings = 0;
+                                for (DataSnapshot rating : dataSnapshot.getChildren()) {
+                                    if (rating.exists()) {
+                                        ratingsCount++;
+                                        sumOfRatings += Float.parseFloat(rating.child("rating").getValue().toString());
+                                    }
+                                }
+                                ratingTV.setText("Current Rating is: " + sumOfRatings/ratingsCount);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
                             }
                         });
                     }
