@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,12 +19,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
@@ -39,6 +40,8 @@ public class VolunteerEventsListFragment extends Fragment {
     private DatabaseReference volunteerReference;
     private DatabaseReference eventsReference;
     private Volunteer volunteer;
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
 
     ListView listOfUpcomingEvents;
 
@@ -47,9 +50,6 @@ public class VolunteerEventsListFragment extends Fragment {
 
     @BindView(R.id.volunteerViewEventTitleTV)
     TextView viewEventTitleTV;
-
-    @BindView(R.id.volunteerCreateEventIV)
-    ImageView createEventIV;
 
     private final static String TAG = "VolunteerEventsList";
 
@@ -92,6 +92,7 @@ public class VolunteerEventsListFragment extends Fragment {
         volunteerReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 volunteer = dataSnapshot.getValue(Volunteer.class);
                 volunteer.setId(mUser.getUid());
                 Log.d(TAG, volunteer.toString());
@@ -111,21 +112,37 @@ public class VolunteerEventsListFragment extends Fragment {
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             if (child.exists()) {
-                                String eventId = child.getKey();
-                                Log.d(TAG, "Event id is " + eventId);
+                                boolean isUpcomingEvent = false;
 
-                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("Volunteers"), TAG);
-                                Event event = child.getValue(Event.class);
-                                event.setVolunteers(volunteers);
-                                event.setId(eventId);
+                                try {
+                                    Date eventDate = format.parse(child.child("date").getValue().toString());
+                                    Date currentDate = format.parse(Utilities.getCurrentDate());
 
-                                // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
-                                Log.d(TAG, event.toString());
-                                upcomingEventList.add(event);
-                                if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                    upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                    // Check if the date of the event is either today or in the future
+                                    if (eventDate.compareTo(currentDate) >= 0) {
+                                        isUpcomingEvent = true;
+                                    }
+                                } catch (ParseException e) {
+                                    Log.e(TAG, e.toString());
                                 }
-                                listOfUpcomingEvents.invalidateViews();
+
+                                if (isUpcomingEvent) {
+                                    String eventId = child.getKey();
+                                    Log.d(TAG, "Event id is " + eventId);
+
+                                    HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("Volunteers"), TAG);
+                                    Event event = child.getValue(Event.class);
+                                    event.setVolunteers(volunteers);
+                                    event.setId(eventId);
+
+                                    // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
+                                    Log.d(TAG, event.toString());
+                                    upcomingEventList.add(event);
+                                    if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
+                                        upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                    }
+                                    listOfUpcomingEvents.invalidateViews();
+                                }
                             }
                         }
                     }
@@ -142,15 +159,6 @@ public class VolunteerEventsListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @OnClick(R.id.volunteerCreateEventIV)
-    public void createEventOnClick() {
-//        Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
-//        createEventIntent.putExtra("id", volunteer.getId());
-//        createEventIntent.putExtra("categories", volunteer.getCategory());
-//        startActivity(createEventIntent);
-        Log.d(TAG, "Event Button Clicked");
     }
 
 }

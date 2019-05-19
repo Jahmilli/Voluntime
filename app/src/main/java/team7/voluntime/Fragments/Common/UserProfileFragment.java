@@ -27,6 +27,7 @@ import butterknife.OnClick;
 import team7.voluntime.Activities.EditCharityActivity;
 import team7.voluntime.Activities.EditVolunteerActivity;
 import team7.voluntime.Activities.MainActivity;
+import team7.voluntime.Activities.VolunteerHistoryActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
@@ -193,5 +194,10 @@ public class UserProfileFragment extends Fragment {
         } else {
             return EditCharityActivity.class;
         }
+    }
+
+    @OnClick(R.id.userprofileVolHisBtn)
+    public void volunteerHistoryOnClick() {
+        startActivity(new Intent(getContext(), VolunteerHistoryActivity.class));
     }
 }
