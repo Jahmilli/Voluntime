@@ -29,7 +29,10 @@ import team7.voluntime.R;
 
 public class EventListAdapter<T> extends ArrayAdapter<Event> {
     private static final String TAG = "EventListAdapter";
-    private VolunteerHistoryActivity volunteerHistoryActivity;
+
+    private VolunteerHistoryActivity volunteerHistoryActivity; // Only accessed from VolunteerHistoryActivity
+    private VolunteerDetailsActivity volunteerDetailsActivity; // Only accessed from VolunteerDetailsActivity
+
     private Context mContext;
     private T screen;
     int mResource;
@@ -58,7 +61,6 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         int minimum = getItem(position).getMinimum();
         int maximum = getItem(position).getMaximum();
 
-        // TODO: Check how this works with volunteer page
         final boolean isPastEvent = getItem(position).isPastEvent();
 
         final HashMap<String, String> volunteers = getItem(position).getVolunteers();
@@ -88,24 +90,33 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                     // This is being used on event details to remove pending and registered list and will just show the attended volunteers
                     intent.putExtra("isPastEvent", isPastEvent);
                     intent.putExtra("volunteers", event.getVolunteers());
-                    Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
 
             });
         } else if (screen.getClass().equals(VolunteerDetailsActivity.class)) {
             adapterEventInfoIV.setVisibility(View.VISIBLE);
-            // TODO: Show heart icon and show rating
-
+            adapterEventRatingIV.setVisibility(View.VISIBLE);
             adapterEventInfoIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull  View view) {
                     Intent intent = new Intent(mContext, EventDetailsActivity.class);
                     intent.putExtra("event", event);
                     intent.putExtra("parentActivity", VolunteerDetailsActivity.class.toString());
-                    Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
                 }
+            });
+
+            adapterEventRatingIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull  View view) {
+                    volunteerDetailsActivity = (VolunteerDetailsActivity) screen;
+                    Intent intent = new Intent(mContext, RateVolunteerActivity.class);
+                    intent.putExtra("event", event);
+                    intent.putExtra("volunteer", volunteerDetailsActivity.getVolunteer());
+                    intent.putExtra("isPastEvent", isPastEvent);
+                    mContext.startActivity(intent);
+            }
             });
 
         } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
@@ -114,7 +125,6 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
             adapterEventIV1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull  View view) {
-                    Log.d("Event Details on Click", VolunteerEventsListFragment.class.toString());
                     Intent intent = new Intent(mContext, EventRegisterActivity.class);
                     intent.putExtra("event", event);
                     mContext.startActivity(intent);
@@ -135,7 +145,6 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
 
                     // This is being used on event details to remove pending and registered list and will just show the attended volunteers
                     intent.putExtra("isPastEvent", isPastEvent);
-                    Log.d(TAG, "Event is: " + event.toString());
                     mContext.startActivity(intent);
 
 
@@ -147,7 +156,6 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
                     volunteerHistoryActivity = (VolunteerHistoryActivity) screen;
                     Intent intent = new Intent(mContext, RateVolunteerActivity.class);
                     intent.putExtra("event", event);
-                    intent.putExtra("parentActivity", VolunteerHistoryActivity.class.toString());
                     intent.putExtra("volunteer", volunteerHistoryActivity.getVolunteer());
                     intent.putExtra("isPastEvent", isPastEvent);
                     mContext.startActivity(intent);

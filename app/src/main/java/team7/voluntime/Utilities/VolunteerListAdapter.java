@@ -65,9 +65,6 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
         ImageView volunteerAdapterProfileIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterProfileIV);
         ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
-        final boolean isRegistered = volunteerAdapterAddIV == null;
-
-
 
         if (volunteerAdapterAddIV != null) {
             volunteerAdapterAddIV.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +93,9 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                 Log.d(TAG, "Volunteer list " + volunteer.toString());
+                Log.d(TAG, "event " + event.toString());
                 Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
-                intent.putExtra("volunteer", (Parcelable) volunteer);
+                intent.putExtra("volunteer", volunteer);
                 intent.putExtra("event", event);
                 mContext.startActivity(intent);
                 }
