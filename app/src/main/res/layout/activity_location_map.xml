@@ -8,7 +8,7 @@
     tools:context=".Activities.LocationMapActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/locationToolbar"
+        android:id="@+id/mapLocationToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/toolbarStyle"
@@ -18,7 +18,7 @@
         android:id="@+id/container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/locationToolbar">
+        android:layout_below="@id/mapLocationToolbar">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -26,16 +26,8 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".Activities.LocationMapActivity" />
+            tools:context=".Activities.LocationActivity" />
 
-        <Button
-            android:id="@+id/setEventLocationBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="41dp"
-            android:text="Add Location"
-            android:visibility="invisible" />
     </FrameLayout>
 
 
