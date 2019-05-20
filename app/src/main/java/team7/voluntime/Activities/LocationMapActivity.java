@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -20,8 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 import team7.voluntime.Domains.Event;
 import team7.voluntime.R;
@@ -40,6 +39,7 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
     private FirebaseUser mUser;
     private FirebaseDatabase database;
     private DatabaseReference eventsReference;
+    private DatabaseReference charityReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,20 +67,15 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        final ArrayList<Event> EventsList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         eventsReference = Utilities.getEventsReference(database);
         eventsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String Id = child.getKey();
                     Event event = child.getValue(Event.class);
-                    String coords[] = event.getLocation().split(" ");
-                    LatLng eventLoc = new LatLng(
-                            Double.parseDouble(coords[0]),
-                            Double.parseDouble(coords[1]));
-                    mMap.addMarker(new MarkerOptions().position(eventLoc).title(event.getTitle()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
+                    addMarker(event, Id);
                 }
             }
 
@@ -89,5 +84,33 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
             }
         });
     }
+
+    public void addMarker(Event e, String Id) {
+        final Event event = e;
+        database = FirebaseDatabase.getInstance();
+        eventsReference = Utilities.getCharityReference(database, event.getOrganisers());
+        eventsReference.child("Events").child(Id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.getValue().toString().equals("previous")) {
+                    final String title = event.getTitle();
+                    final String coords[] = event.getLocation().split(" ");
+                    LatLng eventLoc = new LatLng(
+                            Double.parseDouble(coords[0]),
+                            Double.parseDouble(coords[1]));
+                    mMap.addMarker(new MarkerOptions().position(eventLoc).title(title));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
+                    Toast.makeText(getBaseContext(), dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+
 
 }
