@@ -141,6 +141,9 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                             } else {
                                 // TODO: Determine if anything is needed here
+                                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(mLastKnownLocation.getLatitude(),
+                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                             }
 
                         } else {
