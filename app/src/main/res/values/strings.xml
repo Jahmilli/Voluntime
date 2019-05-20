@@ -35,4 +35,5 @@
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_event_details">EventDetailsActivity</string>
     <string name="title_activity_event_register">EventRegisterActivity</string>
+    <string name="title_activity_charity_details">CharityDetails</string>
 </resources>

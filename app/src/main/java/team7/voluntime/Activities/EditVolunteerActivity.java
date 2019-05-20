@@ -201,7 +201,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
             return false;
         }
         int day = Integer.parseInt(date.substring(0, 2));
-        int month = Integer.parseInt(date.substring(3, 5));
+        int month = Integer.parseInt(date.substring(3, 5)) - 1;
         int year = Integer.parseInt(date.substring(6, 10));
         dob.set(Calendar.DAY_OF_MONTH, day);
         dob.set(Calendar.MONTH, month);
@@ -215,11 +215,10 @@ public class EditVolunteerActivity extends AppCompatActivity {
         volunteerDOBET.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int day, month, year;
-                day = 1;
-                month = 0;
-                year = cal.get(Calendar.YEAR);
+                String date = volunteerDOBET.getText().toString().trim();
+                int year = Integer.parseInt(date.substring(6, 10));
+                int month = Integer.parseInt(date.substring(3, 5)) - 1;
+                int day = Integer.parseInt(date.substring(0, 2));
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         EditVolunteerActivity.this,

@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -34,19 +36,22 @@ public class RateVolunteerActivity extends AppCompatActivity {
 
     private Volunteer volunteer;
     private DatabaseReference reference;
+    private FirebaseDatabase database;
     private Rating rating;
     private Event event;
-    private FirebaseDatabase database;
+    private boolean isPastEvent;
 
     // Bindings
     @BindView(R.id.rateVolunteerNameTV)
     TextView nameTV;
-
     @BindView(R.id.rateVolunteerRatingBar)
     RatingBar ratingBar;
-
     @BindView(R.id.rateVolunteerCommentET)
     EditText commentET;
+    @BindView(R.id.rateVolunteerCommentTV)
+    TextView commentTV;
+    @BindView(R.id.rateVolunteerSubmitBtn)
+    Button submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,14 @@ public class RateVolunteerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         volunteer = intent.getParcelableExtra("volunteer");
         event = intent.getParcelableExtra("event");
+        isPastEvent = intent.getBooleanExtra("isPastEvent", false);
+        if (isPastEvent) {
+            ratingBar.setEnabled(false);
+            commentET.setVisibility(View.GONE);
+            commentTV.setVisibility(View.VISIBLE);
+            submitBtn.setVisibility(View.GONE);
+        }
+
         nameTV.setText(volunteer.getName());
         reference = database.getReference("Volunteers").child(volunteer.getId()).child("Ratings").child(event.getId());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,7 +79,11 @@ public class RateVolunteerActivity extends AppCompatActivity {
                 rating = dataSnapshot.getValue(Rating.class);
                 if (rating != null) {
                     ratingBar.setRating(rating.getRating());
-                    commentET.setText(rating.getComment());
+                    if (isPastEvent) {
+                        commentTV.setText(rating.getComment());
+                    } else {
+                        commentET.setText(rating.getComment());
+                    }
                 }
             }
 

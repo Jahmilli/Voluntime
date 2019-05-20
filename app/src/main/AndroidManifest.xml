@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_vt_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Activities.RateVolunteerActivity"></activity>
+        <activity android:name=".Activities.VolunteerHistoryActivity" />
+        <activity android:name=".Activities.RateVolunteerActivity" />
         <activity android:name=".Activities.VolunteerDetailsActivity" />
         <activity
             android:name=".Activities.EventRegisterActivity"
@@ -69,6 +70,10 @@
             android:name=".Activities.EventDetailsActivity"
             android:label="@string/title_event_details"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Activities.CharityDetailsActivity"
+            android:label="@string/title_activity_charity_details"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>
