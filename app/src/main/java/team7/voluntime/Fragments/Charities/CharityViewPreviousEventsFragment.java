@@ -88,14 +88,12 @@ public class CharityViewPreviousEventsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.exists()) {
-                        if (child.getValue() != null) {
+                    if (child.exists() && child.getValue() != null) {
                             String id = child.getKey();
                             String value = child.getValue().toString();
                             if (value.equals("previous")) {
                                 previousEvents.put(id, ""); // Add the id which can then be searched later on
                             }
-                        }
                     }
                 }
             }

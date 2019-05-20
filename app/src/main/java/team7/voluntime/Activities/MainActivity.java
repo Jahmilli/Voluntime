@@ -75,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
     private static String accountType;
 
     /**
+     * I am using this enum to know which is the current fragment being displayed, you will see
+     * what I mean with this later in this code.
+     */
+    private enum MenuStates {
+        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT
+    }
+
+    /**
      * The current fragment being displayed.
      */
     private MenuStates currentState;
@@ -233,13 +241,6 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    /**
-     * I am using this enum to know which is the current fragment being displayed, you will see
-     * what I mean with this later in this code.
-     */
-    private enum MenuStates {
-        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT
-    }
 
     @Override
     protected void onStart() {
