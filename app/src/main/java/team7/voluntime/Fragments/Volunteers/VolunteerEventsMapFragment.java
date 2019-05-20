@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Activities.LocationMapActivity;
 import team7.voluntime.R;
 
@@ -40,7 +41,7 @@ public class VolunteerEventsMapFragment extends Fragment {
         return v;
     }
 
-
+    @OnClick(R.id.volEventsViewMapBtn)
     public void loadMap() {
         Intent intent = new Intent(getActivity(), LocationMapActivity.class);
         startActivity(intent);

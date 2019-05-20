@@ -31,8 +31,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 
 import team7.voluntime.R;
@@ -74,7 +72,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        setEventLocationBtn = (Button) findViewById(R.id.setEventLocationBtn);
+        setEventLocationBtn = findViewById(R.id.setEventLocationBtn);
 
         createHelpDialog();
 
@@ -140,7 +138,11 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                                         .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                             } else {
-                                // TODO: Determine if anything is needed here
+                                LatLng userLoc = new LatLng(
+                                        mLastKnownLocation.getLatitude(),
+                                        mLastKnownLocation.getLongitude());
+                                mGoogleMap.moveCamera(CameraUpdateFactory
+                                        .newLatLngZoom(userLoc, 10));
                             }
 
                         } else {
@@ -240,6 +242,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     
     public void createHelpDialog() {
         helpAlertBuilder = new AlertDialog.Builder(this);
+        //TODO: Remove this when viewing events
         helpAlertBuilder.setMessage("Select a location for where your event will be run!");
         helpAlertBuilder.setCancelable(true);
         helpAlertBuilder.setPositiveButton(
