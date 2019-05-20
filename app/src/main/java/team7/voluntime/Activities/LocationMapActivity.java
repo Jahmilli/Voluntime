@@ -73,16 +73,14 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
         eventsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int lat = 0;
-                int lon = 0;
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Event event = child.getValue(Event.class);
-                    LatLng sydney = new LatLng(lat, lon);
-                    mMap.addMarker(new MarkerOptions().position(sydney).title(event.getTitle()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                    lat = lat + 10;
-                    lon = lon + 10;
-                    EventsList.add(event);
+                    String coords[] = event.getLocation().split(" ");
+                    LatLng eventLoc = new LatLng(
+                            Double.parseDouble(coords[0]),
+                            Double.parseDouble(coords[1]));
+                    mMap.addMarker(new MarkerOptions().position(eventLoc).title(event.getTitle()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
                 }
             }
 
@@ -90,16 +88,6 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
-        int count = EventsList.size();
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(String.valueOf(count)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-//        Event test = EventsList.get(0);
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title(test.getTitle()));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
 }
