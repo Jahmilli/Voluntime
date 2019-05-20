@@ -105,7 +105,7 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        charityReference.child("Events").addListenerForSingleValueEvent(new ValueEventListener() {
+        charityReference.child("Events").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -129,52 +129,54 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        eventReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        eventReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        upcomingEventList.clear();
-                        previousEventList.clear();
-                        upcomingEventsTV.setVisibility(View.VISIBLE);
-                        previousEventsTV.setVisibility(View.VISIBLE);
+                        if (dataSnapshot.exists()) {
+                            upcomingEventList.clear();
+                            previousEventList.clear();
+                            upcomingEventsTV.setVisibility(View.VISIBLE);
+                            previousEventsTV.setVisibility(View.VISIBLE);
 
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.exists()) {
-                                String eventId = child.getKey();
-                                Log.d(TAG, "Event id is " + eventId);
-                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                if (child.exists()) {
+                                    String eventId = child.getKey();
+                                    HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
-                                Event event = child.getValue(Event.class);
-                                event.setVolunteers(volunteers);
-                                event.setId(eventId);
+                                    Event event = child.getValue(Event.class);
+                                    event.setVolunteers(volunteers);
+                                    event.setId(eventId);
 
-                                // Will only display events that the charity has created
-                                if (event.getOrganisers().equals(mUser.getUid())) {
-                                    Log.d(TAG, event.toString());
-                                    if (upcomingEvents.containsKey(eventId)) {
-                                        event.setPastEvent(false);
-                                        upcomingEventList.add(event);
-                                        if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                            upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                    // Will only display events that the charity has created
+                                    if (event.getOrganisers().equals(mUser.getUid())) {
+                                        Log.d(TAG, event.toString());
+                                        if (upcomingEvents.containsKey(eventId)) {
+                                            event.setPastEvent(false);
+                                            upcomingEventList.add(event);
+                                            if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
+                                                upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                            }
+                                            listOfUpcomingEventsLV.invalidateViews();
+                                        } else if (previousEvents.containsKey(eventId)) {
+                                            event.setPastEvent(true);
+                                            previousEventList.add(event);
+                                            if (previousEventsTV.getVisibility() != View.INVISIBLE) {
+                                                previousEventsTV.setVisibility(View.INVISIBLE);
+                                            }
+                                            listOfPreviousEventsLV.invalidateViews();
                                         }
-                                        listOfUpcomingEventsLV.invalidateViews();
-                                    } else if (previousEvents.containsKey(eventId)) {
-                                        event.setPastEvent(true);
-                                        previousEventList.add(event);
-                                        if (previousEventsTV.getVisibility() != View.INVISIBLE) {
-                                            previousEventsTV.setVisibility(View.INVISIBLE);
-                                        }
-                                        listOfPreviousEventsLV.invalidateViews();
                                     }
                                 }
                             }
+
                         }
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+            }
+        });
 
         return v;
     }
@@ -185,7 +187,7 @@ public class CharityViewEventsFragment extends Fragment {
     }
 
     public DatabaseReference getDBReference() {
-        return this.charityReference;
+        return charityReference;
     }
     public FirebaseUser getUser() {
         return mUser;

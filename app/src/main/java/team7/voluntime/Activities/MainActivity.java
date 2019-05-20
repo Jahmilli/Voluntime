@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -263,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
     public void ChangeTitle(String newTitle) {
         toolbar.setTitle(newTitle);
     }
-
 
     /**
      * This function allows to change the content of the Fragment holder

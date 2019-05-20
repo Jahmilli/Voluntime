@@ -29,15 +29,12 @@
                     android:textSize="20sp"
                     android:text="Back"/>
 
-                <TextView
-                    android:id="@+id/eventDetalsConcludeEventTV"
+                <ImageView
+                    android:id="@+id/eventDetailsCancelEventIV"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
-                    android:layout_marginTop="20sp"
-                    android:textSize="20sp"
-                    android:visibility="gone"
-                    android:text="Conclude Event"/>
+                    android:layout_height="50dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ic_cancel_icon" />
 
             </LinearLayout>
 
@@ -112,6 +109,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="created date time" />
+
+            <Button
+                android:id="@+id/eventDetailsConcludeEventBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/gradient_login_btn"
+                android:visibility="gone"
+                android:text="Conclude Event!"
+                android:textSize="20sp"
+                android:textColor="#eee" />
 
             <LinearLayout
                 android:id="@+id/eventDetailsPendingVolunteersLL"
