@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -110,6 +112,7 @@ public class UserProfileFragment extends Fragment {
 
         // Get Account type and pass it into getType() method to return correct string path
         DatabaseReference typeRef = database.getReference(getType());
+        final DecimalFormat df = new DecimalFormat();
 
         typeRef.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,7 +153,8 @@ public class UserProfileFragment extends Fragment {
                                         }
                                     }
                                     average = ratingsCount > 0 ? sumOfRatings/ratingsCount : 0;
-                                    ratingTV.setText("Current Rating is: " + average);
+                                    df.setMaximumFractionDigits(2);
+                                    ratingTV.setText("Current Rating is: " + df.format(average));
                                 }
 
                                 @Override
