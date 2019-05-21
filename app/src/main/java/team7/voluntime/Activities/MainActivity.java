@@ -5,16 +5,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
+import team7.voluntime.Fragments.Charities.CharityViewPreviousEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
+import team7.voluntime.Fragments.Volunteers.VolunteerEventsMapFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE
+        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT, VOLUNTEER_EVENTS_MAP
     }
 
     /**
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             // TODO: Handle this case
             Log.d(TAG, "Issue with initialising main activity based on account, accountType is: " + accountType);
         }
-                    
+
         // Setup the navigation drawer, most of this code was taken from:
         // https://developer.android.com/training/implementing-navigation/nav-drawer
         navigationView.setNavigationItemSelectedListener(
@@ -187,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
                                     currentState = MenuStates.VOLUNTEER_EVENTS_LIST;
                                 }
                                 break;
+                            case R.id.nav_past_event:
+                                if (currentState != MenuStates.PAST_EVENT) {
+                                    ChangeFragment(new CharityViewPreviousEventsFragment());
+                                    currentState = MenuStates.PAST_EVENT;
+                                }
+                                break;
                             case R.id.nav_logout:
                                 if (currentState != MenuStates.LOGOUT) {
                                     Log.d(TAG, "Logging out now");
@@ -196,6 +202,11 @@ public class MainActivity extends AppCompatActivity {
                                     finish();
                                 }
                                 break;
+                            case R.id.nav_volunteer_events_map:
+                                if (currentState != MenuStates.VOLUNTEER_EVENTS_MAP) {
+                                    ChangeFragment(new VolunteerEventsMapFragment());
+                                    currentState = MenuStates.VOLUNTEER_EVENTS_MAP;
+                                }
                         }
 
                         return true;
