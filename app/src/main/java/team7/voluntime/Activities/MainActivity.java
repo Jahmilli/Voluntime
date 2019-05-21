@@ -26,6 +26,7 @@ import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.Fragments.Charities.CharityViewPreviousEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
+import team7.voluntime.Fragments.Volunteers.VolunteerEventsMapFragment;
 import team7.voluntime.R;
 import team7.voluntime.Utilities.Utilities;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT
+        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT, VOLUNTEER_EVENTS_MAP
     }
 
     /**
@@ -200,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
                                     finish();
                                 }
                                 break;
+                            case R.id.nav_volunteer_events_map:
+                                if (currentState != MenuStates.VOLUNTEER_EVENTS_MAP) {
+                                    ChangeFragment(new VolunteerEventsMapFragment());
+                                    currentState = MenuStates.VOLUNTEER_EVENTS_MAP;
+                                }
                         }
 
                         return true;
@@ -240,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
         ft.add(R.id.fragment_container, new UserProfileFragment());
         ft.commit();
     }
-
 
     @Override
     protected void onStart() {
