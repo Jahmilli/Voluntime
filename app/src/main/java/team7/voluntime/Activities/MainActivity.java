@@ -275,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle(newTitle);
     }
 
-
     /**
      * This function allows to change the content of the Fragment holder
      * @param fragment The fragment to be displayed

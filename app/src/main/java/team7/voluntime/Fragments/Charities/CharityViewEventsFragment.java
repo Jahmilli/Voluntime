@@ -98,7 +98,7 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        charityReference.child("Events").addListenerForSingleValueEvent(new ValueEventListener() {
+        charityReference.child("Events").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -120,7 +120,7 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        eventReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        eventReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         upcomingEventList.clear();
@@ -129,7 +129,6 @@ public class CharityViewEventsFragment extends Fragment {
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             if (child.exists()) {
                                 String eventId = child.getKey();
-                                Log.d(TAG, "Event id is " + eventId);
                                 HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
                                 Event event = child.getValue(Event.class);
@@ -167,7 +166,7 @@ public class CharityViewEventsFragment extends Fragment {
     }
 
     public DatabaseReference getDBReference() {
-        return this.charityReference;
+        return charityReference;
     }
     public FirebaseUser getUser() {
         return mUser;

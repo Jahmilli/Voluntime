@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -58,8 +59,10 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
-    @BindView(R.id.eventDetalsConcludeEventTV)
-    TextView concludeEventTV;
+    @BindView(R.id.eventDetailsCancelEventIV)
+    ImageView cancelEventIV;
+    @BindView(R.id.eventDetailsConcludeEventBtn)
+    Button concludeEventBtn;
     @BindView(R.id.eventDetailsDescriptionTV)
     TextView descriptionTV;
     @BindView(R.id.eventDetailsCategoryTV)
@@ -150,11 +153,12 @@ public class EventDetailsActivity extends AppCompatActivity {
                     Date eventDate = format.parse(event.getDate());
                     Date currentDate = format.parse(Utilities.getCurrentDate());
                     if (eventDate.compareTo(currentDate) <= 0) {
-                        concludeEventTV.setVisibility(View.VISIBLE);
+                        concludeEventBtn.setVisibility(View.VISIBLE);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                cancelEventIV.setVisibility(View.VISIBLE);
                 registeredVolunteersLL.setVisibility(View.VISIBLE);
                 pendingVolunteersLL.setVisibility(View.VISIBLE);
                 setVolunteers();
@@ -162,6 +166,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // Used when viewing past events. This displays users that attended the event.
     private void setAttendedVolunteers() {
         attendedVolunteersList = new ArrayList<>();
         final VolunteerListAdapter attendedVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_attended_volunteer_layout, attendedVolunteersList, this);
@@ -289,13 +294,13 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
 
     // Sets the event to previous for the charity and all volunteers registered with that event.
-    private void concludeEvent() {
+    private void finishEvent(final String status) {
         mDatabase.getReference()
                 .child("Charities")
                 .child(event.getOrganisers())
                 .child("Events")
                 .child(event.getId())
-                .setValue(Constants.EVENT_PREVIOUS);
+                .setValue(status);
 
         eventVolunteersReference
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -303,9 +308,14 @@ public class EventDetailsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot volunteer : dataSnapshot.getChildren()) {
-                                if (volunteer.getValue() != null && volunteer.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
-                                    eventVolunteersReference.child(volunteer.getKey()).setValue(Constants.EVENT_PREVIOUS);
-                                    volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(Constants.EVENT_PREVIOUS);
+                                if (status.equals(Constants.EVENT_PREVIOUS)) {
+                                    if (volunteer.getValue() != null && volunteer.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
+                                        eventVolunteersReference.child(volunteer.getKey()).setValue(status);
+                                        volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
+                                    }
+                                } else if (status.equals(Constants.EVENT_CANCELLED)) {
+                                    eventVolunteersReference.child(volunteer.getKey()).setValue(status);
+                                    volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
                                 }
                             }
                         }
@@ -336,7 +346,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         finish();
     }
 
-    @OnClick(R.id.eventDetalsConcludeEventTV)
+    @OnClick(R.id.eventDetailsConcludeEventBtn)
     public void concludeOnClick() {
         final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Event Conclusion");
@@ -346,10 +356,31 @@ public class EventDetailsActivity extends AppCompatActivity {
                 if (pendingVolunteersList.size() > 0) {
                     Toast.makeText(EventDetailsActivity.this, "Please add or remove the pending volunteers", Toast.LENGTH_SHORT).show();
                 } else {
-                    concludeEvent();
-                    Toast.makeText(EventDetailsActivity.this, "Event has conclued, congratulations!", Toast.LENGTH_SHORT).show();
+                    finishEvent(Constants.EVENT_PREVIOUS);
+                    Toast.makeText(EventDetailsActivity.this, "Event has concluded, congratulations!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    @OnClick(R.id.eventDetailsCancelEventIV)
+    public void cancelEventOnClick() {
+        final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Event Cancellation");
+        builder.setMessage("Are you sure you wish to cancel the event?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finishEvent(Constants.EVENT_CANCELLED);
+                Toast.makeText(EventDetailsActivity.this, "Your event has been cancelled", Toast.LENGTH_SHORT).show();
+                finish();
+
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
