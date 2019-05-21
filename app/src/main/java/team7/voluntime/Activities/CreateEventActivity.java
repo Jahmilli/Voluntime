@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -58,7 +59,6 @@ public class CreateEventActivity extends AppCompatActivity {
     private DatabaseReference charityReference;
     private FirebaseUser mUser;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private TimePickerDialog.OnTimeSetListener mTimeSetListener;
 
     private String id;
     private String categories;
