@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
+import team7.voluntime.Fragments.Charities.CharityViewPreviousEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsMapFragment;
@@ -73,6 +74,19 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
     private static String accountType;
+
+    /**
+     * I am using this enum to know which is the current fragment being displayed, you will see
+     * what I mean with this later in this code.
+     */
+    private enum MenuStates {
+        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT
+    }
+
+    /**
+     * The current fragment being displayed.
+     */
+    private MenuStates currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +186,12 @@ public class MainActivity extends AppCompatActivity {
                                     currentState = MenuStates.VOLUNTEER_EVENTS_LIST;
                                 }
                                 break;
+                            case R.id.nav_past_event:
+                                if (currentState != MenuStates.PAST_EVENT) {
+                                    ChangeFragment(new CharityViewPreviousEventsFragment());
+                                    currentState = MenuStates.PAST_EVENT;
+                                }
+                                break;
                             case R.id.nav_logout:
                                 if (currentState != MenuStates.LOGOUT) {
                                     Log.d(TAG, "Logging out now");
@@ -225,19 +245,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.fragment_container, new UserProfileFragment());
         ft.commit();
-    }
-
-    /**
-     * The current fragment being displayed.
-     */
-    private MenuStates currentState;
-
-    /**
-     * I am using this enum to know which is the current fragment being displayed, you will see
-     * what I mean with this later in this code.
-     */
-    private enum MenuStates {
-        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, VOLUNTEER_EVENTS_MAP
     }
 
     @Override

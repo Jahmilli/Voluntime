@@ -3,7 +3,6 @@ package team7.voluntime.Utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,8 @@ import team7.voluntime.Activities.RateVolunteerActivity;
 import team7.voluntime.Activities.VolunteerDetailsActivity;
 import team7.voluntime.Activities.VolunteerHistoryActivity;
 import team7.voluntime.Domains.Event;
-import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
+import team7.voluntime.Fragments.Charities.CharityViewPreviousEventsFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
 import team7.voluntime.R;
 
@@ -77,7 +76,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         ImageView adapterEventRatingIV = convertView.findViewById(R.id.adapterEventRatingIV);
 
 
-        if (screen.getClass().equals(CharityViewEventsFragment.class)) {
+        if (screen.getClass().equals(CharityViewEventsFragment.class) || screen.getClass().equals(CharityViewPreviousEventsFragment.class)) {
             adapterEventInfoIV.setVisibility(View.VISIBLE);
 
             adapterEventInfoIV.setOnClickListener(new View.OnClickListener() {

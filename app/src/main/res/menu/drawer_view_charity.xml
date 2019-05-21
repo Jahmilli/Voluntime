@@ -5,6 +5,9 @@
             android:id="@+id/nav_event"
             android:title="View My Events" />
         <item
+            android:id="@+id/nav_past_event"
+            android:title="View My Previous Events" />
+        <item
             android:id="@+id/nav_profile"
             android:title="Profile" />
     </group>
