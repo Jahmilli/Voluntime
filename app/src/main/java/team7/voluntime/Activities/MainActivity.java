@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
      * what I mean with this later in this code.
      */
     private enum MenuStates {
-        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT
+        EVENT, VOLUNTEER_EVENTS_LIST, LOGOUT, PROFILE, PAST_EVENT, VOLUNTEER_EVENTS_MAP
     }
 
     /**
