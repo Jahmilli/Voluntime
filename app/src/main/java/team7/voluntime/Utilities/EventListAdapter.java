@@ -55,6 +55,8 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         String category = getItem(position).getCategory();
         String location = getItem(position).getLocation();
         String date = getItem(position).getDate();
+        String startTime = getItem(position).getStartTime();
+        String endTime = getItem(position).getEndTime();
         String createdTime = getItem(position).getCreatedTime();
         String organisers = getItem(position).getOrganisers();
         int minimum = getItem(position).getMinimum();
@@ -64,7 +66,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
 
         final HashMap<String, String> volunteers = getItem(position).getVolunteers();
 
-        final Event event = new Event(eventId, title, description, category, location, date, createdTime, organisers, minimum, maximum, volunteers);
+        final Event event = new Event(eventId, title, description, category, location, date, startTime, endTime, createdTime, organisers, minimum, maximum, volunteers);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);

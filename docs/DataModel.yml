@@ -32,6 +32,8 @@ Events:
     category: [String]
     location: String # String representing GPS coords
     date: String
+    startTime: String
+    endTime: String
     createdTime: String
     organisers: CharityID
     minimum: Integer

@@ -105,6 +105,20 @@
                 android:text="date" />
 
             <TextView
+                android:id="@+id/eventDetailsStartTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Start Time" />
+
+            <TextView
+                android:id="@+id/eventDetailsEndTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="End Time" />
+
+            <TextView
                 android:id="@+id/eventDetailsCreatedTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
