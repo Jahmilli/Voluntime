@@ -59,6 +59,8 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
+    @BindView(R.id.eventDetailsCancelEventIV)
+    ImageView cancelEventIV;
     @BindView(R.id.eventDetailsConcludeEventBtn)
     Button concludeEventBtn;
     @BindView(R.id.eventDetailsDescriptionTV)
@@ -156,6 +158,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                cancelEventIV.setVisibility(View.VISIBLE);
                 registeredVolunteersLL.setVisibility(View.VISIBLE);
                 pendingVolunteersLL.setVisibility(View.VISIBLE);
                 setVolunteers();
