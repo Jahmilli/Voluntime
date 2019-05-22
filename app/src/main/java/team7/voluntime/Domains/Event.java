@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import java.util.HashMap;
 
-// TODO: Add Event Time!!
 public class Event implements Parcelable {
     private String id;
     private String title;
@@ -13,6 +12,8 @@ public class Event implements Parcelable {
     private String category;
     private String location;
     private String date;
+    private String startTime;
+    private String endTime;
     private String createdTime;
     private String organisers;
     private int minimum;
@@ -24,13 +25,15 @@ public class Event implements Parcelable {
 
     }
 
-    public Event(String id, String title, String description, String category, String location, String date, String createdTime, String organisers, int minimum, int maximum, HashMap<String, String> volunteers) {
+    public Event(String id, String title, String description, String category, String location, String date, String startTime, String endTime, String createdTime, String organisers, int minimum, int maximum, HashMap<String, String> volunteers) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.category = category;
         this.location = location;
         this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.createdTime = createdTime;
         this.organisers = organisers;
         this.minimum = minimum;
@@ -64,6 +67,22 @@ public class Event implements Parcelable {
 
     public String getDate() {
         return date;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getCreatedTime() {
@@ -120,6 +139,8 @@ public class Event implements Parcelable {
         parcel.writeString(category);
         parcel.writeString(location);
         parcel.writeString(date);
+        parcel.writeString(startTime);
+        parcel.writeString(endTime);
         parcel.writeString(createdTime);
         parcel.writeString(organisers);
         parcel.writeInt(minimum);
@@ -144,6 +165,8 @@ public class Event implements Parcelable {
         category = in.readString();
         location = in.readString();
         date = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
         createdTime = in.readString();
         organisers = in.readString();
         minimum = in.readInt();
@@ -158,6 +181,8 @@ public class Event implements Parcelable {
                 "\nCategory: " + getCategory() +
                 "\nLocation: " + getLocation() +
                 "\nDate: " + getDate() +
+                "\nStart Time: " + getStartTime() +
+                "\nEnd Time: " + getEndTime() +
                 "\nCreatedTime: " + getCreatedTime() +
                 "\nOrganisers: " + getOrganisers() +
                 "\nMinimum: " + getMinimum() +

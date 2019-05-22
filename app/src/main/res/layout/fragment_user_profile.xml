@@ -88,6 +88,16 @@
                     android:textStyle="bold|italic"
                     android:textColorHighlight="@android:color/black" />
 
+                <TextView
+                    android:id="@+id/userprofileTotalTimeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20sp"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic"
+                    android:textColorHighlight="@android:color/black" />
+
 
                 <!-- Shared Attributes -->
                 <LinearLayout

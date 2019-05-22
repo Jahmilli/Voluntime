@@ -57,6 +57,10 @@ public class EventRegisterActivity extends AppCompatActivity {
     TextView eventRegisterEventAddressTV;
     @BindView(R.id.eventRegisterEventDateTV)
     TextView eventRegisterEventDateTV;
+    @BindView(R.id.eventRegisterEventStartTimeTV)
+    TextView startTimeTV;
+    @BindView(R.id.eventRegisterEventEndTimeTV)
+    TextView endTimeTV;
     @BindView(R.id.eventCancelRegisterButton)
     Button eventCancelButton;
 
@@ -94,6 +98,8 @@ public class EventRegisterActivity extends AppCompatActivity {
         eventRegisterEventNameTV.setText(event.getTitle());
         eventRegisterEventDescriptionTV.setText(event.getDescription());
         eventRegisterEventDateTV.setText(event.getDate());
+        startTimeTV.setText(event.getStartTime());
+        endTimeTV.setText(event.getEndTime());
         String address = "Location Unavailable";
         try {
             address = Utilities.getLocation(
