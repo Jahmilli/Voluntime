@@ -42,20 +42,16 @@ public class CharityViewEventsFragment extends Fragment {
     private DatabaseReference eventReference;
     private Charity charity;
 
-    ListView listOfUpcomingEvents;
-    ListView listOfPreviousEvents;
+    ListView listOfUpcomingEventsLV;
 
     @BindView(R.id.upcomingEventsTV)
     TextView upcomingEventsTV;
-    @BindView(R.id.previousEventsTV)
-    TextView previousEventsTV;
     @BindView(R.id.viewEventTitleTV)
     TextView viewEventTitleTV;
     @BindView(R.id.createEventIV)
     ImageView createEventIV;
 
     private final static String TAG = "CharityViewEvents";
-
 
     public CharityViewEventsFragment() {
         // Required empty public constructor
@@ -78,18 +74,14 @@ public class CharityViewEventsFragment extends Fragment {
         charityReference = Utilities.getCharityReference(database, mUser.getUid());
         eventReference = Utilities.getEventsReference(database);
 
-        listOfUpcomingEvents = (ListView) v.findViewById(R.id.listOfUpcomingEventsLV);
-        listOfPreviousEvents = (ListView) v.findViewById(R.id.listOfPreviousEventsLV);
+        listOfUpcomingEventsLV = v.findViewById(R.id.listOfUpcomingEventsLV);
         final ArrayList<Event> upcomingEventList = new ArrayList<>();
-        final ArrayList<Event> previousEventList = new ArrayList<>();
 
         final HashMap<String, String> upcomingEvents = new HashMap<>();
-        final HashMap<String, String> previousEvents = new HashMap<>();
 
         EventListAdapter<CharityViewEventsFragment> upcomingEventListAdapter = new EventListAdapter<>(getActivity(), R.layout.adapter_view_event_layout, upcomingEventList, CharityViewEventsFragment.this);
-        EventListAdapter<CharityViewEventsFragment> previousEventListAdapter = new EventListAdapter<>(getActivity(), R.layout.adapter_view_event_layout, previousEventList, CharityViewEventsFragment.this);
-        listOfUpcomingEvents.setAdapter(upcomingEventListAdapter);
-        listOfPreviousEvents.setAdapter(previousEventListAdapter);
+        listOfUpcomingEventsLV.setAdapter(upcomingEventListAdapter);
+
 
         // Attach a listener to read the data at our posts reference
         charityReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,14 +98,17 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        charityReference.child("Events").child("Upcoming").addValueEventListener(new ValueEventListener() {
+        charityReference.child("Events").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.exists()) {
                         if (child.getValue() != null) {
-                            String id = child.getValue().toString();
-                            upcomingEvents.put(id, ""); // Add the id which can then be searched later on
+                            String id = child.getKey();
+                            String value = child.getValue().toString();
+                            if (value.equals("upcoming")) {
+                                upcomingEvents.put(id, "");
+                            }
                         }
                     }
                 }
@@ -125,38 +120,15 @@ public class CharityViewEventsFragment extends Fragment {
             }
         });
 
-        charityReference.child("Events").child("Previous").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.exists()) {
-                        if (child.getValue() != null) {
-                            String id = child.getValue().toString();
-                            previousEvents.put(id, ""); // Add the id which can then be searched later on
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        eventReference
-                .addValueEventListener(new ValueEventListener() {
+        eventReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         upcomingEventList.clear();
-                        previousEventList.clear();
                         upcomingEventsTV.setVisibility(View.VISIBLE);
-                        previousEventsTV.setVisibility(View.VISIBLE);
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             if (child.exists()) {
                                 String eventId = child.getKey();
-                                Log.d(TAG, "Event id is " + eventId);
                                 HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
                                 Event event = child.getValue(Event.class);
@@ -167,19 +139,13 @@ public class CharityViewEventsFragment extends Fragment {
                                 if (event.getOrganisers().equals(mUser.getUid())) {
                                     Log.d(TAG, event.toString());
                                     if (upcomingEvents.containsKey(eventId)) {
+                                        event.setPastEvent(false);
                                         upcomingEventList.add(event);
                                         if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
                                             upcomingEventsTV.setVisibility(View.INVISIBLE);
                                         }
-                                    } else if (previousEvents.containsKey(eventId)) {
-                                        previousEventList.add(event);
-                                        if (previousEventsTV.getVisibility() != View.INVISIBLE) {
-                                            previousEventsTV.setVisibility(View.INVISIBLE);
-                                        }
+                                        listOfUpcomingEventsLV.invalidateViews();
                                     }
-
-                                    listOfUpcomingEvents.invalidateViews();
-                                    listOfPreviousEvents.invalidateViews();
                                 }
                             }
                         }
@@ -200,7 +166,7 @@ public class CharityViewEventsFragment extends Fragment {
     }
 
     public DatabaseReference getDBReference() {
-        return this.charityReference;
+        return charityReference;
     }
     public FirebaseUser getUser() {
         return mUser;

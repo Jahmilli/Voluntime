@@ -37,11 +37,18 @@
             android:src="@drawable/ic_cancel_icon" />
 
         <ImageView
-            android:id="@+id/volunteerAdapterIV2"
+            android:id="@+id/volunteerAdapterProfileIV"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
             android:src="@drawable/ic_view_profile_icon" />
+
+        <ImageView
+            android:id="@+id/volunteerAdapterRatingIV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_heart_red_icon" />
 
     </LinearLayout>
 

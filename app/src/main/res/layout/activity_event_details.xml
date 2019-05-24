@@ -29,6 +29,14 @@
                     android:textSize="20sp"
                     android:text="Back"/>
 
+                <ImageView
+                    android:id="@+id/eventDetailsCancelEventIV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="15dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_cancel_icon" />
+
             </LinearLayout>
 
 
@@ -97,19 +105,49 @@
                 android:text="date" />
 
             <TextView
+                android:id="@+id/eventDetailsStartTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Start Time" />
+
+            <TextView
+                android:id="@+id/eventDetailsEndTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="End Time" />
+
+            <TextView
                 android:id="@+id/eventDetailsCreatedTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="created date time" />
 
+            <Button
+                android:id="@+id/eventDetailsConcludeEventBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/gradient_login_btn"
+                android:visibility="gone"
+                android:text="Conclude Event!"
+                android:textSize="20sp"
+                android:textColor="#eee" />
+
             <LinearLayout
+                android:id="@+id/eventDetailsPendingVolunteersLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/eventDetailsPendingVolunteersLabelTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pending Volunteers:"
@@ -136,11 +174,12 @@
 
 
             <LinearLayout
+                android:id="@+id/eventDetailsRegisteredVolunteersLL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/eventDetailsRegisteredVolunteersLabelTV"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Registered Volunteers: "
@@ -158,6 +197,38 @@
 
             <ListView
                 android:id="@+id/eventRegisteredVolunteersLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" />
+
+
+            <LinearLayout
+                android:id="@+id/eventDetailsAttendedVolunteersLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Attended Volunteers:"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/eventDetailsAttendedVolunteersTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="None" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/eventAttendedVolunteersLV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

@@ -14,6 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="0dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -35,6 +36,37 @@
                 android:textStyle="bold" />
 
 
+            <TextView
+                android:id="@+id/eventRegisterStatusTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:textSize="15dp"
+                android:textStyle="italic|bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/eventRegisterEventHost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Event Hosted By:  " />
+
+                <TextView
+                    android:id="@+id/eventRegisterEventHostTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic|bold"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,26 +87,33 @@
 
             </LinearLayout>
 
-            <!--TODO: Implement Map-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/eventRegisterEventAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:text="Event Address:  " />
 
                 <TextView
                     android:id="@+id/eventRegisterEventAddressTV"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp" />
+                    android:layout_height="wrap_content" />
+
 
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/eventRegisterMapIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_map" />
 
 
             <LinearLayout
@@ -117,15 +156,63 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Event Start Time:  " />
+
+            <TextView
+                android:id="@+id/eventRegisterEventStartTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Event Start Time:  " />
+
+            <TextView
+                android:id="@+id/eventRegisterEventEndTimeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" />
+
+        </LinearLayout>
+
             <Button
                 android:id="@+id/eventRegisterButton"
-                android:layout_marginTop="200dp"
-                android:paddingTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginTop="100dp"
                 android:onClick="eventRegisterConfirm"
                 android:text="Register" />
+
+            <Button
+                android:id="@+id/eventCancelRegisterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:onClick="eventRegisterCancel"
+                android:text="Cancel Registration"
+                android:visibility="gone" />
+
 
         </LinearLayout>
     </ScrollView>

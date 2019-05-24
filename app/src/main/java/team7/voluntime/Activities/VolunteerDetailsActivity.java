@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import butterknife.OnClick;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
 
@@ -31,6 +33,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     private static String TAG = "VolunteerDetailsActivity";
 
     Volunteer volunteer;
+    Event event;
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteerHistoryReference;
     private DatabaseReference eventsReference;
@@ -55,6 +58,7 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     @BindView(R.id.volunteerDetailsHistoryTV)
     TextView historyTV;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +70,10 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
         volunteerHistoryLV = findViewById(R.id.volunteerDetailsHistoryLV);
 
         Intent intent = getIntent();
+        Bundle extra = getIntent().getExtras();
         volunteer = intent.getParcelableExtra("volunteer");
+        event = intent.getParcelableExtra("event"); // This will likely only be used from Charity viewing Volunteer profile
+
         nameTV.setText(volunteer.getName());
         emailTV.setText(volunteer.getEmail());
         phoneTV.setText(volunteer.getPhoneNumber());
@@ -89,12 +96,14 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
                 volunteerHistoryAdapter.notifyDataSetChanged();
 
                 for (final DataSnapshot event : dataSnapshot.getChildren()) {
-                    if (event.exists() && event.getValue().toString().equals("previous")) {
+                    if (event.exists() && event.getValue().toString().equals(Constants.EVENT_PREVIOUS)) {
                         eventsReference.child(event.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Event tempEvent = dataSnapshot.getValue(Event.class);
+                                tempEvent.setId(event.getKey());
                                 tempEvent.setVolunteers(new HashMap<String, String>());
+                                tempEvent.setPastEvent(true);
                                 if (historyTV.getVisibility() != View.INVISIBLE) {
                                     historyTV.setVisibility(View.INVISIBLE);
                                 }
@@ -120,8 +129,9 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
 
     }
 
-    public String getVolunteerID() {
-        return volunteer.getId();
+    // Used by EventListAdapter
+    public Volunteer getVolunteer() {
+        return volunteer;
     }
 
     @Override
@@ -139,4 +149,5 @@ public class VolunteerDetailsActivity extends AppCompatActivity {
     public void backButtonOnClick() {
         finish();
     }
+
 }

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:src="@drawable/ic_lock_outline" />
+            android:src="@drawable/ic_plus" />
 
     </LinearLayout>
 
@@ -55,34 +56,5 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp" />
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Previous Events:" />
-
-        <TextView
-            android:id="@+id/previousEventsTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="None" />
-
-    </LinearLayout>
-
-
-    <ListView
-        android:id="@+id/listOfPreviousEventsLV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp" />
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package team7.voluntime.Utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import team7.voluntime.Activities.EventDetailsActivity;
+import team7.voluntime.Activities.RateVolunteerActivity;
 import team7.voluntime.Activities.VolunteerDetailsActivity;
+import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
 
@@ -43,7 +46,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
     public View getView(int position, View convertView, ViewGroup parent) {
         eventId = Objects.requireNonNull(getItem(position)).getId();
 
-        final String eventId = this.activity.getEventId();
+        final Event event = activity.getEvent();
+        final boolean isPastEvent = activity.getIsPastEvent();
         final String volunteerId = getItem(position).getId();
         String dateOfBirth = getItem(position).getDateOfBirth();
         String name = getItem(position).getName();
@@ -59,16 +63,16 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
         ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
         ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
-        ImageView volunteerAdapterIV2 = (ImageView) convertView.findViewById(R.id.volunteerAdapterIV2);
-
+        ImageView volunteerAdapterProfileIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterProfileIV);
+        ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
 
         if (volunteerAdapterAddIV != null) {
             volunteerAdapterAddIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                 DatabaseReference reference = activity.getDatabaseReference();
-                reference.child("Volunteers").child(volunteerId).child("Events").child(eventId).setValue("registered");
-                reference.child("Events").child(eventId).child("Volunteers").child(volunteerId).setValue("registered");
+                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
+                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
                 }
             });
         }
@@ -78,24 +82,39 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                 @Override
                 public void onClick(@NonNull View view) {
                     DatabaseReference reference = activity.getDatabaseReference();
-                    reference.child("Volunteers").child(volunteerId).child("Events").child(eventId).setValue("pending");
-                    reference.child("Events").child(eventId).child("Volunteers").child(volunteerId).setValue("pending");
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_PENDING);
+                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_PENDING);
                 }
             });
         }
 
-        if (volunteerAdapterIV2 != null) {
-            volunteerAdapterIV2.setOnClickListener(new View.OnClickListener() {
+        if (volunteerAdapterProfileIV != null) {
+            volunteerAdapterProfileIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                 Log.d(TAG, "Volunteer list " + volunteer.toString());
+                Log.d(TAG, "event " + event.toString());
                 Intent intent = new Intent(mContext, VolunteerDetailsActivity.class);
-                intent.putExtra("volunteer", (Parcelable) volunteer);
+                intent.putExtra("volunteer", volunteer);
+                intent.putExtra("event", event);
                 mContext.startActivity(intent);
                 }
             });
         }
 
+        if (volunteerAdapterRatingIV != null) {
+            volunteerAdapterRatingIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    Log.d(TAG, "Volunteer list " + volunteer.toString());
+                    Intent intent = new Intent(mContext, RateVolunteerActivity.class);
+                    intent.putExtra("volunteer", (Parcelable) volunteer);
+                    intent.putExtra("event", event);
+                    intent.putExtra("isPastEvent", isPastEvent);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
 
         nameTV.setText(name);
         return convertView;

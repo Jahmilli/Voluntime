@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -110,4 +111,7 @@ public class Utilities {
         mListView.requestLayout();
     }
 
+    public static DateFormat getTimeFormat() {
+        return new SimpleDateFormat("HH:mm");
+    }
 }
