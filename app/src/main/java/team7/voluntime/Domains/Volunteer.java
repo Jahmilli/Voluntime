@@ -82,17 +82,6 @@ public class Volunteer implements Parcelable {
         this.history = history;
     }
 
-    @Override
-    public String toString() {
-        return "Volunteer ID: " + this.getId() +
-                "\nName: " + this.getName() +
-                "\nAddress: " + this.getAddress() +
-                "\nPhone Number: " + this.getPhoneNumber() +
-                "\nDateOfBirth: " + this.getDateOfBirth() +
-                "\nGender: " + this.getGender() +
-                "\nEmail: " + this.getEmail() +
-                "\nHistory: " + this.getHistory();
-    }
 
     @Override
     public int describeContents() {
@@ -130,5 +119,17 @@ public class Volunteer implements Parcelable {
         phoneNumber = in.readString();
         gender = in.readString();
         email = in.readString();
+    }
+
+    @Override
+    public String toString() {
+        return "Volunteer ID: " + this.getId() +
+                "\nName: " + this.getName() +
+                "\nAddress: " + this.getAddress() +
+                "\nPhone Number: " + this.getPhoneNumber() +
+                "\nDateOfBirth: " + this.getDateOfBirth() +
+                "\nGender: " + this.getGender() +
+                "\nEmail: " + this.getEmail() +
+                "\nHistory: " + this.getHistory();
     }
 }

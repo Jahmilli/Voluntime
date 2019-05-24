@@ -1,14 +1,19 @@
 package team7.voluntime.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,7 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +33,7 @@ import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.R;
+import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.Utilities;
 import team7.voluntime.Utilities.VolunteerListAdapter;
 
@@ -34,12 +43,26 @@ public class EventDetailsActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference volunteersReference;
     private DatabaseReference eventVolunteersReference;
+
+    // Not used in past events
+    ArrayList<Volunteer> pendingVolunteersList;
+    ArrayList<Volunteer> registeredVolunteersList;
     private ListView pendingVolunteersLV;
     private ListView registeredVolunteersLV;
+
+    // Only used for past events
+    ArrayList<Volunteer> attendedVolunteersList;
+    private ListView attendedVolunteersLV;
+
     private Event event;
+    private boolean isPastEvent;
 
     @BindView(R.id.eventDetailsTitleTV)
     TextView titleTV;
+    @BindView(R.id.eventDetailsCancelEventIV)
+    ImageView cancelEventIV;
+    @BindView(R.id.eventDetailsConcludeEventBtn)
+    Button concludeEventBtn;
     @BindView(R.id.eventDetailsDescriptionTV)
     TextView descriptionTV;
     @BindView(R.id.eventDetailsCategoryTV)
@@ -52,18 +75,26 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView locationTV;
     @BindView(R.id.eventDetailsDateTV)
     TextView dateTV;
+    @BindView(R.id.eventDetailsStartTimeTV)
+    TextView startTimeTV;
+    @BindView(R.id.eventDetailsEndTimeTV)
+    TextView endTimeTV;
     @BindView(R.id.eventDetailsCreatedTimeTV)
     TextView createdTimeTV;
     @BindView(R.id.eventDetailsMapIV)
     ImageView mapIV;
-    @BindView(R.id.eventDetailsPendingVolunteersLabelTV)
-    TextView pendingVolunteersLabelTV;
+    @BindView(R.id.eventDetailsPendingVolunteersLL)
+    LinearLayout pendingVolunteersLL;
     @BindView(R.id.eventDetailsPendingVolunteersTV)
     TextView pendingVolunteersTV;
-    @BindView(R.id.eventDetailsRegisteredVolunteersLabelTV)
-    TextView registeredVolunteersLabelTV;
+    @BindView(R.id.eventDetailsRegisteredVolunteersLL)
+    LinearLayout registeredVolunteersLL;
     @BindView(R.id.eventDetailsRegisteredVolunteersTV)
     TextView registeredVolunteersTV;
+    @BindView(R.id.eventDetailsAttendedVolunteersLL)
+    LinearLayout attendedVolunteersLL;
+    @BindView(R.id.eventDetailsAttendedVolunteersTV)
+    TextView attendedVolunteersTV;
 
     private final static String TAG = "EventDetails";
 
@@ -74,9 +105,15 @@ public class EventDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        event = (Event) intent.getParcelableExtra("event");
-        pendingVolunteersLV = (ListView) findViewById(R.id.eventPendingVolunteersLV);
-        registeredVolunteersLV = (ListView) findViewById(R.id.eventRegisteredVolunteersLV);
+        event = intent.getParcelableExtra("event");
+        isPastEvent = intent.getBooleanExtra("isPastEvent", false); // Assume all events are upcoming events unless specified
+
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        pendingVolunteersLV = findViewById(R.id.eventPendingVolunteersLV);
+        registeredVolunteersLV = findViewById(R.id.eventRegisteredVolunteersLV);
+        attendedVolunteersLV = findViewById(R.id.eventAttendedVolunteersLV);
 
         coords = event.getLocation().split(" ");
 
@@ -86,6 +123,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         minimumTV.setText(event.getMinimum() + "");
         maximumTV.setText(event.getMaximum() + "");
         dateTV.setText(event.getDate());
+        startTimeTV.setText(event.getStartTime());
+        endTimeTV.setText(event.getEndTime());
         createdTimeTV.setText(event.getCreatedTime());
         String address = "Location Unavailable";
         try {
@@ -102,27 +141,95 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationTV.setText(address);
 
 
-        if (intent.getStringExtra("parentActivity").equals(VolunteerDetailsActivity.class.toString())) {
-            pendingVolunteersLabelTV.setVisibility(View.INVISIBLE);
-            pendingVolunteersTV.setVisibility(View.INVISIBLE);
-            registeredVolunteersLabelTV.setVisibility(View.INVISIBLE);
-            registeredVolunteersTV.setVisibility(View.INVISIBLE);
-        } else if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
+        if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
+            // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
+            if (intent.getStringExtra("eventStatus") != null && intent.getStringExtra("eventStatus").equals("previous")) {
+
+            }
             mDatabase = FirebaseDatabase.getInstance();
             volunteersReference = mDatabase.getReference().child("Volunteers");
+            // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");
-            setVolunteers();
-        };
 
+            if (isPastEvent) {
+                attendedVolunteersLL.setVisibility(View.VISIBLE);
+                setAttendedVolunteers();
+            } else {
+                try {
+                    Date eventDate = format.parse(event.getDate());
+                    Date currentDate = format.parse(Utilities.getCurrentDate());
+                    if (eventDate.compareTo(currentDate) <= 0) {
+                        concludeEventBtn.setVisibility(View.VISIBLE);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                cancelEventIV.setVisibility(View.VISIBLE);
+                registeredVolunteersLL.setVisibility(View.VISIBLE);
+                pendingVolunteersLL.setVisibility(View.VISIBLE);
+                setVolunteers();
+            }
+        }
+    }
+
+    // Used when viewing past events. This displays users that attended the event.
+    private void setAttendedVolunteers() {
+        attendedVolunteersList = new ArrayList<>();
+        final VolunteerListAdapter attendedVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_attended_volunteer_layout, attendedVolunteersList, this);
+        attendedVolunteersLV.setAdapter(attendedVolunteersAdapter);
+        eventVolunteersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    attendedVolunteersList.clear();
+
+                    // These is needed to stop application crashing when either list is updated and becomes empty
+                    attendedVolunteersAdapter.notifyDataSetChanged();
+
+                    for (final DataSnapshot attendedVolunteer : dataSnapshot.getChildren()) {
+                        if (attendedVolunteer.exists() && attendedVolunteer.getValue().equals("previous")) {
+                            volunteersReference.child(attendedVolunteer.getKey()).child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        if (attendedVolunteersTV.getVisibility() != View.INVISIBLE) {
+                                            attendedVolunteersTV.setVisibility(View.INVISIBLE);
+                                        }
+                                        Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
+                                        tempVolunteer.setId(attendedVolunteer.getKey());
+                                        attendedVolunteersList.add(tempVolunteer);
+                                        attendedVolunteersLV.invalidateViews();
+                                        Utilities.setDynamicHeight(attendedVolunteersLV);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setVolunteers() {
-        final ArrayList<Volunteer> pendingVolunteersList = new ArrayList<>();
-        final ArrayList<Volunteer> registeredVolunteersList = new ArrayList<>();
+        pendingVolunteersList = new ArrayList<>();
+        registeredVolunteersList = new ArrayList<>();
         final VolunteerListAdapter pendingVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_pending_volunteer_layout, pendingVolunteersList, this);
         final VolunteerListAdapter registeredVolunteersAdapter = new VolunteerListAdapter(this,  R.layout.adapter_view_registered_volunteer_layout, registeredVolunteersList, this);
         pendingVolunteersLV.setAdapter(pendingVolunteersAdapter);
         registeredVolunteersLV.setAdapter(registeredVolunteersAdapter);
+
+        // Contains volunteer ids for the particular event
         eventVolunteersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -135,13 +242,13 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                 for (final DataSnapshot child : dataSnapshot.getChildren()) {
                     if (child.exists()) {
-                        volunteersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        volunteersReference.child(child.getKey()).child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.hasChild(child.getKey())) {
-                                    Volunteer tempVolunteer = dataSnapshot.child(child.getKey()).child("Profile").getValue(Volunteer.class);
+                                if (dataSnapshot.exists()) {
+                                    Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
                                     tempVolunteer.setId(child.getKey());
-                                    if (child.getValue().toString().equals("pending")) {
+                                    if (child.getValue().toString().equals(Constants.EVENT_PENDING)) {
                                         if (pendingVolunteersTV.getVisibility() != View.INVISIBLE) {
                                             pendingVolunteersTV.setVisibility(View.INVISIBLE);
                                         }
@@ -152,7 +259,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                                             registeredVolunteersTV.setVisibility(View.VISIBLE);
                                         }
 
-                                    } else if (child.getValue().toString().equals("registered")) {
+                                    } else if (child.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
                                         if (registeredVolunteersTV.getVisibility() != View.INVISIBLE) {
                                             registeredVolunteersTV.setVisibility(View.INVISIBLE);
                                         }
@@ -184,12 +291,51 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
 
 
-    public String getEventId() {
-        return event.getId();
+    public Event getEvent() {
+        return event;
     }
 
     public DatabaseReference getDatabaseReference() {
         return mDatabase.getReference();
+    }
+
+    // Sets the event to previous for the charity and all volunteers registered with that event.
+    private void finishEvent(final String status) {
+        mDatabase.getReference()
+                .child("Charities")
+                .child(event.getOrganisers())
+                .child("Events")
+                .child(event.getId())
+                .setValue(status);
+
+        eventVolunteersReference
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot volunteer : dataSnapshot.getChildren()) {
+                                if (status.equals(Constants.EVENT_PREVIOUS)) {
+                                    if (volunteer.getValue() != null && volunteer.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
+                                        eventVolunteersReference.child(volunteer.getKey()).setValue(status);
+                                        volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
+                                    }
+                                } else if (status.equals(Constants.EVENT_CANCELLED)) {
+                                    eventVolunteersReference.child(volunteer.getKey()).setValue(status);
+                                    volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public boolean getIsPastEvent() {
+        return isPastEvent;
     }
 
     @OnClick(R.id.eventDetailsMapIV)
@@ -204,6 +350,51 @@ public class EventDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.eventDetailsBackTV)
     public void backButtonOnClick() {
         finish();
+    }
+
+    @OnClick(R.id.eventDetailsConcludeEventBtn)
+    public void concludeOnClick() {
+        final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Event Conclusion");
+        builder.setMessage("Are you sure you wish to conclude the event?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (pendingVolunteersList.size() > 0) {
+                    Toast.makeText(EventDetailsActivity.this, "Please add or remove the pending volunteers", Toast.LENGTH_SHORT).show();
+                } else {
+                    finishEvent(Constants.EVENT_PREVIOUS);
+                    Toast.makeText(EventDetailsActivity.this, "Event has concluded, congratulations!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    @OnClick(R.id.eventDetailsCancelEventIV)
+    public void cancelEventOnClick() {
+        final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Event Cancellation");
+        builder.setMessage("Are you sure you wish to cancel the event?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finishEvent(Constants.EVENT_CANCELLED);
+                Toast.makeText(EventDetailsActivity.this, "Your event has been cancelled", Toast.LENGTH_SHORT).show();
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
 }

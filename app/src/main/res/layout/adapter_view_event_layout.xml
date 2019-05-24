@@ -35,19 +35,30 @@
         android:gravity="right"
         android:orientation="horizontal">
 
+
         <ImageView
             android:id="@+id/adapterEventIV1"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:src="@drawable/ic_lock_outline" />
+            android:visibility="gone"
+            android:src="@drawable/ic_plus" />
 
         <ImageView
-            android:id="@+id/adapterEventIV2"
+            android:id="@+id/adapterEventInfoIV"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:src="@drawable/ic_profile_icon" />
+            android:src="@drawable/ic_info"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/adapterEventRatingIV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_heart_red_icon"
+            android:visibility="gone" />
 
     </LinearLayout>
 

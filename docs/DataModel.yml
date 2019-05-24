@@ -7,7 +7,14 @@ Volunteers:
       address: String
       gender: String
     Events:
-      <EventID>: String # pending/registered/previous
+      <EventID>: String # pending/registered/previous/cancelled
+    Ratings:
+      <EventID>:
+        charityId: <CharityID>
+        eventId: <EventID>
+        rating: Integer
+        comment: String
+        dateRated: String
 Charities:
   <CharityID>:
     Profile:
@@ -17,15 +24,16 @@ Charities:
       description: String
       category: [String]
     Events:
-      upcoming: [EventID]
-      previous: [EventID]
+      <EventID>: String # previous/upcoming
 Events:
   <EventID>:
     title: String
     description: String
     category: [String]
-    location: [String] # String representing GPS coords
+    location: String # String representing GPS coords
     date: String
+    startTime: String
+    endTime: String
     createdTime: String
     organisers: CharityID
     minimum: Integer

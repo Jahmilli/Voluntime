@@ -142,7 +142,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
             RadioButton radioButton = findViewById(volunteerGenderRG.getCheckedRadioButtonId());
             String gender = radioButton.getText().toString().trim();
 
-            reference.child("Profile").child("fullName").setValue(name);
+            reference.child("Profile").child("name").setValue(name);
             reference.child("Profile").child("email").setValue(email);
             reference.child("Profile").child("phoneNumber").setValue(phoneNumber);
             reference.child("Profile").child("dateOfBirth").setValue(date);
@@ -190,7 +190,7 @@ public class EditVolunteerActivity extends AppCompatActivity {
 
     public boolean isValidPhoneNumber(String phoneET) {
         phoneET = phoneET.replaceAll(" ", "");
-        return (phoneET.length() == 8 || phoneET.length() == 10) && StringUtils.isNumericSpace(phoneET.toString());
+        return (phoneET.length() == 8 || phoneET.length() == 10) && StringUtils.isNumericSpace(phoneET);
     }
 
     private boolean isValidDOB() {
@@ -201,17 +201,13 @@ public class EditVolunteerActivity extends AppCompatActivity {
             return false;
         }
         int day = Integer.parseInt(date.substring(0, 2));
-        int month = Integer.parseInt(date.substring(3, 5));
+        int month = Integer.parseInt(date.substring(3, 5)) - 1;
         int year = Integer.parseInt(date.substring(6, 10));
         dob.set(Calendar.DAY_OF_MONTH, day);
         dob.set(Calendar.MONTH, month);
         dob.set(Calendar.YEAR, year);
         Log.d(TAG, "IsValidDOB being called: " + dob);
-        if (dob.before(currentCal)) {
-            return true;
-        } else {
-            return false;
-        }
+        return dob.before(currentCal);
     }
 
     public void addListeners() {
@@ -219,11 +215,10 @@ public class EditVolunteerActivity extends AppCompatActivity {
         volunteerDOBET.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int day, month, year;
-                day = 1;
-                month = 0;
-                year = cal.get(Calendar.YEAR);
+                String date = volunteerDOBET.getText().toString().trim();
+                int year = Integer.parseInt(date.substring(6, 10));
+                int month = Integer.parseInt(date.substring(3, 5)) - 1;
+                int day = Integer.parseInt(date.substring(0, 2));
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         EditVolunteerActivity.this,

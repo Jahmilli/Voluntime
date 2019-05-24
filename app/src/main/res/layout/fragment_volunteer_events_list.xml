@@ -16,15 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            android:text="View Events" />
-
-        <ImageView
-            android:id="@+id/volunteerCreateEventIV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_lock_outline"
-            />
+            android:text="Upcoming Events" />
 
     </LinearLayout>
 
