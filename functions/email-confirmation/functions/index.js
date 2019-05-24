@@ -24,12 +24,13 @@ const PENDING = 'pending';
 const REGISTERED = 'registered';
 const PREVIOUS = 'previous';
 const CANCELLED = 'cancelled';
+const REJECTED = 'rejected';
 
 // Sends an email confirmation when a user changes his mailing list subscription.
 exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events/{eventID}').onWrite(async (change, context) => {
     const snapshot = change.after;
     const val = snapshot.val();
-    let email = undefined;
+    let volunteerData = undefined;
     let location = undefined;
     let eventData = undefined;
     let charityData = undefined;
@@ -38,11 +39,11 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         return;
     }
 
-    email = admin.database()
-    .ref(`/Volunteers/${context.params.uid}/Profile/email`)
+    volunteerData = admin.database()
+    .ref(`/Volunteers/${context.params.uid}/Profile`)
     .once('value', res => {
-        email = res.val();
-        console.log('email is: ', email);
+        volunteerData = res.val();
+        console.log('Volunteer Data is: ', volunteerData);
     });
 
     eventData = admin.database()
@@ -51,7 +52,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         eventData = res.val();
     });
 
-    await Promise.all([email, eventData])
+    await Promise.all([volunteerData, eventData])
         .then(res => res)
         .catch(err => err);
 
@@ -79,13 +80,14 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
 
     const mailOptions = {
         from: '"Voluntime." <noreply@firebase.com>',
-        to: email,
+        to: volunteerData.email,
     };
 
     // Building Email message.
     if (val === REGISTERED) {
         mailOptions.subject = 'You have been selected to help out with our event!';
-        mailOptions.text = "Thanks for registering for an event, the details are as follows: " + 
+        mailOptions.text = `Hello ${volunteerData.name}` + 
+        `Thanks for registering for an event, the details are as follows: ` + 
         `\nTitle:  ${eventData.title}` +
         `\nDate: ${eventData.date}` +
         `\nTime:  TBA` +
@@ -99,18 +101,28 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
 
     } else if (val === PREVIOUS) {
         mailOptions.subject = "Thank you for your support";
-        mailOptions.text = `Hey there,` +
+        mailOptions.text = `Hello ${volunteerData.name},` +
         `\nAll of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n` +
-        `Looking forward to seeing you,\n` +
+        `Looking forward to seeing you sometime soon!,\n` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
         // Potentially list future events from the charity here.
     } else if (val === CANCELLED) {
         mailOptions.subject = "Our event has been cancelled";
-        mailOptions.text = `Unfortunately, we have had to cancel our event.` +
+        mailOptions.text = `Hello ${volunteerData.name}` + 
+        `\nUnfortunately, we have had to cancel our event.` +
         `\nAll of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n` +
-        `Looking forward to seeing you,\n` +
+        `Looking forward to seeing you sometime soon!,\n` +
+        `\n${charityData.name}` +
+        `\n${charityData.phoneNumber}` +
+        `\n${charityData.address}`;
+    } else if (val === REJECTED) {
+        mailOptions.subject = "You were not picked for our event";
+        mailOptions.text = `Hello ${volunteerData.name}` + 
+        `\nUnfortunately, you were not picked for our event.` +
+        `\nWe hope you understand and we encourage you to apply for our future events.\n\n\n` +
+        `Looking forward to seeing you sometime soon!,\n` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
@@ -118,7 +130,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
 
     try {
         await mailTransport.sendMail(mailOptions);
-        console.log(`An email was successfully sent to ${email}`);
+        console.log(`An email was successfully sent to ${volunteer.email}`);
     } catch(error) {
         console.error('There was an error while sending the email:', error);
     }
