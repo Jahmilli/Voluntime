@@ -1,7 +1,9 @@
 package team7.voluntime.Utilities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Parcelable;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -61,8 +64,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
-        ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
-        ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
+        final ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
+        final ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
         ImageView volunteerAdapterProfileIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterProfileIV);
         ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
 
@@ -70,9 +73,9 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
             volunteerAdapterAddIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
-                DatabaseReference reference = activity.getDatabaseReference();
-                reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
-                reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
+                    DatabaseReference reference = activity.getDatabaseReference();
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
+                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
                 }
             });
         }
@@ -81,11 +84,26 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
             volunteerAdapterRemoveIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
-                    DatabaseReference reference = activity.getDatabaseReference();
-                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_PENDING);
-                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_PENDING);
+                    final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Reject Volunteer");
+                    builder.setMessage("Are you sure you wish to reject this volunteer?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DatabaseReference reference = activity.getDatabaseReference();
+                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REJECTED);
+                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REJECTED);
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                     builder.show();
                 }
             });
+
         }
 
         if (volunteerAdapterProfileIV != null) {

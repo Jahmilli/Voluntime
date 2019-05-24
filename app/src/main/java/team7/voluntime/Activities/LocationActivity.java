@@ -138,10 +138,13 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
                                         .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
                             } else {
-                                // TODO: Determine if anything is needed here
-                                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(mLastKnownLocation.getLatitude(),
-                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                // If these are 0, then we haven't passed in a location to view, therefore display current location
+                                if (latitude == 0 && longitude == 0) {
+                                    // TODO: Determine if anything is needed here
+                                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                            new LatLng(mLastKnownLocation.getLatitude(),
+                                                    mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                }
                             }
 
                         } else {

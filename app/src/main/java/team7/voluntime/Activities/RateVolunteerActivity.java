@@ -65,7 +65,7 @@ public class RateVolunteerActivity extends AppCompatActivity {
         event = intent.getParcelableExtra("event");
         isPastEvent = intent.getBooleanExtra("isPastEvent", false);
         if (isPastEvent) {
-            ratingBar.setEnabled(false);
+            ratingBar.setIsIndicator(true);
             commentET.setVisibility(View.GONE);
             commentTV.setVisibility(View.VISIBLE);
             submitBtn.setVisibility(View.GONE);
