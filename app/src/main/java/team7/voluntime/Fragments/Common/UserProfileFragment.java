@@ -143,7 +143,90 @@ public class UserProfileFragment extends Fragment {
                                 }
                             });
 
+                            // User to calculate the average rating of the volunteer
+                            volunteerReference.child("Ratings").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    int ratingsCount = 0;
+                                    float sumOfRatings = 0;
+                                    float average = 0;
+                                    for (DataSnapshot rating : dataSnapshot.getChildren()) {
+                                        if (rating.exists()) {
+                                            ratingsCount++;
+                                            sumOfRatings += Float.parseFloat(rating.child("rating").getValue().toString());
+                                        }
+                                    }
+                                    average = ratingsCount > 0 ? sumOfRatings / ratingsCount : 0;
+                                    df.setMaximumFractionDigits(2);
+                                    ratingTV.setText("Current Rating is: " + df.format(average));
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            // Used to get the total sum of volunteering hours completed by the volunteer
+                            volunteerReference.child("Events").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        final long[] totalVolunteeringTime = new long[1];
+                                        for (final DataSnapshot event : dataSnapshot.getChildren()) {
+                                            if (event.getValue() != null && event.getValue().toString().equals("previous")) {
+                                                eventsReference.child(event.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot eventSnapshot) {
+                                                        if (eventSnapshot.exists() &&
+                                                                eventSnapshot.child("startTime").getValue() != null &&
+                                                                eventSnapshot.child("endTime").getValue() != null) {
+
+                                                            String startTime = eventSnapshot.child("startTime").getValue().toString();
+                                                            String endTime = eventSnapshot.child("endTime").getValue().toString();
+                                                            long difference = 0;
+                                                            try {
+                                                                Date formattedStartTime = format.parse(startTime);
+                                                                Date formattedEndTime = format.parse(endTime);
+                                                                difference = (formattedEndTime.getTime() - formattedStartTime.getTime())/1000; // Gets difference in seconds
+                                                                totalVolunteeringTime[0] += difference;
+
+                                                                long hours = totalVolunteeringTime[0] / 3600;
+                                                                long minutes = (totalVolunteeringTime[0] % 3600) / 60;
+                                                                String timeString = String.format("%2d:%02d", hours, minutes);
+
+                                                                totalTimeTV.setText("Total Volunteered Time: " + timeString);
+                                                                Log.d(TAG, "Differences from " + formattedEndTime.getTime() + " and date 1: " + formattedStartTime.getTime() + " is: " + difference);
+                                                                Log.d(TAG, "Total volunteering time is " + totalVolunteeringTime[0]);
+                                                            } catch (ParseException e) {
+                                                                Log.e(TAG, e.toString());
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            totalTimeTV.setVisibility(VISIBLE);
+                            ratingTV.setVisibility(VISIBLE);
+
                         }
+
+
+
                         if (getType().equals("Charities")) {
                             charityLayout.setVisibility(VISIBLE);
                             charityReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -173,84 +256,6 @@ public class UserProfileFragment extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        // User to calculate the average rating of the volunteer
-        volunteerReference.child("Ratings").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int ratingsCount = 0;
-                float sumOfRatings = 0;
-                float average = 0;
-                for (DataSnapshot rating : dataSnapshot.getChildren()) {
-                    if (rating.exists()) {
-                        ratingsCount++;
-                        sumOfRatings += Float.parseFloat(rating.child("rating").getValue().toString());
-                    }
-                }
-                average = ratingsCount > 0 ? sumOfRatings / ratingsCount : 0;
-                df.setMaximumFractionDigits(2);
-                ratingTV.setText("Current Rating is: " + df.format(average));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        // Used to get the total sum of volunteering hours completed by the volunteer
-        volunteerReference.child("Events").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    final long[] totalVolunteeringTime = new long[1];
-                    for (final DataSnapshot event : dataSnapshot.getChildren()) {
-                        if (event.getValue() != null && event.getValue().toString().equals("previous")) {
-                            eventsReference.child(event.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot eventSnapshot) {
-                                    if (eventSnapshot.exists() &&
-                                            eventSnapshot.child("startTime").getValue() != null &&
-                                            eventSnapshot.child("endTime").getValue() != null) {
-
-                                        String startTime = eventSnapshot.child("startTime").getValue().toString();
-                                        String endTime = eventSnapshot.child("endTime").getValue().toString();
-                                        long difference = 0;
-                                        try {
-                                            Date formattedStartTime = format.parse(startTime);
-                                            Date formattedEndTime = format.parse(endTime);
-                                            difference = (formattedEndTime.getTime() - formattedStartTime.getTime())/1000; // Gets difference in seconds
-                                            totalVolunteeringTime[0] += difference;
-
-                                            long hours = totalVolunteeringTime[0] / 3600;
-                                            long minutes = (totalVolunteeringTime[0] % 3600) / 60;
-                                            long seconds = totalVolunteeringTime[0] % 60;
-                                            String timeString = String.format("%2d:%02d", hours, minutes);
-
-                                            totalTimeTV.setText("Total Volunteered Time: " + timeString);
-                                            Log.d(TAG, "Differences from " + formattedEndTime.getTime() + " and date 1: " + formattedStartTime.getTime() + " is: " + difference);
-                                            Log.d(TAG, "Total volunteering time is " + totalVolunteeringTime[0]);
-                                        } catch (ParseException e) {
-                                            Log.e(TAG, e.toString());
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 

@@ -86,6 +86,7 @@
                     android:layout_marginBottom="20sp"
                     android:textSize="20sp"
                     android:textStyle="bold|italic"
+                    android:visibility="gone"
                     android:textColorHighlight="@android:color/black" />
 
                 <TextView
@@ -96,6 +97,7 @@
                     android:layout_marginBottom="20sp"
                     android:textSize="20sp"
                     android:textStyle="bold|italic"
+                    android:visibility="gone"
                     android:textColorHighlight="@android:color/black" />
 
 
