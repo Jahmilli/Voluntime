@@ -4,16 +4,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import team7.voluntime.Fragments.Charities.ViewEventsFragment;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;
 import team7.voluntime.Fragments.Volunteers.VolunteerEventsListFragment;
@@ -288,10 +284,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView.inflateMenu(R.menu.drawer_view_volunteer);
         navigationView.setCheckedItem(R.id.nav_profile);
     }
-
-    @OnClick(R.id.searchCharityTV)
-    public void onClick() {
-        Intent intent = new Intent(this, SearchCharityActivity.class);
 
     public static String getAccountType() {
         return accountType;

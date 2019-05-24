@@ -52,7 +52,7 @@
     <ListView
         android:id="@+id/volunteerListOfUpcomingEventsLV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="550dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -74,6 +74,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="None"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/searchCharity"
+            android:text="search charity"/>
 
     </LinearLayout>
 </LinearLayout>
