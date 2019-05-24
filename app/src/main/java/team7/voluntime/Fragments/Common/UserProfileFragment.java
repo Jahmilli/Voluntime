@@ -22,10 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -173,17 +170,17 @@ public class UserProfileFragment extends Fragment {
 //                                         final LinkedList<Float> totalVolunteeringTime = new LinkedList<>();
 //                                         for (final DataSnapshot event : dataSnapshot.getChildren()) {
 //                                             Log.d(TAG, "Total volunteering time is " + totalVolunteeringTime.toString());
-
+//
 //                                             if (event.getValue() != null && event.getValue().toString().equals("previous")) {
 //                                                 Log.d(TAG, "Made it here, vol hours " + totalVolunteeringTime.toString());
-
+//
 //                                                 eventsReference.child(event.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
 //                                                     @Override
 //                                                     public void onDataChange(@NonNull DataSnapshot eventSnapshot) {
 //                                                         if (eventSnapshot.exists() &&
 //                                                             eventSnapshot.child("startTime").getValue() != null &&
 //                                                             eventSnapshot.child("endTime").getValue() != null) {
-
+//
 //                                                             String startTime = eventSnapshot.child("startTime").getValue().toString();
 //                                                             String endTime = eventSnapshot.child("endTime").getValue().toString();
 //                                                             float difference = 0;
@@ -198,23 +195,23 @@ public class UserProfileFragment extends Fragment {
 //                                                             Log.d(TAG, "Total volunteering time is " + totalVolunteeringTime.toString());
 //                                                         }
 //                                                     }
-
+//
 //                                                     @Override
 //                                                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+//
 //                                                     }
 //                                                 });
 //                                             }
 //                                         }
 //                                     }
 //                                 }
-
+//
 //                                 @Override
 //                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+//
 //                                 }
 //                             });
-//                         }
+                        }
                         if (getType().equals("Charities")) {
                             charityLayout.setVisibility(VISIBLE);
                             charityReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -249,6 +246,8 @@ public class UserProfileFragment extends Fragment {
 
         return v;
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
