@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
-        String logoName = "heart.png";
+        String logoName = "White.png";
         try {
             InputStream stream = getAssets().open(logoName);
             Drawable d = Drawable.createFromStream(stream, null);
