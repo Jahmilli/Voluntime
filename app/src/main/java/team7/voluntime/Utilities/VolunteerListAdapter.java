@@ -70,14 +70,14 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
         ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
 
         if (volunteerAdapterAddIV != null) {
-                volunteerAdapterAddIV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull View view) {
-                        DatabaseReference reference = activity.getDatabaseReference();
-                        reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
-                        reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
-                    }
-                });
+            volunteerAdapterAddIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    DatabaseReference reference = activity.getDatabaseReference();
+                    reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
+                    reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
+                }
+            });
         }
 
         if (volunteerAdapterRemoveIV != null) {
@@ -89,18 +89,17 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                     builder.setMessage("Are you sure you wish to reject this volunteer?");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
-                                DatabaseReference reference = activity.getDatabaseReference();
-                        reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REJECTED);
-                        reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REJECTED);
+                            DatabaseReference reference = activity.getDatabaseReference();
+                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REJECTED);
+                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REJECTED);
                         }
                     });
 
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
                      builder.show();
                 }
             });
