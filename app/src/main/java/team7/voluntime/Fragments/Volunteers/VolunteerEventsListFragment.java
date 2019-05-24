@@ -54,11 +54,9 @@ public class VolunteerEventsListFragment extends Fragment {
     @BindView(R.id.volunteerViewEventTitleTV)
     TextView viewEventTitleTV;
 
-    @BindView(R.id.volunteerCreateEventIV)
-    ImageView createEventIV;
-
     @BindView(R.id.searchCharity)
     TextView searchCharity;
+
     private final static String TAG = "VolunteerEventsList";
 
 
@@ -170,14 +168,6 @@ public class VolunteerEventsListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @OnClick(R.id.volunteerCreateEventIV)
-    public void createEventOnClick() {
-//        Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
-//        createEventIntent.putExtra("id", volunteer.getId());
-//        createEventIntent.putExtra("categories", volunteer.getCategory());
-//        startActivity(createEventIntent);
-        Log.d(TAG, "Event Button Clicked");
-    }
     @OnClick(R.id.searchCharity)
     public void SearchCharityOnClick() {
 
