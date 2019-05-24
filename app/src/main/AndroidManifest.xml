@@ -23,11 +23,6 @@
             android:label="@string/title_activity_event_register"
             android:theme="@style/NoActionBar" />
 
-        <activity
-            android:name=".Activities.EventRegisterActivity"
-            android:label="@string/title_activity_event_register"
-            android:theme="@style/NoActionBar"></activity>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
