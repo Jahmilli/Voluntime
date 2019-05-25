@@ -1,5 +1,6 @@
 package team7.voluntime.Activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -18,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,6 +51,7 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
     private FirebaseDatabase database;
     private DatabaseReference eventsReference;
     private DatabaseReference charityReference;
+    private Button viewEventLocationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,8 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        viewEventLocationBtn = findViewById(R.id.viewEventLocationBtn);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -96,22 +103,74 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
         });
     }
 
-    public void addMarker(Event e, String Id) {
-        final Event event = e;
+    public void addMarker(Event t, String Id) {
+        final Event eventIn = t;
+        final String ID = Id;
+
         database = FirebaseDatabase.getInstance();
-        eventsReference = Utilities.getCharityReference(database, event.getOrganisers());
+        eventsReference = Utilities.getCharityReference(database, eventIn.getOrganisers());
         eventsReference.child("Events").child(Id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Toast.makeText(getBaseContext(), ID, Toast.LENGTH_LONG).show();
                 if (!dataSnapshot.getValue().toString().equals("previous")) {
-                    final String title = event.getTitle();
-                    final String coords[] = event.getLocation().split(" ");
-                    LatLng eventLoc = new LatLng(
-                            Double.parseDouble(coords[0]),
-                            Double.parseDouble(coords[1]));
-                    mMap.addMarker(new MarkerOptions().position(eventLoc).title(title)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                    //TODO: Figure out onClick???
+                    mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            viewEventLocationBtn.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        String title = eventIn.getTitle();
+                        String coords[] = eventIn.getLocation().split(" ");
+                        LatLng eventLoc = new LatLng(
+                                Double.parseDouble(coords[0]),
+                                Double.parseDouble(coords[1]));
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(eventLoc).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+                        @Override
+                        public boolean onMarkerClick(final Marker marker) {
+                            final Marker mark = marker;
+                            database = FirebaseDatabase.getInstance();
+                            eventsReference = Utilities.getEventsReference(database);
+                            eventsReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                        String Id = child.getKey();
+                                        Event e = child.getValue(Event.class);
+
+                                        final Event event = new Event(Id, e.getTitle(), e.getDescription(), e.getDescription(),
+                                                e.getLocation(), e.getDate(), e.getStartTime(),
+                                                e.getEndTime(), e.getCreatedTime(), e.getOrganisers(),
+                                                e.getMinimum(), e.getMaximum(), e.getVolunteers());
+
+
+                                        if (mark.getTitle().equals(e.getTitle())) {
+                                            viewEventLocationBtn.setVisibility(View.VISIBLE);
+                                            viewEventLocationBtn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    viewEventLocationBtn.setVisibility(View.GONE);
+                                                    Intent intent = new Intent(getBaseContext(), EventRegisterActivity.class);
+                                                    intent.putExtra("event", event);
+                                                    getBaseContext().startActivity(intent);
+                                                    finish();
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
+                            return false;
+                        }
+                    });
                 }
             }
 
@@ -132,7 +191,6 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
         finish();
         return super.onSupportNavigateUp();
     }
-
 
     private void getDeviceLocation() {
         /*
