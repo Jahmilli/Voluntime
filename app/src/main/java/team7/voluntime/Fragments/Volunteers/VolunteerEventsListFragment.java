@@ -130,10 +130,14 @@ public class VolunteerEventsListFragment extends Fragment {
                                     String eventId = child.getKey();
                                     Log.d(TAG, "Event id is " + eventId);
 
-                                    HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("EventVolunteers").child("Volunteers"), TAG);
                                     Event event = child.getValue(Event.class);
-                                    event.setVolunteers(volunteers);
                                     event.setId(eventId);
+
+                                    if (child.child("Volunteers").child(volunteer.getId()).getValue() != null) {
+                                        String status = child.child("Volunteers").child(volunteer.getId()).getValue().toString();
+                                        event.setVolunteerStatus(status);
+                                    }
+
 
                                     // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
                                     Log.d(TAG, event.toString());
