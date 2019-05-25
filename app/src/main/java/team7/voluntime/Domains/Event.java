@@ -19,7 +19,10 @@ public class Event implements Parcelable {
     private int minimum;
     private int maximum;
     private HashMap<String, String> volunteers;
+
+    // Fields not in Firebase (and shouldn't be)
     private boolean isPastEvent;
+    private String volunteerStatus;
 
     public Event() {
 
@@ -124,6 +127,14 @@ public class Event implements Parcelable {
 
     public void setPastEvent(boolean pastEvent) {
         isPastEvent = pastEvent;
+    }
+
+    public String getVolunteerStatus() {
+        return volunteerStatus;
+    }
+
+    public void setVolunteerStatus(String volunteerStatus) {
+        this.volunteerStatus = volunteerStatus;
     }
 
     @Override
