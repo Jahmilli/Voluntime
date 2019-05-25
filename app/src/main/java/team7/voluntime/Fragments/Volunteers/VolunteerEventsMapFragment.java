@@ -58,6 +58,7 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
     private LatLng mDefaultLocation = new LatLng(-33.86, 151.2);
     private FirebaseDatabase database;
     private DatabaseReference eventsReference;
+    private DatabaseReference charityReference;
     private Button viewEventLocationBtn;
 
 
@@ -80,6 +81,10 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         viewEventLocationBtn = view.findViewById(R.id.viewEventLocationBtn);
+
+        database = FirebaseDatabase.getInstance();
+        eventsReference = database.getReference().child("Events");
+        charityReference = database.getReference().child("Charities");
 
         mMapView = view.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
@@ -105,8 +110,6 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
         updateLocationUI();
         getDeviceLocation();
 
-        database = FirebaseDatabase.getInstance();
-        eventsReference = Utilities.getEventsReference(database);
         eventsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,13 +129,10 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
     public void addMarker(Event t, String Id) {
         final Event eventIn = t;
 
-
-        database = FirebaseDatabase.getInstance();
-        eventsReference = Utilities.getCharityReference(database, eventIn.getOrganisers());
-        eventsReference.child("Events").child(Id).addValueEventListener(new ValueEventListener() {
+        charityReference.child(eventIn.getOrganisers()).child("Events").child(Id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.getValue().toString().equals("previous")) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null && !dataSnapshot.getValue().toString().equals("previous")) {
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
@@ -152,9 +152,7 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
                         @Override
                         public boolean onMarkerClick(final Marker marker) {
                             final Marker mark = marker;
-                            database = FirebaseDatabase.getInstance();
-                            eventsReference = Utilities.getEventsReference(database);
-                            eventsReference.addValueEventListener(new ValueEventListener() {
+                            eventsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot child : dataSnapshot.getChildren()) {
