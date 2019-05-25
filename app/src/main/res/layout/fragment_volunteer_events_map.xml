@@ -5,21 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.Volunteers.VolunteerEventsMapFragment">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/map"
+    <FrameLayout
+        android:id="@+id/container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/viewEventLocationBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="41dp"
-        android:text="View Event"
-        android:background="@color/vtBlue"
-        android:textColor="#eee"
-        android:textSize="15sp"
-        android:visibility="invisible" />
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    
+        <Button
+            android:id="@+id/viewEventLocationBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="41dp"
+            android:text="View Event"
+            android:background="@color/vtBlue"
+            android:textColor="#eee"
+            android:textSize="15sp"
+            android:visibility="invisible" />
+    </FrameLayout>
 
 </RelativeLayout>
