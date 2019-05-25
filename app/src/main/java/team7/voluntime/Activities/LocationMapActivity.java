@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,17 +39,15 @@ import team7.voluntime.Utilities.Utilities;
 public class LocationMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private static final int DEFAULT_ZOOM = 15;
+
     private final String TAG = "LocationMapActivity";
     private Toolbar toolbar;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mLocationPermissionGranted;
     private Location mLastKnownLocation;
     private LatLng mDefaultLocation = new LatLng(-33.86, 151.2);
-    private FirebaseUser mUser;
     private FirebaseDatabase database;
     private DatabaseReference eventsReference;
-    private DatabaseReference charityReference;
     private Button viewEventLocationBtn;
 
     @Override
@@ -105,14 +102,13 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
 
     public void addMarker(Event t, String Id) {
         final Event eventIn = t;
-        final String ID = Id;
+
 
         database = FirebaseDatabase.getInstance();
         eventsReference = Utilities.getCharityReference(database, eventIn.getOrganisers());
         eventsReference.child("Events").child(Id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Toast.makeText(getBaseContext(), ID, Toast.LENGTH_LONG).show();
                 if (!dataSnapshot.getValue().toString().equals("previous")) {
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
@@ -123,10 +119,11 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         String title = eventIn.getTitle();
                         String coords[] = eventIn.getLocation().split(" ");
+                        String date = eventIn.getDate();
                         LatLng eventLoc = new LatLng(
                                 Double.parseDouble(coords[0]),
                                 Double.parseDouble(coords[1]));
-                        Marker marker = mMap.addMarker(new MarkerOptions().position(eventLoc).title(title)
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(eventLoc).title(title).snippet(date)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
                         @Override
@@ -141,13 +138,12 @@ public class LocationMapActivity extends AppCompatActivity implements OnMapReady
                                         String Id = child.getKey();
                                         Event e = child.getValue(Event.class);
 
-                                        final Event event = new Event(Id, e.getTitle(), e.getDescription(), e.getDescription(),
+                                        final Event event = new Event(Id, e.getTitle(), e.getDescription(), e.getCategory(),
                                                 e.getLocation(), e.getDate(), e.getStartTime(),
                                                 e.getEndTime(), e.getCreatedTime(), e.getOrganisers(),
                                                 e.getMinimum(), e.getMaximum(), e.getVolunteers());
 
-
-                                        if (mark.getTitle().equals(e.getTitle())) {
+                                        if (mark.getTitle().equals(e.getTitle()) && mark.getSnippet().equals(event.getDate())) {
                                             viewEventLocationBtn.setVisibility(View.VISIBLE);
                                             viewEventLocationBtn.setOnClickListener(new View.OnClickListener() {
                                                 @Override
