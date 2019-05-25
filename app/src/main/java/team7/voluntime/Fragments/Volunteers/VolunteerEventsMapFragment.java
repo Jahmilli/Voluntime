@@ -35,6 +35,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import team7.voluntime.Activities.EventRegisterActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.R;
@@ -60,6 +63,7 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
     private DatabaseReference eventsReference;
     private DatabaseReference charityReference;
     private Button viewEventLocationBtn;
+    private final Map<Marker, Event> markerMap = new HashMap<Marker, Event>();
 
 
     public VolunteerEventsMapFragment() {
@@ -126,64 +130,48 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
         });
     }
 
-    public void addMarker(Event t, String Id) {
-        final Event eventIn = t;
+    public void addMarker(Event event, String eventId) {
+        final Event eventIn = event;
+        eventIn.setId(eventId);
 
-        charityReference.child(eventIn.getOrganisers()).child("Events").child(Id).addListenerForSingleValueEvent(new ValueEventListener() {
+        charityReference.child(eventIn.getOrganisers()).child("Events").child(eventId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getValue() != null && !dataSnapshot.getValue().toString().equals("previous")) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null && dataSnapshot.getValue().toString().equals("upcoming")) {
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
                             viewEventLocationBtn.setVisibility(View.INVISIBLE);
                         }
                     });
+
+                    String title = eventIn.getTitle();
+                    String coords[] = eventIn.getLocation().split(" ");
+                    String date = eventIn.getDate();
+                    LatLng eventLoc = new LatLng(
+                            Double.parseDouble(coords[0]),
+                            Double.parseDouble(coords[1]));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(eventLoc).title(title).snippet(date)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+                    markerMap.put(marker, eventIn);
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        String title = eventIn.getTitle();
-                        String coords[] = eventIn.getLocation().split(" ");
-                        String date = eventIn.getDate();
-                        LatLng eventLoc = new LatLng(
-                                Double.parseDouble(coords[0]),
-                                Double.parseDouble(coords[1]));
-                        Marker marker = mMap.addMarker(new MarkerOptions().position(eventLoc).title(title).snippet(date)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
                         @Override
                         public boolean onMarkerClick(final Marker marker) {
                             final Marker mark = marker;
-                            eventsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            final Event tempEvent = markerMap.get(mark);
+                            viewEventLocationBtn.setVisibility(View.VISIBLE);
+                            viewEventLocationBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                        String Id = child.getKey();
-                                        Event e = child.getValue(Event.class);
-
-                                        final Event event = new Event(Id, e.getTitle(), e.getDescription(), e.getCategory(),
-                                                e.getLocation(), e.getDate(), e.getStartTime(),
-                                                e.getEndTime(), e.getCreatedTime(), e.getOrganisers(),
-                                                e.getMinimum(), e.getMaximum(), e.getVolunteers());
-
-                                        if (mark.getTitle().equals(e.getTitle()) && mark.getSnippet().equals(event.getDate())) {
-                                            viewEventLocationBtn.setVisibility(View.VISIBLE);
-                                            viewEventLocationBtn.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    viewEventLocationBtn.setVisibility(View.GONE);
-                                                    Intent intent = new Intent(getContext(), EventRegisterActivity.class);
-                                                    intent.putExtra("event", event);
-                                                    getContext().startActivity(intent);
-                                                }
-                                            });
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                public void onClick(View v) {
+                                    viewEventLocationBtn.setVisibility(View.GONE);
+                                    Intent intent = new Intent(getContext(), EventRegisterActivity.class);
+                                    intent.putExtra("event", tempEvent);
+                                    getContext().startActivity(intent);
                                 }
                             });
+
                             return false;
                         }
                     });
