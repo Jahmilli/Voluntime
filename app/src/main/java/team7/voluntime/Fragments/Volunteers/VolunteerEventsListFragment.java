@@ -19,18 +19,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
-import team7.voluntime.Utilities.Constants;
 import team7.voluntime.Utilities.EventListAdapter;
 import team7.voluntime.Utilities.Utilities;
 
@@ -113,10 +108,7 @@ public class VolunteerEventsListFragment extends Fragment {
 
                         for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                             if (eventSnapshot.exists()) {
-                                boolean isUpcomingEvent = false;
                                 String eventId = eventSnapshot.getKey();
-                                Log.d(TAG, "Event id is " + eventId);
-
                                 final Event event = eventSnapshot.getValue(Event.class);
                                 event.setId(eventId);
 
@@ -125,11 +117,8 @@ public class VolunteerEventsListFragment extends Fragment {
                                     public void onDataChange(@NonNull DataSnapshot charityEventStatusSnapshot) {
                                         if (charityEventStatusSnapshot.exists() && charityEventStatusSnapshot.getValue() != null) {
                                             if (charityEventStatusSnapshot.getValue().equals("upcoming")) {
-                                                if (eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue() != null) {
-                                                    String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
-                                                    event.setVolunteerStatus(status);
-                                                }
-
+                                                String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
+                                                event.setVolunteerStatus(status);
                                                 // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
                                                 Log.d(TAG, event.toString());
                                                 upcomingEventList.add(event);
@@ -146,9 +135,6 @@ public class VolunteerEventsListFragment extends Fragment {
 
                                     }
                                 });
-
-
-
 
                             }
                         }
