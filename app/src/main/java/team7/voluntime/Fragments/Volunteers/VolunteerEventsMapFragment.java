@@ -78,7 +78,6 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_volunteer_events_map, container, false);
 
-//        mGeoDataClient = Places.getGeoDataClient(getActivity());
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         viewEventLocationBtn = view.findViewById(R.id.viewEventLocationBtn);
 
@@ -86,11 +85,6 @@ public class VolunteerEventsMapFragment extends Fragment implements OnMapReadyCa
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
         mMapView.onResume();
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
