@@ -40,11 +40,12 @@ public class EventRegisterActivity extends AppCompatActivity {
     private String eventID;
     private String charityID;
     private String charityName;
+    private DatabaseReference nReference;
+
     @BindView(R.id.eventRegisterEventHostTV)
     TextView eventRegisterEventHostTV;
     @BindView(R.id.eventRegisterStatusTV)
     TextView eventRegisterStatusTV;
-
 
     @BindView(R.id.eventRegisterEventNameTV)
     TextView eventRegisterEventNameTV;
@@ -52,7 +53,6 @@ public class EventRegisterActivity extends AppCompatActivity {
     Button eventRegisterButton;
     @BindView(R.id.eventRegisterEventDescriptionTV)
     TextView eventRegisterEventDescriptionTV;
-    private DatabaseReference nReference;
     @BindView(R.id.eventRegisterEventAddressTV)
     TextView eventRegisterEventAddressTV;
     @BindView(R.id.eventRegisterEventDateTV)
@@ -80,12 +80,13 @@ public class EventRegisterActivity extends AppCompatActivity {
         eventID = event.getId();
         charityID = event.getOrganisers();
         nReference = database.getReference("Charities").child(charityID);
-        nReference.child("Profile").child("name").addListenerForSingleValueEvent(
-                new ValueEventListener() {
+        nReference.child("Profile").child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                        charityName = dataSnapshot.getValue().toString();
-                        eventRegisterEventHostTV.setText(charityName);
+                        if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                            charityName = dataSnapshot.getValue().toString();
+                            eventRegisterEventHostTV.setText(charityName);
+                        }
                     }
 
                     @Override
@@ -118,20 +119,34 @@ public class EventRegisterActivity extends AppCompatActivity {
         reference.child("Events").child(eventID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                     String status = dataSnapshot.getValue().toString();
-                    if (status.equals("pending") || status.equals("pending")) {
-                        eventRegisterStatusTV.setText("You have registered for this event");
-                        eventRegisterButton.setVisibility(View.GONE);
-                        eventCancelButton.setVisibility(View.VISIBLE);
-                    } else if (status.equals("cancelled")) {
-                        eventRegisterStatusTV.setText("You have cancelled your registration for this event");
-                        eventCancelButton.setVisibility(View.GONE);
-                        eventRegisterButton.setVisibility(View.VISIBLE);
-                    } else if (status.equals("previous")) {
-                        eventRegisterStatusTV.setText("Event Completed");
-                        eventCancelButton.setVisibility(View.GONE);
-                        eventRegisterButton.setVisibility(View.GONE);
+                    switch (status) {
+                        case Constants.EVENT_PENDING:
+                            eventRegisterStatusTV.setText("You have registered for this event and are currently pending");
+                            eventRegisterButton.setVisibility(View.GONE);
+                            eventCancelButton.setVisibility(View.VISIBLE);
+                            break;
+                        case Constants.EVENT_REGISTERED:
+                            eventRegisterStatusTV.setText("You are registered and approved for this event!");
+                            eventRegisterButton.setVisibility(View.GONE);
+                            eventCancelButton.setVisibility(View.VISIBLE);
+                            break;
+                        // Need to figure cancelled out a bit more...
+                        case Constants.EVENT_CANCELLED:
+                            eventRegisterStatusTV.setText("You have cancelled your registration for this event");
+                            eventCancelButton.setVisibility(View.GONE);
+                            eventRegisterButton.setVisibility(View.VISIBLE);
+                            break;
+                        case Constants.EVENT_REJECTED:
+                            eventRegisterStatusTV.setText("You have been rejected from this event");
+                            eventCancelButton.setVisibility(View.GONE);
+                            eventRegisterButton.setVisibility(View.GONE);
+                            break;
+                        default:
+                            eventRegisterStatusTV.clearComposingText();
+                            eventCancelButton.setVisibility(View.GONE);
+
                     }
                 }
             }
@@ -184,9 +199,9 @@ public class EventRegisterActivity extends AppCompatActivity {
         builder.setMessage("Once cancelled you will NO longer be able to re-register for this event ");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                vReference.child("Events").child(eventID).setValue("cancelled");
+                vReference.child("Events").child(eventID).setValue(Constants.EVENT_CANCELLED);
                 eReference = database.getReference("Events").child(eventID);
-                eReference.child("Volunteers").child(mUser.getUid()).setValue("cancelled");
+                eReference.child("Volunteers").child(mUser.getUid()).setValue(Constants.EVENT_CANCELLED);
                 finish();
             }
         });

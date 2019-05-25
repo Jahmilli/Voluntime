@@ -19,11 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,9 +35,8 @@ public class VolunteerEventsListFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference volunteerReference;
     private DatabaseReference eventsReference;
+    private DatabaseReference charitiesReference;
     private Volunteer volunteer;
-    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
 
     ListView listOfUpcomingEvents;
 
@@ -75,6 +70,7 @@ public class VolunteerEventsListFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         volunteerReference = Utilities.getVolunteerReference(database, mUser.getUid());
         eventsReference = Utilities.getEventsReference(database);
+        charitiesReference = database.getReference().child("Charities");
 
         listOfUpcomingEvents = (ListView) v.findViewById(R.id.volunteerListOfUpcomingEventsLV);
 
@@ -110,43 +106,36 @@ public class VolunteerEventsListFragment extends Fragment {
                         upcomingEventList.clear();
                         upcomingEventsTV.setVisibility(View.VISIBLE);
 
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.exists()) {
-                                boolean isUpcomingEvent = false;
+                        for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                            if (eventSnapshot.exists()) {
+                                String eventId = eventSnapshot.getKey();
+                                final Event event = eventSnapshot.getValue(Event.class);
+                                event.setId(eventId);
 
-                                try {
-                                    Date eventDate = format.parse(child.child("date").getValue().toString());
-                                    Date currentDate = format.parse(Utilities.getCurrentDate());
-
-                                    // Check if the date of the event is either today or in the future
-                                    if (eventDate.compareTo(currentDate) >= 0) {
-                                        isUpcomingEvent = true;
-                                    }
-                                } catch (ParseException e) {
-                                    Log.e(TAG, e.toString());
-                                }
-
-                                if (isUpcomingEvent) {
-                                    String eventId = child.getKey();
-                                    Log.d(TAG, "Event id is " + eventId);
-
-                                    Event event = child.getValue(Event.class);
-                                    event.setId(eventId);
-
-                                    if (child.child("Volunteers").child(volunteer.getId()).getValue() != null) {
-                                        String status = child.child("Volunteers").child(volunteer.getId()).getValue().toString();
-                                        event.setVolunteerStatus(status);
+                                charitiesReference.child(event.getOrganisers()).child("Events").child(eventId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot charityEventStatusSnapshot) {
+                                        if (charityEventStatusSnapshot.exists() && charityEventStatusSnapshot.getValue() != null) {
+                                            if (charityEventStatusSnapshot.getValue().equals("upcoming")) {
+                                                String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
+                                                event.setVolunteerStatus(status);
+                                                // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
+                                                Log.d(TAG, event.toString());
+                                                upcomingEventList.add(event);
+                                                if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
+                                                    upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                                }
+                                                listOfUpcomingEvents.invalidateViews();
+                                            }
+                                        }
                                     }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
-                                    Log.d(TAG, event.toString());
-                                    upcomingEventList.add(event);
-                                    if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                        upcomingEventsTV.setVisibility(View.INVISIBLE);
                                     }
-                                    listOfUpcomingEvents.invalidateViews();
-                                }
+                                });
+
                             }
                         }
                     }
