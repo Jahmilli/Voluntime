@@ -117,9 +117,10 @@ public class VolunteerEventsListFragment extends Fragment {
                                     public void onDataChange(@NonNull DataSnapshot charityEventStatusSnapshot) {
                                         if (charityEventStatusSnapshot.exists() && charityEventStatusSnapshot.getValue() != null) {
                                             if (charityEventStatusSnapshot.getValue().equals("upcoming")) {
-                                                String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
-                                                event.setVolunteerStatus(status);
-                                                // Will only display events that the charity has created (event.getOrganisers().equals(mUser.getUid())) {
+                                                if (eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue() != null) {
+                                                    String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
+                                                    event.setVolunteerStatus(status);
+                                                }
                                                 Log.d(TAG, event.toString());
                                                 upcomingEventList.add(event);
                                                 if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
