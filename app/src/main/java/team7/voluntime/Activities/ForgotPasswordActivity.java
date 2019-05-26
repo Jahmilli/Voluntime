@@ -37,9 +37,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @BindView(R.id.forgotPasswordET)
     EditText forgotPasswordET;
 
-    @BindView(R.id.logoForgot)
-    ImageView logoForgot;
-
     private static String TAG = "ForgotPasswordActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         try {
             InputStream stream = getAssets().open(logoName);
             Drawable d = Drawable.createFromStream(stream, null);
-            logoForgot.setImageDrawable(d);
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, e.toString());
