@@ -49,9 +49,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     @BindView(R.id.createPasswordInputLayout)
     TextInputLayout createPasswordInputLayout;
 
-    @BindView(R.id.logoCreate)
-    ImageView logoCreate;
-
     private static String TAG = "CreateAccountActivity";
 
     @Override
@@ -70,7 +67,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         try {
             InputStream stream = getAssets().open(logoName);
             Drawable d = Drawable.createFromStream(stream, null);
-            logoCreate.setImageDrawable(d);
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, e.toString());
