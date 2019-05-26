@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Voluntime"
                 android:textColor="@color/whiteColor"
@@ -32,23 +32,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/rect_white"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/loginEmailET"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#00000000"
                     android:fontFamily="@font/roboto_light"
                     android:gravity="center"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
                     android:padding="20dp"
                     android:textColor="@color/whiteColor"
+                    android:textColorHighlight="@color/colorPrimaryDark"
                     android:textColorHint="@color/whiteColor"
-                    android:textSize="15.4dp"/>
+                    android:textColorLink="@color/colorPrimary"
+                    android:textSize="15.4dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -75,7 +77,9 @@
                     android:inputType="textPassword"
                     android:padding="20dp"
                     android:textColor="@color/whiteColor"
+                    android:textColorHighlight="@color/colorPrimaryDark"
                     android:textColorHint="@color/whiteColor"
+                    android:textColorLink="@color/colorPrimary"
                     android:textSize="15.4dp" />
 
 
