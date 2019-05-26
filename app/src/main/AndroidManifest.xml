@@ -82,11 +82,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activities.LocationMapActivity"
-            android:label="@string/title_activity_location"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".Activities.EventDetailsActivity"
             android:label="@string/title_event_details"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
