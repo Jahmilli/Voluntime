@@ -8,15 +8,6 @@
     android:background="@drawable/gradient_1"
     tools:context="team7.voluntime.Activities.LoginActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:scrollbars="none">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="80dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Voluntime"
                 android:textColor="@color/whiteColor"
@@ -41,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
-                android:layout_marginTop="100.3dp"
+                android:layout_marginTop="70dp"
                 android:background="@drawable/rect_white"
                 android:orientation="vertical">
 
@@ -74,62 +65,62 @@
 
                 <EditText
                     android:id="@+id/loginPasswordET"
-                    android:hint="@string/password_txt"
-                    android:inputType="textPassword"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
                     android:background="#00000000"
                     android:fontFamily="@font/roboto_light"
                     android:gravity="center"
+                    android:hint="Password"
+                    android:inputType="textPassword"
                     android:padding="20dp"
                     android:textColor="@color/whiteColor"
                     android:textColorHint="@color/whiteColor"
-                    android:textSize="15.4dp"/>
+                    android:textSize="15.4dp" />
+
+
 
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/resetPasswordTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="14.4dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="Forgot Password?"
+                android:textColor="@color/whiteColor"
+                android:textSize="15.4dp"/>
 
-            <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="38.4dp"
+            android:background="@drawable/rect_whitefull"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/gradient_login_btn"
-                android:text="@string/log_in_txt"
-                android:textSize="20sp"
-                android:textColor="#eee" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:text="LOG IN"
+                android:padding="22dp"
+                android:textColor="#009eee"
+                android:textSize="15.4dp"/>
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/resetPasswordTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FORGOT PASSWORD?"
-                    android:layout_weight="1"
-                    android:textColor="#154c40"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/createAccountTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="#154c40"
-                    android:text="JOIN NOW"
-                    android:textSize="16sp"/>
-
-            </LinearLayout>
-
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="38.4dp"
+        android:orientation="vertical">
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/googleBtn"
@@ -137,5 +128,41 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </ScrollView>
+
+
+
+    </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Don’t have an account?"
+                    android:textSize="17.3dp"
+                    android:textColor="@color/whiteColor" />
+
+                <TextView
+                    android:id="@+id/createAccountTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_light"
+                    android:text="Join Now"
+                    android:layout_marginTop="10.5dp"
+                    android:layout_gravity="center"
+                    android:textSize="17.3dp"
+                    android:textColor="@color/whiteColor"/>
+
+            </LinearLayout>
+
+
+
+
 </RelativeLayout>
