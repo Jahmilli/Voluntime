@@ -28,6 +28,18 @@
             android:layout_height="match_parent"
             tools:context=".Activities.LocationActivity" />
 
+        <Button
+            android:id="@+id/viewEventLocationBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="41dp"
+            android:text="View Event"
+            android:background="@color/vtBlue"
+            android:textColor="#eee"
+            android:textSize="15sp"
+            android:visibility="invisible" />
+
     </FrameLayout>
 
 
