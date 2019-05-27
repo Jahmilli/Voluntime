@@ -87,6 +87,14 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".Activities.SearchCharityActivity"
+            android:label="@string/title_search_charity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Activities.SearchEventActivity"
+            android:label="@string/title_search_charity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".Activities.CharityDetailsActivity"
             android:label="@string/title_activity_charity_details"
             android:theme="@style/NoActionBar"

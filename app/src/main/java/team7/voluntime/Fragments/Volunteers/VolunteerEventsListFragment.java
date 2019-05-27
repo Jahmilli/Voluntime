@@ -1,13 +1,18 @@
 package team7.voluntime.Fragments.Volunteers;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +28,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import team7.voluntime.Activities.SearchCharityActivity;
+import team7.voluntime.Activities.SearchEventActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
@@ -37,6 +45,10 @@ public class VolunteerEventsListFragment extends Fragment {
     private DatabaseReference eventsReference;
     private DatabaseReference charitiesReference;
     private Volunteer volunteer;
+    private ArrayAdapter adapter;
+    private EventListAdapter upcomingEventListAdapter;
+
+
 
     ListView listOfUpcomingEvents;
 
@@ -45,6 +57,10 @@ public class VolunteerEventsListFragment extends Fragment {
 
     @BindView(R.id.volunteerViewEventTitleTV)
     TextView viewEventTitleTV;
+
+    @BindView(R.id.searchCharity)
+    TextView searchCharity;
+
 
     private final static String TAG = "VolunteerEventsList";
 
@@ -76,7 +92,7 @@ public class VolunteerEventsListFragment extends Fragment {
 
         final ArrayList<Event> upcomingEventList = new ArrayList<>();
 
-        EventListAdapter upcomingEventListAdapter = new EventListAdapter(
+        upcomingEventListAdapter = new EventListAdapter(
                 getActivity(),
                 R.layout.adapter_view_event_layout,
                 upcomingEventList,
@@ -88,10 +104,11 @@ public class VolunteerEventsListFragment extends Fragment {
         volunteerReference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                volunteer = dataSnapshot.getValue(Volunteer.class);
-                volunteer.setId(mUser.getUid());
-                Log.d(TAG, volunteer.toString());
+                if (dataSnapshot.exists()) {
+                    volunteer = dataSnapshot.getValue(Volunteer.class);
+                    volunteer.setId(mUser.getUid());
+                    Log.d(TAG, volunteer.toString());
+                }
             }
 
             @Override
@@ -146,6 +163,25 @@ public class VolunteerEventsListFragment extends Fragment {
 
                     }
                 });
+
+
+        EditText charityFilter = (EditText) v.findViewById(R.id.charityFilter);
+        charityFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                (VolunteerEventsListFragment.this).upcomingEventListAdapter.getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return v;
     }
