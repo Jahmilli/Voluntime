@@ -1,7 +1,6 @@
 package team7.voluntime.Fragments.Volunteers;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,9 +27,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import team7.voluntime.Activities.SearchCharityActivity;
-import team7.voluntime.Activities.SearchEventActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
@@ -55,9 +51,6 @@ public class VolunteerEventsListFragment extends Fragment {
     @BindView(R.id.volunteerUpcomingEventsTV)
     TextView upcomingEventsTV;
 
-    @BindView(R.id.volunteerViewEventTitleTV)
-    TextView viewEventTitleTV;
-
     @BindView(R.id.searchCharity)
     TextView searchCharity;
 
@@ -73,7 +66,7 @@ public class VolunteerEventsListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getActivity().setTitle("All Events");
+        getActivity().setTitle("Upcoming Events");
     }
 
     @Override
