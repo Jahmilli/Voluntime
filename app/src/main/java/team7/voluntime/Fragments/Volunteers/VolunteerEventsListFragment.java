@@ -47,7 +47,7 @@ public class VolunteerEventsListFragment extends Fragment {
     private Volunteer volunteer;
     private ArrayAdapter adapter;
     private EventListAdapter upcomingEventListAdapter;
-    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
 
 
     ListView listOfUpcomingEvents;
