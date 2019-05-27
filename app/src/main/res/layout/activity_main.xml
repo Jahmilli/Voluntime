@@ -20,9 +20,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#099EEE"
+            android:background="@color/whiteColor"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:titleTextColor="@color/whiteColor" />
+            app:titleTextColor="@color/vtBlue" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -40,6 +40,4 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_view" />
-
-
 </android.support.v4.widget.DrawerLayout>
