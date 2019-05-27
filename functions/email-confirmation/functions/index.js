@@ -86,7 +86,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     // Building Email message.
     if (val === REGISTERED) {
         mailOptions.subject = 'You have been selected to help out with our event!';
-        mailOptions.text = `Hello ${volunteerData.name}` + 
+        mailOptions.text = `Hello ${volunteerData.name},` + 
         `Thanks for registering for an event, the details are as follows: ` + 
         `\nTitle:  ${eventData.title}` +
         `\nDate: ${eventData.date}` +
@@ -94,26 +94,26 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         `\nDescription: ${eventData.description}` +
         `\nCategory: ${eventData.category}` +
         `\nLocation: ${location} \n\n\n` +
-        `Looking forward to seeing you,\n` +
-        `${charityData.name} \n` +
-        `${charityData.phoneNumber} \n` +
-        `${charityData.address}`;
+        `Looking forward to seeing you,` +
+        `\n${charityData.name}` +
+        `\n${charityData.phoneNumber}` +
+        `\n${charityData.address}`;
 
     } else if (val === PREVIOUS) {
         mailOptions.subject = "Thank you for your support";
         mailOptions.text = `Hello ${volunteerData.name},` +
         `\nAll of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n` +
-        `Looking forward to seeing you sometime soon!,\n` +
+        `Looking forward to seeing you sometime soon!` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
         // Potentially list future events from the charity here.
     } else if (val === CANCELLED) {
         mailOptions.subject = "Our event has been cancelled";
-        mailOptions.text = `Hello ${volunteerData.name}` + 
+        mailOptions.text = `Hello ${volunteerData.name},` + 
         `\nUnfortunately, we have had to cancel our event.` +
         `\nAll of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n` +
-        `Looking forward to seeing you sometime soon!,\n` +
+        `Looking forward to seeing you sometime soon!` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
@@ -122,7 +122,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         mailOptions.text = `Hello ${volunteerData.name}` + 
         `\nUnfortunately, you were not picked for our event.` +
         `\nWe hope you understand and we encourage you to apply for our future events.\n\n\n` +
-        `Looking forward to seeing you sometime soon!,\n` +
+        `Looking forward to seeing you sometime soon!` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
