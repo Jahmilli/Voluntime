@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     android:orientation="horizontal">
 
     <ScrollView
@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Edit Details"
-                android:textColor="#222"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/whiteColor"
                 android:textSize="37sp" />
 
             <TextView
@@ -35,8 +36,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Edit Volunteer Details"
-                android:textColor="#555"
-                android:textSize="23sp" />
+                android:textSize="23sp"
+                android:fontFamily="@font/roboto_light"
+                android:textColor="@color/whiteColor" />
 
             <EditText
                 android:id="@+id/editVolunteerNameET"
@@ -85,6 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Gender:"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/whiteColor"
                     android:textSize="23sp" />
 
                 <RadioButton
@@ -93,7 +97,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Male"
-                    android:textColor="#666"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/whiteColor"
+                    android:buttonTint="@color/whiteColor"
                     android:textSize="23sp" />
 
                 <RadioButton
@@ -101,7 +107,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Female"
-                    android:textColor="#666"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/whiteColor"
+                    android:buttonTint="@color/whiteColor"
                     android:textSize="23sp" />
             </RadioGroup>
 
@@ -123,9 +131,9 @@
                     android:layout_height="wrap_content"
                     android:background="#0000"
                     android:text="Back"
-                    android:textColor="#154c40"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="25sp" />
 
                 <View
                     android:layout_width="0dp"
@@ -138,9 +146,9 @@
                     android:layout_height="wrap_content"
                     android:background="#0000"
                     android:text="Finish"
-                    android:textColor="#154c40"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="25sp" />
 
             </LinearLayout>
         </LinearLayout>

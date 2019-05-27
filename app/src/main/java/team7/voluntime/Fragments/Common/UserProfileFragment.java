@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -21,13 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,6 +104,8 @@ public class UserProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_user_profile, container, false);
         ButterKnife.bind(this, v);
+
+        setHasOptionsMenu(true);
 
         // Get Current logged in instance from database
         mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -270,14 +272,6 @@ public class UserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @OnClick(R.id.userprofileEditBtn)
-    public void onClick() {
-        Intent intent = new Intent(getContext(), getEditActivity());
-        startActivity(intent);
-
-    }
-
-
     public String getType() {
         String type = MainActivity.getAccountType();
         if (type.equals("Volunteer")) {
@@ -300,4 +294,18 @@ public class UserProfileFragment extends Fragment {
     public void volunteerHistoryOnClick() {
         startActivity(new Intent(getContext(), VolunteerHistoryActivity.class));
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_location, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(getContext(), getEditActivity());
+        startActivity(intent);
+        return true;
+    }
+
 }
