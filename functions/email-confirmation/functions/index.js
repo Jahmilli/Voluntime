@@ -103,7 +103,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         mailOptions.subject = "Thank you for your support";
         mailOptions.text = `Hello ${volunteerData.name},` +
         `\nAll of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n` +
-        `Looking forward to seeing you sometime soon!,\n` +
+        `Looking forward to seeing you sometime soon!` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
@@ -113,7 +113,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         mailOptions.text = `Hello ${volunteerData.name}` + 
         `\nUnfortunately, we have had to cancel our event.` +
         `\nAll of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n` +
-        `Looking forward to seeing you sometime soon!,\n` +
+        `Looking forward to seeing you sometime soon!` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
@@ -122,7 +122,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         mailOptions.text = `Hello ${volunteerData.name}` + 
         `\nUnfortunately, you were not picked for our event.` +
         `\nWe hope you understand and we encourage you to apply for our future events.\n\n\n` +
-        `Looking forward to seeing you sometime soon!,\n` +
+        `Looking forward to seeing you sometime soon!` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
