@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.Fragments.Charities.CharityViewEventsFragment;
 import team7.voluntime.Fragments.Charities.CharityViewPreviousEventsFragment;
 import team7.voluntime.Fragments.Common.UserProfileFragment;

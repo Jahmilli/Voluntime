@@ -80,7 +80,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        
+
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         Intent intent = getIntent();
@@ -241,7 +241,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
     }
-    
+
     public void createHelpDialog() {
         helpAlertBuilder = new AlertDialog.Builder(this);
         //TODO: Remove this when viewing events
