@@ -39,9 +39,11 @@ import team7.voluntime.R;
 public class SearchCharityActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseRF;
+    private DatabaseReference charityReference;
     private ArrayAdapter adapter;
     private ListView charityListView;
-    private ArrayList<String> charityname = new ArrayList<>();
+    private ArrayList<CharityDetailsActivity> charityname = new ArrayList<>();
+
 
 
     /**
@@ -56,20 +58,21 @@ public class SearchCharityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_charity);
         /** fire base reference */
         firebaseDB = FirebaseDatabase.getInstance();
-        databaseRF = firebaseDB.getReference("Charity");
+        databaseRF = firebaseDB.getReference("Charities");
+
         Log.d(TAG, "onCreate: Started CharitySearch.");
 
-        /** Array Adapter takes the arraylist and puts the arraylist into a listview */
+        /** Array Adapter takes the arraylist and puts the arraylist, into a listview */
         charityListView = (ListView) findViewById(R.id.charityListView);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, charityname);
         charityListView.setAdapter(adapter);
         /** Child event listener Which checks for changes in the firebase*/
         databaseRF.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String value = dataSnapshot.getValue(String.class);
-                charityname.add(value);
-                adapter.notifyDataSetChanged();
+                for(DataSnapshot ds: dataSnapshot.getChildren()) {
+
+
+                }
             }
 
             @Override
@@ -96,23 +99,7 @@ public class SearchCharityActivity extends AppCompatActivity {
 
             }
         });
-        EditText charityFilter = (EditText) findViewById(R.id.charityFilter);
-        charityFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                (SearchCharityActivity.this).adapter.getFilter().filter(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
 
     }

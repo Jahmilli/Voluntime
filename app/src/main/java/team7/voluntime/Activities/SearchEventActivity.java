@@ -36,7 +36,7 @@ public class SearchEventActivity extends AppCompatActivity {
         /** fire base reference */
         firebaseDB = FirebaseDatabase.getInstance();
         databaseRF = firebaseDB.getReference("Event");
-        Log.d(TAG, "onCreate: Started EventSerach.");
+        Log.d(TAG, "onCreate: Started EventSearch.");
 
         /** Array Adapter takes the arraylist and puts the arraylist into a listview */
         eventListView = (ListView) findViewById(R.id.eventListView);
