@@ -2,13 +2,17 @@ package team7.voluntime.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +67,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         int maximum = getItem(position).getMaximum();
 
         final boolean isPastEvent = getItem(position).isPastEvent();
+        final String volunteerStatus = getItem(position).getVolunteerStatus();
 
         final HashMap<String, String> volunteers = getItem(position).getVolunteers();
 
@@ -71,6 +76,8 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
+        LinearLayout eventLayout = convertView.findViewById(R.id.adapterEventLL);
+        ImageView statusIV = convertView.findViewById(R.id.adapterEventStatusIV);
         TextView dateTV = convertView.findViewById(R.id.adapterEventDateTV);
         TextView titleTV = convertView.findViewById(R.id.adapterEventTitleTV);
         ImageView adapterEventIV1 = convertView.findViewById(R.id.adapterEventIV1);
@@ -122,6 +129,20 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
 
         } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
             adapterEventIV1.setVisibility(View.VISIBLE);
+            if (!StringUtils.isEmpty(volunteerStatus)) {
+                switch (volunteerStatus) {
+                    case Constants.EVENT_PENDING:
+//                        statusIV.setImageResource(R.mipmap.subtract_round);
+                        eventLayout.setBackgroundColor(Color.rgb(255, 253, 123));
+                        break;
+                    case Constants.EVENT_REGISTERED: eventLayout.setBackgroundColor(Color.rgb(60, 179, 113));
+                        break;
+                    case Constants.EVENT_REJECTED: eventLayout.setBackgroundColor(Color.rgb(255, 99, 71));
+                        break;
+                    default: eventLayout.setBackgroundColor(Color.WHITE);
+                }
+
+            }
 
             adapterEventIV1.setOnClickListener(new View.OnClickListener() {
                 @Override

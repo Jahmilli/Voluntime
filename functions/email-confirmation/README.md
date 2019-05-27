@@ -6,7 +6,7 @@ This function is triggered by changes in User's events and creates and sends an 
     /Volunteers
         /$uid
             /Events
-                /$eventID: String # pending/pegistered/previous/cancelled
+                /$eventID: String # pending/registered/previous/cancelled/rejected
 ```
 ## Deploying the function
 Requirements:
