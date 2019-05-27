@@ -46,7 +46,7 @@ public class CharityViewPreviousEventsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("View Previous Events");
+        getActivity().setTitle("Events You Hosted");
     }
 
     @Override

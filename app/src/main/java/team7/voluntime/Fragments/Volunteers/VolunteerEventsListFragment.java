@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
@@ -47,13 +45,6 @@ public class VolunteerEventsListFragment extends Fragment {
 
 
     ListView listOfUpcomingEvents;
-
-    @BindView(R.id.volunteerUpcomingEventsTV)
-    TextView upcomingEventsTV;
-
-    @BindView(R.id.searchCharity)
-    TextView searchCharity;
-
 
     private final static String TAG = "VolunteerEventsList";
 
@@ -114,7 +105,6 @@ public class VolunteerEventsListFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         upcomingEventList.clear();
-                        upcomingEventsTV.setVisibility(View.VISIBLE);
 
                         for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                             if (eventSnapshot.exists()) {
@@ -133,9 +123,6 @@ public class VolunteerEventsListFragment extends Fragment {
                                                 }
                                                 Log.d(TAG, event.toString());
                                                 upcomingEventList.add(event);
-                                                if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                                    upcomingEventsTV.setVisibility(View.INVISIBLE);
-                                                }
                                                 listOfUpcomingEvents.invalidateViews();
                                             }
                                         }

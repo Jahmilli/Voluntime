@@ -20,11 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:layout_marginBottom="41dp"
-            android:text="View Event"
-            android:background="@color/vtBlue"
-            android:textColor="#eee"
-            android:textSize="15sp"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/round_button"
+            android:paddingStart="5sp"
+            android:paddingRight="5sp"
+            android:text="Volunteer History"
+            android:textColor="@color/whiteColor"
             android:visibility="invisible" />
     </FrameLayout>
 

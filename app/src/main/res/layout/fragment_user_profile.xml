@@ -202,11 +202,14 @@
 
                     <Button
                         android:id="@+id/userprofileVolHisBtn"
-                        android:layout_width="200sp"
-                        android:layout_height="50sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="30sp"
-                        android:text="Volunteer History" />
+                        android:background="@drawable/round_button"
+                        android:paddingStart="5sp"
+                        android:paddingRight="5sp"
+                        android:text="Volunteer History"
+                        android:textColor="@color/whiteColor" />
 
                 </LinearLayout>
 
