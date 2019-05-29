@@ -105,50 +105,61 @@ public class EventDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
         ButterKnife.bind(this);
+        mDatabase = FirebaseDatabase.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
         Intent intent = getIntent();
         event = intent.getParcelableExtra("event");
         isPastEvent = intent.getBooleanExtra("isPastEvent", false); // Assume all events are upcoming events unless specified
-
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
         pendingVolunteersLV = findViewById(R.id.eventPendingVolunteersLV);
         registeredVolunteersLV = findViewById(R.id.eventRegisteredVolunteersLV);
         attendedVolunteersLV = findViewById(R.id.eventAttendedVolunteersLV);
 
         coords = event.getLocation().split(" ");
+        mDatabase.getReference().child("Events").child(event.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    event = dataSnapshot.getValue(Event.class);
+                    event.setId(dataSnapshot.getKey());
+                    titleTV.setText(event.getTitle());
+                    descriptionTV.setText(event.getDescription());
+                    categoryTV.setText(event.getCategory());
+                    minimumTV.setText(event.getMinimum() + "");
+                    maximumTV.setText(event.getMaximum() + "");
+                    dateTV.setText(event.getDate());
+                    startTimeTV.setText(event.getStartTime());
+                    endTimeTV.setText(event.getEndTime());
+                    createdTimeTV.setText(event.getCreatedTime());
+                    String address = "Location Unavailable";
+                    try {
+                        address = Utilities.getLocation(
+                                EventDetailsActivity.this,
+                                Double.parseDouble(coords[0]),
+                                Double.parseDouble(coords[1]))
+                                .get(0).getAddressLine(0);
+                        mapIV.setVisibility(View.VISIBLE);
+                    } catch(IndexOutOfBoundsException e) {
+                        Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
+                        Log.e(TAG, e.toString());
+                    }
+                    locationTV.setText(address);
+                }
+            }
 
-        titleTV.setText(event.getTitle());
-        descriptionTV.setText(event.getDescription());
-        categoryTV.setText(event.getCategory());
-        minimumTV.setText(event.getMinimum() + "");
-        maximumTV.setText(event.getMaximum() + "");
-        dateTV.setText(event.getDate());
-        startTimeTV.setText(event.getStartTime());
-        endTimeTV.setText(event.getEndTime());
-        createdTimeTV.setText(event.getCreatedTime());
-        String address = "Location Unavailable";
-        try {
-             address = Utilities.getLocation(
-                    this,
-                    Double.parseDouble(coords[0]),
-                    Double.parseDouble(coords[1]))
-                    .get(0).getAddressLine(0);
-             mapIV.setVisibility(View.VISIBLE);
-        } catch(IndexOutOfBoundsException e) {
-            Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
-            Log.e(TAG, e.toString());
-        }
-        locationTV.setText(address);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
 
         if (intent.getStringExtra("parentActivity").equals(CharityViewEventsFragment.class.toString())) {
             // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
             if (intent.getStringExtra("eventStatus") != null && intent.getStringExtra("eventStatus").equals("previous")) {
 
             }
-            mDatabase = FirebaseDatabase.getInstance();
+
             volunteersReference = mDatabase.getReference().child("Volunteers");
             // TODO: Added in event status need to probably check how this interacts with volunteer page. Check for null etc
             eventVolunteersReference = mDatabase.getReference().child("Events").child(event.getId()).child("Volunteers");

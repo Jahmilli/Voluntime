@@ -67,6 +67,20 @@
                 android:inputType="date"/>
 
             <EditText
+                android:id="@+id/editEventStartTimeET"
+                style="@style/loginEditTexts"
+                android:focusable="false"
+                android:layout_marginTop="10sp"
+                android:hint="Select Start Time"/>
+
+            <EditText
+                android:id="@+id/editEventEndTimeET"
+                style="@style/loginEditTexts"
+                android:focusable="false"
+                android:layout_marginTop="10sp"
+                android:hint="Select End Time"/>
+
+            <EditText
                 android:id="@+id/editEventMinAttendeesET"
                 style="@style/loginEditTexts"
                 android:layout_marginTop="10sp"
