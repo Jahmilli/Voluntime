@@ -1,13 +1,12 @@
 package team7.voluntime.Activities;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +34,10 @@ public class EditEventActivity extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private Event event;
-    private boolean animated = false;
+    private String eventID;
+
+    // Request Codes
+    private static final int LOCATION_REQUEST_CODE = 6;
 
     @BindView(R.id.editEventTitleET)
     EditText eventTitleET;
@@ -61,43 +63,43 @@ public class EditEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
-
-        mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-
         database = FirebaseDatabase.getInstance();
-
-        reference = Utilities.getEventsReference(database);
-
+        reference = Utilities.getEventsReference(database).child(event.getId());
         ButterKnife.bind(this);
 
-
+        Intent intent = getIntent();
+        event = intent.getParcelableExtra("event");
 
         reference.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                reference.child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        event = dataSnapshot.getValue(Event.class);
-                        event.setId(user.getUid());
-                        eventTitleET.setText(event.getTitle());
-                        eventDescriptionET.setText(event.getDescription());
-                        eventLocationET.setText(event.getLocation());
-                        eventDateET.setText(event.getDate());
+                if (dataSnapshot.exists()) {
+                    event = dataSnapshot.getValue(Event.class);
+                    event.setId(user.getUid());
+                    eventTitleET.setText(event.getTitle());
+                    eventDescriptionET.setText(event.getDescription());
 
-
-                        eventMinimumET.setText(event.getMinimum());
-                        eventMaximumET.setText(event.getMaximum());
-
+                    String address = "Location Unavailable";
+                    try {
+                        Log.d(TAG, "HEREEEEE");
+                        String coords[] = event.getLocation().split(" ");
+                        address = Utilities.getLocation(
+                                EditEventActivity.this,
+                                Double.parseDouble(coords[0]),
+                                Double.parseDouble(coords[1]))
+                                .get(0)
+                                .getAddressLine(0);
+                    } catch(IndexOutOfBoundsException e) {
+                        Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
+                        Log.e(TAG, e.toString());
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e(TAG, "The read failed: " + databaseError.getCode());
-                    }
-                });
+                    eventLocationET.setText(address);
+                    eventDateET.setText(event.getDate());
+                    eventMinimumET.setText(String.valueOf(event.getMinimum()));
+                    eventMaximumET.setText(String.valueOf(event.getMaximum()));
+                }
             }
 
             @Override
@@ -106,14 +108,11 @@ public class EditEventActivity extends AppCompatActivity {
             }
 
         });
-
-
     }
 
     @OnClick(R.id.editEventSubmitBtn)
     public void setEventInfo() {
         if (checkValidEvent()) {
-            reference = database.getReference("Events").child(user.getUid());
             String title = eventTitleET.getText().toString().trim();
             String location = eventLocationET.getText().toString().trim();
             String description = eventDescriptionET.getText().toString().trim();
@@ -121,17 +120,13 @@ public class EditEventActivity extends AppCompatActivity {
             String minimum = eventMinimumET.getText().toString().trim();
             String maximum = eventMaximumET.getText().toString().trim();
 
+            reference.child("title").setValue(title);
+            reference.child("location").setValue(location);
+            reference.child("description").setValue(description);
+            reference.child("date").setValue(date);
+            reference.child("minimum").setValue(minimum);
+            reference.child("maximum").setValue(maximum);
 
-            reference.child("Profile").child("title").setValue(title);
-            reference.child("Profile").child("location").setValue(location);
-            reference.child("Profile").child("description").setValue(description);
-            reference.child("Profile").child("date").setValue(date);
-            reference.child("Profile").child("minimum").setValue(minimum);
-            reference.child("Profile").child("maximum").setValue(maximum);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("accountType", "Event");
-            startActivity(intent);
             finish();
         }
     }
@@ -171,23 +166,39 @@ public class EditEventActivity extends AppCompatActivity {
             Toast.makeText(this, "Your minimum number of attendees must be less than or equal to your maximum", Toast.LENGTH_SHORT).show();
             return false;}
 
-            return true;
-        }
-
-
-
-
-
-
-        @Override
-        public void onBackPressed() {
-            finish();
-        }
-
-        @OnClick(R.id.editEventSubmitBtn)
-        public void editEventSubmitBtn () {
-
-            finish();
-        }
-
+        return true;
     }
+
+
+
+    @OnClick(R.id.editEventLocationET)
+    public void editLocationOnClick() {
+        String coords[] = event.getLocation().split(" ");
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra("latitude", Double.parseDouble(coords[0]));
+        intent.putExtra("longitude", Double.parseDouble(coords[1]));
+        intent.putExtra("address", eventLocationET.getText().toString());
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK) {
+            double latitude = data.getDoubleExtra("latitude", 0);
+            double longitude = data.getDoubleExtra("longitude", 0);
+            String address = data.getStringExtra("address");
+            if (longitude == 0 && latitude == 0) {
+                Toast.makeText(this, "No Location was Selected", Toast.LENGTH_SHORT);
+            } else {
+                eventLocationET.setText(address);
+            }
+        }
+    }
+}

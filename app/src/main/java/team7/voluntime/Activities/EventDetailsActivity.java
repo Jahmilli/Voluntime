@@ -61,6 +61,8 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView titleTV;
     @BindView(R.id.eventDetailsCancelEventIV)
     ImageView cancelEventIV;
+    @BindView(R.id.eventDetailsEditEventIV)
+    ImageView editEventIV;
     @BindView(R.id.eventDetailsConcludeEventBtn)
     Button concludeEventBtn;
     @BindView(R.id.eventDetailsDescriptionTV)
@@ -164,6 +166,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                editEventIV.setVisibility(View.VISIBLE);
                 cancelEventIV.setVisibility(View.VISIBLE);
                 registeredVolunteersLL.setVisibility(View.VISIBLE);
                 pendingVolunteersLL.setVisibility(View.VISIBLE);
@@ -395,6 +398,13 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    @OnClick(R.id.eventDetailsEditEventIV)
+    public void editEventOnClick() {
+        Intent intent = new Intent(this, EditEventActivity.class);
+        intent.putExtra("event", event);
+        startActivity(intent);
     }
 
 }
