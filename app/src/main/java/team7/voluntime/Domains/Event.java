@@ -68,6 +68,10 @@ public class Event implements Parcelable {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getDate() {
         return date;
     }
