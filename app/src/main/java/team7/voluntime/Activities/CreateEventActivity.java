@@ -234,7 +234,7 @@ public class CreateEventActivity extends AppCompatActivity {
     public boolean checkValidFields() {
         Log.d(TAG, "Check all fields being called");
 
-        if (titleET.getText().toString().trim().isEmpty() || !StringUtils.isAlphaSpace(titleET.getText().toString())) {
+        if (titleET.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
             return false;
         }

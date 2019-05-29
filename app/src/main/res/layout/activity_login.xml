@@ -15,15 +15,24 @@
             android:paddingBottom="20dp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Voluntime"
-                android:textColor="@color/whiteColor"
-                android:textSize="35dp" />
+                android:layout_marginTop="10dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_launcher_vt_white" />
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:fontFamily="@font/roboto_bold"-->
+                <!--android:text="Voluntime"-->
+                <!--android:textColor="@color/whiteColor"-->
+                <!--android:textSize="35dp" />-->
 
 
             <android.support.design.widget.TextInputLayout
@@ -32,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/rect_white"
                 android:orientation="vertical">
 
@@ -45,7 +54,7 @@
                     android:gravity="center"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
-                    android:padding="20dp"
+                    android:padding="15dp"
                     android:textColor="@color/whiteColor"
                     android:textColorHighlight="@color/colorPrimaryDark"
                     android:textColorHint="@color/whiteColor"
@@ -61,7 +70,7 @@
                 app:passwordToggleEnabled="true"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
-                android:layout_marginTop="38.4dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/rect_white"
                 android:orientation="vertical">
 
@@ -75,11 +84,12 @@
                     android:gravity="center"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:padding="20dp"
+                    android:padding="15dp"
                     android:textColor="@color/whiteColor"
                     android:textColorHighlight="@color/colorPrimaryDark"
                     android:textColorHint="@color/whiteColor"
                     android:textColorLink="@color/colorPrimary"
+                    android:shadowColor="@color/whiteColor"
                     android:textSize="15.4dp" />
 
 
@@ -91,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="14.4dp"
+                android:layout_marginTop="14dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Forgot Password?"
                 android:textColor="@color/whiteColor"
@@ -102,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="36dp"
             android:layout_marginRight="36dp"
-            android:layout_marginTop="38.4dp"
+            android:layout_marginTop="25dp"
             android:background="@drawable/rect_whitefull"
             android:orientation="vertical">
 
@@ -113,7 +123,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:gravity="center"
                 android:text="LOG IN"
-                android:padding="22dp"
+                android:padding="15dp"
                 android:textColor="#009eee"
                 android:textSize="15.4dp"/>
         </LinearLayout>
@@ -123,13 +133,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
-        android:layout_marginTop="38.4dp"
+        android:layout_marginTop="25dp"
         android:orientation="vertical">
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/googleBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -159,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_light"
                     android:text="Join Now"
-                    android:layout_marginTop="10.5dp"
+                    android:layout_marginTop="8dp"
                     android:layout_gravity="center"
                     android:textSize="17.3dp"
                     android:textColor="@color/whiteColor"/>

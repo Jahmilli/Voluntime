@@ -115,8 +115,9 @@ public class CharityViewEventsFragment extends Fragment {
         });
 
         eventReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
                         upcomingEventList.clear();
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -140,12 +141,13 @@ public class CharityViewEventsFragment extends Fragment {
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                }
+            });
 
         return v;
     }

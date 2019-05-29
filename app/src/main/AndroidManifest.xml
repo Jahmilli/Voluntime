@@ -15,18 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_vt_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <activity android:name=".Activities.VolunteerHistoryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.RateVolunteerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.VolunteerDetailsActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.EditEventActivity"
+            android:label="@string/title_activity_edit_event"
+            android:theme="@style/NoActionBar"></activity>
+        <activity android:name=".Activities.VolunteerHistoryActivity" />
+        <activity android:name=".Activities.RateVolunteerActivity" />
+        <activity android:name=".Activities.VolunteerDetailsActivity" />
         <activity
             android:name=".Activities.EventRegisterActivity"
             android:label="@string/title_activity_event_register"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -35,57 +34,51 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDaBGxcIqMndsJRBD1m_lt-h_5gnC6EK34" />
 
-        <activity android:name=".Activities.LoginActivity" android:configChanges="orientation|screenSize" android:screenOrientation="portrait">
-
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainActivity" android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.MainActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".Activities.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.EditVolunteerActivity"
             android:label="EditVolunteerActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.EditCharityActivity"
             android:label="EditCharityActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.SetupActivity"
-            android:label="@string/title_activity_setup"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:label="@string/title_activity_setup"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.CreateEventActivity"
             android:label="@string/title_activity_create_event"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.LocationActivity"
             android:label="@string/title_activity_location"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.EventDetailsActivity"
             android:label="@string/title_event_details"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Activities.SearchCharityActivity"
             android:label="@string/title_search_charity"
@@ -97,8 +90,7 @@
         <activity
             android:name=".Activities.CharityDetailsActivity"
             android:label="@string/title_activity_charity_details"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>
