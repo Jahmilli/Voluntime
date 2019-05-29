@@ -123,28 +123,30 @@ public class CharityViewEventsFragment extends Fragment {
         eventReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    upcomingEventList.clear();
-                    upcomingEventsTV.setVisibility(View.VISIBLE);
+                    if (dataSnapshot.exists()) {
+                        upcomingEventList.clear();
+                        upcomingEventsTV.setVisibility(View.VISIBLE);
 
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        if (child.exists()) {
-                            String eventId = child.getKey();
-                            HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.exists()) {
+                                String eventId = child.getKey();
+                                HashMap<String, String> volunteers = Utilities.getVolunteers(child.child("Volunteers"), TAG);
 
-                            Event event = child.getValue(Event.class);
-                            event.setVolunteers(volunteers);
-                            event.setId(eventId);
+                                Event event = child.getValue(Event.class);
+                                event.setVolunteers(volunteers);
+                                event.setId(eventId);
 
-                            // Will only display events that the charity has created
-                            if (event.getOrganisers().equals(mUser.getUid())) {
-                                Log.d(TAG, event.toString());
-                                if (upcomingEvents.containsKey(eventId)) {
-                                    event.setPastEvent(false);
-                                    upcomingEventList.add(event);
-                                    if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                        upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                // Will only display events that the charity has created
+                                if (event.getOrganisers().equals(mUser.getUid())) {
+                                    Log.d(TAG, event.toString());
+                                    if (upcomingEvents.containsKey(eventId)) {
+                                        event.setPastEvent(false);
+                                        upcomingEventList.add(event);
+                                        if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
+                                            upcomingEventsTV.setVisibility(View.INVISIBLE);
+                                        }
+                                        listOfUpcomingEventsLV.invalidateViews();
                                     }
-                                    listOfUpcomingEventsLV.invalidateViews();
                                 }
                             }
                         }

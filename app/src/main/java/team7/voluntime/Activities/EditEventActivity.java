@@ -63,13 +63,13 @@ public class EditEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
+        Intent intent = getIntent();
+        event = intent.getParcelableExtra("event");
         user = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
         reference = Utilities.getEventsReference(database).child(event.getId());
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        event = intent.getParcelableExtra("event");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -114,18 +114,18 @@ public class EditEventActivity extends AppCompatActivity {
     public void setEventInfo() {
         if (checkValidEvent()) {
             String title = eventTitleET.getText().toString().trim();
-            String location = eventLocationET.getText().toString().trim();
             String description = eventDescriptionET.getText().toString().trim();
             String date = eventDateET.getText().toString().trim();
-            String minimum = eventMinimumET.getText().toString().trim();
-            String maximum = eventMaximumET.getText().toString().trim();
+
+            int minAttendees = Integer.parseInt(eventMinimumET.getText().toString().trim());
+            int maxAttendees = Integer.parseInt(eventMaximumET.getText().toString().trim());
 
             reference.child("title").setValue(title);
-            reference.child("location").setValue(location);
+            reference.child("location").setValue(event.getLocation());
             reference.child("description").setValue(description);
             reference.child("date").setValue(date);
-            reference.child("minimum").setValue(minimum);
-            reference.child("maximum").setValue(maximum);
+            reference.child("minimum").setValue(minAttendees);
+            reference.child("maximum").setValue(maxAttendees);
 
             finish();
         }
@@ -198,6 +198,7 @@ public class EditEventActivity extends AppCompatActivity {
                 Toast.makeText(this, "No Location was Selected", Toast.LENGTH_SHORT);
             } else {
                 eventLocationET.setText(address);
+                event.setLocation(latitude + " " + longitude);
             }
         }
     }
