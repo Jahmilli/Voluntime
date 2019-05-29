@@ -37,6 +37,14 @@
                     android:visibility="gone"
                     android:src="@drawable/ic_cancel_icon" />
 
+                <ImageView
+                    android:id="@+id/eventDetailsEditEventIV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="15dp"
+                    android:visibility="gone"
+                    android:src="@drawable/edit" />
+
             </LinearLayout>
 
 
