@@ -5,7 +5,7 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     tools:context=".Activities.EditEventActivity">
 
     <ScrollView
@@ -28,33 +28,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit Event"
-                android:layout_gravity="center"
-                android:textSize="20sp" />
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/whiteColor"
+                android:textSize="30sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Please complete the required fields below to edit a charity event" />
+                android:text="Please complete the required fields below to edit the event"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_light"
+                android:textColor="@color/whiteColor"/>
 
             <EditText
                 android:id="@+id/editEventTitleET"
                 style="@style/loginEditTexts"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="8sp"
+                android:textSize="20sp"
                 android:hint="Event Title"
                 android:inputType="text" />
 
             <EditText
                 android:id="@+id/editEventDescriptionET"
                 style="@style/loginEditTexts"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="8sp"
                 android:hint="Description"
+                android:textSize="20sp"
                 android:inputType="text" />
 
             <EditText
                 android:id="@+id/editEventLocationET"
                 style="@style/loginEditTexts"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="8sp"
                 android:hint="Location"
+                android:textSize="20sp"
                 android:focusable="false"
                 android:inputType="textMultiLine" />
 
@@ -62,49 +69,65 @@
                 android:id="@+id/editEventDateET"
                 style="@style/loginEditTexts"
                 android:focusable="false"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="8sp"
                 android:hint="Event Date"
+                android:textSize="20sp"
                 android:inputType="date"/>
 
             <EditText
                 android:id="@+id/editEventStartTimeET"
                 style="@style/loginEditTexts"
                 android:focusable="false"
-                android:layout_marginTop="10sp"
-                android:hint="Select Start Time"/>
+                android:layout_marginTop="8sp"
+                android:hint="Select Start Time"
+                android:textSize="20sp"/>
 
             <EditText
                 android:id="@+id/editEventEndTimeET"
                 style="@style/loginEditTexts"
                 android:focusable="false"
-                android:layout_marginTop="10sp"
-                android:hint="Select End Time"/>
+                android:layout_marginTop="8sp"
+                android:hint="Select End Time"
+                android:textSize="20sp"/>
 
             <EditText
                 android:id="@+id/editEventMinAttendeesET"
                 style="@style/loginEditTexts"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="8sp"
                 android:hint="Minimum number of attendees"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:textSize="20sp"/>
 
             <EditText
                 android:id="@+id/editEventMaxAttendeesET"
                 style="@style/loginEditTexts"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="8sp"
                 android:hint="Maximum number of attendees"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:textSize="20sp"/>
 
-            <Button
-                android:id="@+id/editEventSubmitBtn"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/gradient_login_btn"
-                android:text="Edit Event"
-                android:textSize="20sp"
-                android:textColor="#eee" />
+                android:background="@drawable/rect_whitefull"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/editEventSubmitBtn"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:textColor="#009eee"
+                    android:textSize="15.4dp"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
