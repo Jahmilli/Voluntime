@@ -81,8 +81,6 @@ public class EventDetailsActivity extends AppCompatActivity {
     TextView startTimeTV;
     @BindView(R.id.eventDetailsEndTimeTV)
     TextView endTimeTV;
-    @BindView(R.id.eventDetailsCreatedTimeTV)
-    TextView createdTimeTV;
     @BindView(R.id.eventDetailsMapIV)
     ImageView mapIV;
     @BindView(R.id.eventDetailsPendingVolunteersLL)
@@ -131,7 +129,6 @@ public class EventDetailsActivity extends AppCompatActivity {
                     dateTV.setText(event.getDate());
                     startTimeTV.setText(event.getStartTime());
                     endTimeTV.setText(event.getEndTime());
-                    createdTimeTV.setText(event.getCreatedTime());
                     String address = "Location Unavailable";
                     try {
                         address = Utilities.getLocation(
