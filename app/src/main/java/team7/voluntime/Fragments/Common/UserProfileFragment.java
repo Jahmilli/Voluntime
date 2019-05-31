@@ -71,8 +71,6 @@ public class UserProfileFragment extends Fragment {
     TextView descTV;
     @BindView(R.id.userprofileNameTV)
     TextView nameTV;
-    @BindView(R.id.userprofileTypeTV)
-    TextView typeTV;
     @BindView(R.id.userprofileRatingTV)
     TextView ratingTV;
     @BindView(R.id.userprofileTotalTimeTV)
@@ -95,7 +93,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("Profile");
+        getActivity().setTitle(getType() + " Profile");
     }
 
     @Override
@@ -131,7 +129,6 @@ public class UserProfileFragment extends Fragment {
                                         volunteer = dataSnapshot.getValue(Volunteer.class);
                                         volunteer.setId(mUser.getUid());
                                         nameTV.setText(volunteer.getName());
-                                        typeTV.setText("Volunteer");
                                         phoneTV.setText(volunteer.getPhoneNumber());
                                         addressTV.setText(volunteer.getAddress());
                                         genTV.setText(volunteer.getGender());
@@ -238,7 +235,6 @@ public class UserProfileFragment extends Fragment {
                                         charity = dataSnapshot.getValue(Charity.class);
                                         charity.setId(mUser.getUid());
                                         nameTV.setText(charity.getName());
-                                        typeTV.setText("Charity");
                                         phoneTV.setText(charity.getPhoneNumber());
                                         addressTV.setText(charity.getAddress());
                                         catTV.setText(charity.getCategory());
