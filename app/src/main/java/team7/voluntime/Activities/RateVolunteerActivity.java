@@ -51,7 +51,7 @@ public class RateVolunteerActivity extends AppCompatActivity {
     @BindView(R.id.rateVolunteerCommentTV)
     TextView commentTV;
     @BindView(R.id.rateVolunteerSubmitBtn)
-    Button submitBtn;
+    TextView submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,11 +131,6 @@ public class RateVolunteerActivity extends AppCompatActivity {
             reference.setValue(rateVolunteer);
             finish();
         }
-    }
-
-    @OnClick(R.id.rateVolunteerBackTV)
-    public void backButtonOnClick() {
-        finish();
     }
 
 }

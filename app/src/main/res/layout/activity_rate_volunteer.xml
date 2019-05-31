@@ -4,45 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     tools:context=".Activities.RateVolunteerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
-        <!-- Header Layout -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/TitleTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Rate Volunteer"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/whiteColor"
+            android:textSize="33sp"/>
 
-            <TextView
-                android:id="@+id/rateVolunteerBackTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10sp"
-                android:layout_marginTop="20sp"
-                android:layout_weight="1"
-                android:textSize="20sp"
-                android:text="Back"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/rateVolunteerNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/rateVolunteerNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text=""/>
-
-        </LinearLayout>
+            android:text=""
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/whiteColor"
+            android:textSize="30sp"
+            />
 
         <RatingBar
             android:id="@+id/rateVolunteerRatingBar"
@@ -50,14 +44,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:numStars="5"
-            android:stepSize="0.5" />
+            android:stepSize="0.5"
+            android:progressTint="@color/whiteColor"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:textSize="18sp"
-            android:text="Comment:"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="7dp"
+            android:textSize="22sp"
+            android:text="Comment:"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/whiteColor" />
 
         <EditText
             android:id="@+id/rateVolunteerCommentET"
@@ -70,22 +68,34 @@
         <TextView
             android:id="@+id/rateVolunteerCommentTV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:textSize="18sp"
             android:visibility="gone"
             android:text="" />
 
-        <Button
-            android:id="@+id/rateVolunteerSubmitBtn"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/gradient_login_btn"
-            android:text="Submit"
-            android:textSize="20sp"
-            android:textColor="#eee" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rect_whitefull"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rateVolunteerSubmitBtn"
+                android:layout_gravity="center_horizontal"
+                android:text="SUBMIT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:padding="12dp"
+                android:textColor="#009eee"
+                android:textSize="15.4dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
