@@ -83,6 +83,7 @@
                     android:text="Description:"
                     android:textColor="@color/whiteColor"
                     android:textSize="15sp"
+
                     android:textStyle="bold" />
 
                 <TextView
@@ -91,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/roboto_regular"
+                    android:paddingEnd="8dp"
                     android:text="desc"
                     android:textColor="@color/whiteColor"
                     android:textSize="15sp" />
@@ -164,26 +166,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingEnd="10sp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/eventDetailsStartTime"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center_horizontal"
                         android:text="Start Time"
+                        android:textAlignment="center"
                         android:textColor="@color/whiteColor"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/eventDetailsStartTimeTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:text="Maximum"
+                        android:textAlignment="center"
                         android:textColor="@color/whiteColor"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -192,14 +197,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:paddingStart="10sp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/eventDetailsENDTime"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
+                        android:textAlignment="center"
                         android:text="End Time"
                         android:textColor="@color/whiteColor"
                         android:textSize="15sp"
@@ -207,10 +214,11 @@
 
                     <TextView
                         android:id="@+id/eventDetailsEndTimeTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
+                        android:textAlignment="center"
                         android:text="Maximum"
                         android:textColor="@color/whiteColor"
                         android:textSize="15sp" />
@@ -223,43 +231,66 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
 
-                <TextView
-                    android:id="@+id/eventDetailsLoc"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Location:"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="0.8">
 
-                <TextView
-                    android:id="@+id/eventDetailsLocationTV"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/eventDetailsLoc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="Location:"
+                            android:textColor="@color/whiteColor"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/eventDetailsLocationTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="desc"
+                            android:textColor="@color/whiteColor"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="desc"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="15sp" />
+                    android:layout_weight="0.2">
+
+                    <ImageView
+                        android:id="@+id/eventDetailsMapIV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Map"
+                        android:gravity="center"
+                        android:src="@drawable/ic_map_2"
+                        android:visibility="invisible" />
+                </RelativeLayout>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/eventDetailsMapIV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="Map"
-                android:gravity="center"
-                android:src="@drawable/ic_map_2"
-                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/eventDetailsConcludeEventBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/wbutton"
                 android:paddingStart="5sp"
@@ -269,84 +300,117 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/eventDetailsvolText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/eventMinimum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Minimum Volunteers Needed:"
-                android:textColor="@color/whiteColor"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/eventDetailsMinimumTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Minimum Volunteers Needed:"
-                android:textColor="@color/whiteColor"
-                android:textSize="15sp" />
-        </LinearLayout>
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_horizontal"
+            android:text="Volunteers Needed:"
+            android:textAlignment="center"
+            android:textColor="@color/whiteColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/eventMax"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Maximum Volunteers Needed:"
-                android:textColor="@color/whiteColor"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingEnd="10dp">
 
-            <TextView
-                android:id="@+id/eventDetailsMaximumTV"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/eventMinimum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Minimum:"
+                    android:textAlignment="center"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/eventDetailsMinimumTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingEnd="4dp"
+                    android:text="Minimum"
+                    android:textAlignment="center"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Maximum"
-                android:textColor="@color/whiteColor"
-                android:textSize="15sp" />
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingStart="10dp">
+
+                <TextView
+                    android:id="@+id/eventMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Maximum:"
+                    android:textAlignment="center"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/eventDetailsMaximumTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingEnd="4dp"
+                    android:text="Maximum"
+                    android:textAlignment="center"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
 
+        <!--pending Adapter-->
         <LinearLayout
             android:id="@+id/eventDetailsPendingVolunteersLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingTop="20dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pending Volunteers:"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/roboto_regular"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eventDetailsPendingVolunteersTV"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="None" />
+                android:fontFamily="@font/roboto_regular"
+                android:text="--"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -365,20 +429,30 @@
             android:id="@+id/eventDetailsRegisteredVolunteersLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Registered Volunteers: "
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/roboto_regular"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eventDetailsRegisteredVolunteersTV"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="None"/>
+                android:fontFamily="@font/roboto_regular"
+                android:text="--"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -398,20 +472,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Attended Volunteers:"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/roboto_regular"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eventDetailsAttendedVolunteersTV"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="None" />
+                android:fontFamily="@font/roboto_regular"
+                android:text="--"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp" />
 
         </LinearLayout>
 

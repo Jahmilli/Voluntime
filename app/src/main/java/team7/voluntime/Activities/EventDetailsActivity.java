@@ -204,8 +204,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
-                                        if (attendedVolunteersTV.getVisibility() != View.INVISIBLE) {
-                                            attendedVolunteersTV.setVisibility(View.INVISIBLE);
+                                        if (attendedVolunteersTV.getVisibility() != View.GONE) {
+                                            attendedVolunteersTV.setVisibility(View.GONE);
                                         }
                                         Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
                                         tempVolunteer.setId(attendedVolunteer.getKey());
@@ -260,8 +260,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                                     Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
                                     tempVolunteer.setId(child.getKey());
                                     if (child.getValue().toString().equals(Constants.EVENT_PENDING)) {
-                                        if (pendingVolunteersTV.getVisibility() != View.INVISIBLE) {
-                                            pendingVolunteersTV.setVisibility(View.INVISIBLE);
+                                        if (pendingVolunteersTV.getVisibility() != View.GONE) {
+                                            pendingVolunteersTV.setVisibility(View.GONE);
                                         }
                                         pendingVolunteersList.add(tempVolunteer);
                                         pendingVolunteersLV.invalidateViews();
@@ -271,8 +271,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                                         }
 
                                     } else if (child.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
-                                        if (registeredVolunteersTV.getVisibility() != View.INVISIBLE) {
-                                            registeredVolunteersTV.setVisibility(View.INVISIBLE);
+                                        if (registeredVolunteersTV.getVisibility() != View.GONE) {
+                                            registeredVolunteersTV.setVisibility(View.GONE);
                                         }
                                         registeredVolunteersList.add(tempVolunteer);
                                         registeredVolunteersLV.invalidateViews();
