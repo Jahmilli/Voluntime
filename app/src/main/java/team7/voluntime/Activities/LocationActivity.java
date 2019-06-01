@@ -57,6 +57,7 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     private double latitude = 0;
     private double longitude = 0;
     private String address = "";
+    private boolean isEditable = false;
 
     private final String TAG = "LocationActivity";
 
@@ -87,6 +88,8 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         latitude = intent.getDoubleExtra("latitude", 0);
         longitude = getIntent().getDoubleExtra("longitude", 0);
         address = getIntent().getStringExtra("address");
+        isEditable = getIntent().getBooleanExtra("isEditable", false);
+
 
 
     }
@@ -100,12 +103,16 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         updateLocationUI();
         getDeviceLocation();
 
+        // This will allow for editing the location of the event if its null
         if (latitude > 0 || longitude > 0) {
             Log.d(TAG, "Setting event location, lat is: " + latitude + " long is: " + longitude);
             LatLng eventLocation = new LatLng(latitude, longitude);
             mGoogleMap.addMarker(new MarkerOptions().position(eventLocation).title(address)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 15));
+            if (isEditable) {
+                setEventLocation();
+            }
         } else {
             // Setting a click event handler for the map
             Log.d(TAG, "Setting event handler, lat is: " + latitude + " long is: " + longitude);
