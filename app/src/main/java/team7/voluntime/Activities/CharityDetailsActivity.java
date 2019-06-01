@@ -15,6 +15,7 @@ import com.google.firebase.database.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import team7.voluntime.R;
 
 public class CharityDetailsActivity extends AppCompatActivity {
@@ -31,6 +32,8 @@ public class CharityDetailsActivity extends AppCompatActivity {
     TextView charityDetailsAddressTV;
     @BindView(R.id.charityDetailsDescTV)
     TextView charityDetailsDescTV;
+    @BindView(R.id.backButtonTV)
+    TextView backButtonTV;
     private FirebaseUser mUser;
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -75,6 +78,11 @@ public class CharityDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @OnClick(R.id.backButtonTV)
+    public void backButtonTV() {
+        finish();
     }
 
 }
