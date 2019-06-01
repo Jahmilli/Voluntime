@@ -35,7 +35,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     let eventData = undefined;
     let charityData = undefined;
 
-    if (val === PENDING) {
+    if (val !== REGISTERED && val !== PREVIOUS && val !== CANCELLED && val !== REJECTED) {
         return;
     }
 
@@ -87,10 +87,12 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     if (val === REGISTERED) {
         mailOptions.subject = 'You have been selected to help out with our event!';
         mailOptions.text = `Hello ${volunteerData.name},` + 
-        `Thanks for registering for an event, the details are as follows: ` + 
+        `\n\nYou have been selected to help our with our event!` +
+        `\n\nThe event details are as follows: ` + 
         `\nTitle:  ${eventData.title}` +
         `\nDate: ${eventData.date}` +
-        `\nTime:  TBA` +
+        `\nStart Time:  ${eventData.startTime}` +
+        `\nEnd Time:  ${eventData.endTime}` +
         `\nDescription: ${eventData.description}` +
         `\nCategory: ${eventData.category}` +
         `\nLocation: ${location} \n\n\n` +
@@ -102,8 +104,15 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     } else if (val === PREVIOUS) {
         mailOptions.subject = "Thank you for your support";
         mailOptions.text = `Hello ${volunteerData.name},` +
-        `\nAll of us at ${charityData.name} would just like to thank you for your help and hope to see you at our future events!\n\n\n` +
-        `Looking forward to seeing you sometime soon!` +
+        `\n\nAll of us at ${charityData.name} would just like to thank you for your help at the following event:` +
+        `\nTitle:  ${eventData.title}` +
+        `\nDate: ${eventData.date}` +
+        `\nStart Time:  ${eventData.startTime}` +
+        `\nEnd Time:  ${eventData.endTime}` +
+        `\nDescription: ${eventData.description}` +
+        `\nCategory: ${eventData.category}` +
+        `\nLocation: ${location} \n\n\n` +
+        `We hope to see you at our future events,` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
@@ -111,18 +120,32 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
     } else if (val === CANCELLED) {
         mailOptions.subject = "Our event has been cancelled";
         mailOptions.text = `Hello ${volunteerData.name},` + 
-        `\nUnfortunately, we have had to cancel our event.` +
-        `\nAll of us at ${charityData.name} would just like to apologise for having to cancel this event but we hope to see you in the future!\n\n\n` +
-        `Looking forward to seeing you sometime soon!` +
+        `\n\nThis is a notice of cancellation for the following event:` +
+        `\nTitle:  ${eventData.title}` +
+        `\nDate: ${eventData.date}` +
+        `\nStart Time:  ${eventData.startTime}` +
+        `\nEnd Time:  ${eventData.endTime}` +
+        `\nDescription: ${eventData.description}` +
+        `\nCategory: ${eventData.category}` +
+        `\nLocation: ${location} \n\n\n` +
+        `\nAll of us at ${charityData.name} would just are extremely sorry for this to happen but we hope to see you at future events!\n\n\n` +
+        `Looking forward to seeing you sometime soon,` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
     } else if (val === REJECTED) {
         mailOptions.subject = "You were not picked for our event";
-        mailOptions.text = `Hello ${volunteerData.name}` + 
-        `\nUnfortunately, you were not picked for our event.` +
-        `\nWe hope you understand and we encourage you to apply for our future events.\n\n\n` +
-        `Looking forward to seeing you sometime soon!` +
+        mailOptions.text = `Hello ${volunteerData.name},` + 
+        `\n\nUnfortunately, you were not picked for the following event:` +
+        `\nTitle:  ${eventData.title}` +
+        `\nDate: ${eventData.date}` +
+        `\nStart Time:  ${eventData.startTime}` +
+        `\nEnd Time:  ${eventData.endTime}` +
+        `\nDescription: ${eventData.description}` +
+        `\nCategory: ${eventData.category}` +
+        `\nLocation: ${location} \n\n\n` +
+        `\nWe hope you understand and we encourage you to apply for our future events.` +
+        `\nLooking forward to seeing you sometime soon,\n` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
@@ -130,7 +153,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
 
     try {
         await mailTransport.sendMail(mailOptions);
-        console.log(`An email was successfully sent to ${volunteer.email}`);
+        console.log(`An email was successfully sent to ${volunteerData.email}`);
     } catch(error) {
         console.error('There was an error while sending the email:', error);
     }

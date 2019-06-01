@@ -1,11 +1,9 @@
 package team7.voluntime.Utilities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -34,11 +31,13 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
     private static final String TAG = "VolunteerListAdapter";
     private Context mContext;
     private EventDetailsActivity activity;
+    private ArrayList<Volunteer> volunteerList;
     int mResource;
     private String eventId;
 
     public VolunteerListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Volunteer> objects, EventDetailsActivity activity) {
         super(context, resource, objects);
+        this.volunteerList = objects;
         this.mContext = context;
         this.activity = activity;
         mResource = resource;
@@ -46,7 +45,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         eventId = Objects.requireNonNull(getItem(position)).getId();
 
         final Event event = activity.getEvent();
@@ -76,6 +75,7 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                     DatabaseReference reference = activity.getDatabaseReference();
                     reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REGISTERED);
                     reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REGISTERED);
+                    activity.removeVolunteerFromList(position, true);
                 }
             });
         }
@@ -90,8 +90,9 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             DatabaseReference reference = activity.getDatabaseReference();
-                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REJECTED);
-                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REJECTED);
+                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_PENDING); // TESTING THIS SHOULD BE REJECETD
+                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_PENDING); // TESTING THIS SHOULD BE REJECETD
+                            activity.removeVolunteerFromList(position, false);
                         }
                     });
 

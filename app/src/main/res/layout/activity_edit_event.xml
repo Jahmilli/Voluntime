@@ -46,7 +46,7 @@
                 android:layout_marginTop="8sp"
                 android:textSize="20sp"
                 android:hint="Event Title"
-                android:inputType="text" />
+                android:inputType="textMultiLine" />
 
             <EditText
                 android:id="@+id/editEventDescriptionET"
@@ -54,7 +54,7 @@
                 android:layout_marginTop="8sp"
                 android:hint="Description"
                 android:textSize="20sp"
-                android:inputType="text" />
+                android:inputType="textMultiLine" />
 
             <EditText
                 android:id="@+id/editEventLocationET"
