@@ -110,35 +110,55 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/eventRegisterEventAddress"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Address:  "
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
+                    android:layout_weight="0.8">
 
-                <TextView
-                    android:id="@+id/eventRegisterEventAddressTV"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/eventRegisterEventAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Location:  "
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/whiteColor"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/eventRegisterEventAddressTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/whiteColor"
+                            android:textSize="15sp"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="15sp"/>
+                    android:layout_weight="0.2">
 
+                    <ImageView
+                        android:id="@+id/eventRegisterMapIV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="Map"
+                        android:gravity="center"
+                        android:src="@drawable/ic_map_2" />
 
+                </RelativeLayout>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/eventRegisterMapIV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_map"
-                android:tint="@color/whiteColor"/>
+
 
 
             <LinearLayout
