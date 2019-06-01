@@ -281,9 +281,6 @@ public class EditVolunteerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("accountType", "Volunteer");
-        startActivity(intent);
         finish();
     }
 

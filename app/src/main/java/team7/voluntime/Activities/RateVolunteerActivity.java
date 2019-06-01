@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +51,7 @@ public class RateVolunteerActivity extends AppCompatActivity {
     @BindView(R.id.rateVolunteerCommentTV)
     TextView commentTV;
     @BindView(R.id.rateVolunteerSubmitBtn)
-    TextView submitBtn;
+    LinearLayout submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,10 @@ public class RateVolunteerActivity extends AppCompatActivity {
                         commentTV.setText(rating.getComment());
                     } else {
                         commentET.setText(rating.getComment());
+                    }
+                } else {
+                    if (isPastEvent) {
+                        commentTV.setText("No comment was provided");
                     }
                 }
             }

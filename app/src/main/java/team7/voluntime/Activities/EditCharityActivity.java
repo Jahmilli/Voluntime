@@ -189,9 +189,6 @@ public class EditCharityActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("accountType", "Charity");
-        startActivity(intent);
         finish();
     }
 
