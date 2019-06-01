@@ -24,7 +24,7 @@
             android:background="@drawable/round_button"
             android:paddingStart="5sp"
             android:paddingRight="5sp"
-            android:text="Event Details"
+            android:text="View Event"
             android:textColor="@color/whiteColor"
             android:visibility="invisible" />
     </FrameLayout>
