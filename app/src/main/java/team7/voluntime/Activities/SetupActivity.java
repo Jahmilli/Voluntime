@@ -124,7 +124,6 @@ public class SetupActivity extends AppCompatActivity {
         currentPage = 2;
     }
 
-    @OnClick({R.id.setupInitCharity, R.id.setupInitVolunteer})
     public void returnToInit() {
         selectSetupLL.setVisibility(View.VISIBLE);
         setupFirstCharitySV.setVisibility(View.VISIBLE);

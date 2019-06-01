@@ -190,34 +190,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:orientation="horizontal"
-                    android:paddingBottom="10dp">
-
-                    <TextView
-                        android:id="@+id/setupInitVolunteer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#0000"
-                        android:text="Back"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textColor="@color/whiteColor"
-                        android:textSize="25sp" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginBottom="36dp"
+                    android:background="@drawable/rect_whitefull"
+                    android:orientation="vertical">
 
 
                         <TextView
                             android:id="@+id/setupFinishVolunteer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Finish"
-                            android:fontFamily="@font/roboto_bold"
-                            android:textColor="@color/whiteColor"
-                            android:textSize="25sp"/>
+                            android:text="FINISH"
+                            android:layout_gravity="center_horizontal"
+                            android:background="#0000"
+                            android:fontFamily="@font/roboto_light"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:textColor="#009eee"
+                            android:textSize="15.4dp"/>
 
                 </LinearLayout>
 
@@ -310,34 +301,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp">
-
-                <TextView
-                    android:id="@+id/setupInitCharity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#0000"
-                    android:text="Back"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="25sp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_marginBottom="36dp"
+                android:background="@drawable/rect_whitefull"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/setupFinishCharity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="FINISH"
+                    android:layout_gravity="center_horizontal"
                     android:background="#0000"
-                    android:text="Finish"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="25sp" />
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:textColor="#009eee"
+                    android:textSize="15.4dp"/>
 
             </LinearLayout>
         </LinearLayout>
