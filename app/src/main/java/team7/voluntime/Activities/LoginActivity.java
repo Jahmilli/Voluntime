@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.email_authentication_message_success, Toast.LENGTH_LONG).show();
                         } else {
                             Log.d(TAG, "Authentication email failed to send " + task.getException());
-                            Toast.makeText(LoginActivity.this, R.string.email_authentication_message_failure, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Failed to send verification email, please try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

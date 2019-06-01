@@ -25,6 +25,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -192,13 +194,11 @@ public class EventDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    attendedVolunteersList.clear();
-
                     // These is needed to stop application crashing when either list is updated and becomes empty
                     attendedVolunteersAdapter.notifyDataSetChanged();
 
                     for (final DataSnapshot attendedVolunteer : dataSnapshot.getChildren()) {
-                        if (attendedVolunteer.exists() && attendedVolunteer.getValue().equals("previous")) {
+                        if (attendedVolunteer.exists() && attendedVolunteer.getValue().equals("previous") && !attendedVolunteersList.contains(attendedVolunteer)) {
                             volunteersReference.child(attendedVolunteer.getKey()).child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
@@ -244,54 +244,54 @@ public class EventDetailsActivity extends AppCompatActivity {
         eventVolunteersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                pendingVolunteersList.clear();
-                registeredVolunteersList.clear();
+                if (dataSnapshot.exists()) {
+                    // These is needed to stop application crashing when either list is updated and becomes empty
+                    pendingVolunteersAdapter.notifyDataSetChanged();
+                    registeredVolunteersAdapter.notifyDataSetChanged();
 
-                // These is needed to stop application crashing when either list is updated and becomes empty
-                pendingVolunteersAdapter.notifyDataSetChanged();
-                registeredVolunteersAdapter.notifyDataSetChanged();
+                    for (final DataSnapshot child : dataSnapshot.getChildren()) {
+                        if (child.exists()) {
+                            volunteersReference.child(child.getKey()).child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
+                                        tempVolunteer.setId(child.getKey());
+                                        if (child.getValue().toString().equals(Constants.EVENT_PENDING) && !pendingVolunteersList.contains(tempVolunteer)) {
+                                            if (pendingVolunteersTV.getVisibility() != View.GONE) {
+                                                pendingVolunteersTV.setVisibility(View.GONE);
+                                            }
+                                            pendingVolunteersList.add(tempVolunteer);
+                                            pendingVolunteersLV.invalidateViews();
+                                            Utilities.setDynamicHeight(pendingVolunteersLV);
+                                            if (registeredVolunteersList.isEmpty()) {
+                                                registeredVolunteersTV.setVisibility(View.VISIBLE);
+                                            }
 
-                for (final DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.exists()) {
-                        volunteersReference.child(child.getKey()).child("Profile").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    Volunteer tempVolunteer = dataSnapshot.getValue(Volunteer.class);
-                                    tempVolunteer.setId(child.getKey());
-                                    if (child.getValue().toString().equals(Constants.EVENT_PENDING)) {
-                                        if (pendingVolunteersTV.getVisibility() != View.GONE) {
-                                            pendingVolunteersTV.setVisibility(View.GONE);
-                                        }
-                                        pendingVolunteersList.add(tempVolunteer);
-                                        pendingVolunteersLV.invalidateViews();
-                                        Utilities.setDynamicHeight(pendingVolunteersLV);
-                                        if (registeredVolunteersList.isEmpty()) {
-                                            registeredVolunteersTV.setVisibility(View.VISIBLE);
-                                        }
-
-                                    } else if (child.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
-                                        if (registeredVolunteersTV.getVisibility() != View.GONE) {
-                                            registeredVolunteersTV.setVisibility(View.GONE);
-                                        }
-                                        registeredVolunteersList.add(tempVolunteer);
-                                        registeredVolunteersLV.invalidateViews();
-                                        Utilities.setDynamicHeight(registeredVolunteersLV);
-                                        if (pendingVolunteersList.isEmpty()) {
-                                            pendingVolunteersTV.setVisibility(View.VISIBLE);
+                                        } else if (child.getValue().toString().equals(Constants.EVENT_REGISTERED) && !registeredVolunteersList.contains(tempVolunteer)) {
+                                            if (registeredVolunteersTV.getVisibility() != View.GONE) {
+                                                registeredVolunteersTV.setVisibility(View.GONE);
+                                            }
+                                            registeredVolunteersList.add(tempVolunteer);
+                                            registeredVolunteersLV.invalidateViews();
+                                            Utilities.setDynamicHeight(registeredVolunteersLV);
+                                            if (pendingVolunteersList.isEmpty()) {
+                                                pendingVolunteersTV.setVisibility(View.VISIBLE);
+                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
+                                }
 
-                        });
+                            });
+                        }
                     }
                 }
+
             }
 
             @Override
@@ -308,6 +308,14 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     public DatabaseReference getDatabaseReference() {
         return mDatabase.getReference();
+    }
+
+    public void removeVolunteerFromList(int index, boolean isPending) {
+        if (isPending) {
+            pendingVolunteersList.remove(index);
+        } else {
+            registeredVolunteersList.remove(index);
+        }
     }
 
     // Sets the event to previous for the charity and all volunteers registered with that event.

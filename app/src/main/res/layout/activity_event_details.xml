@@ -295,6 +295,7 @@
                 android:background="@drawable/wbutton"
                 android:paddingStart="5sp"
                 android:paddingRight="5sp"
+                android:visibility="gone"
                 android:text="Conclude Event!"
                 android:textColor="@color/vtBlue" />
 

@@ -216,17 +216,17 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         titleTV.setText(title);
         nReference = database.getReference("Charities").child(organisers);
         nReference.child("Profile").child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                                     @Override
-                                                                                     public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                                                                                         if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                                                                                             charityName = dataSnapshot.getValue().toString();
-                                                                                             charityTV.setText(charityName);
-                                                                                         }
-                                                                                     }
+             @Override
+             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                     charityName = dataSnapshot.getValue().toString();
+                     charityTV.setText(charityName);
+                 }
+             }
 
-                                                                                     @Override
-                                                                                     public void onCancelled(@NotNull DatabaseError databaseError) {
-                                                                                     }
+             @Override
+             public void onCancelled(@NotNull DatabaseError databaseError) {
+             }
                                                                                  }
         );
         return convertView;

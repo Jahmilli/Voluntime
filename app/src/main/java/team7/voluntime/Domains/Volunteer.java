@@ -132,4 +132,10 @@ public class Volunteer implements Parcelable {
                 "\nEmail: " + this.getEmail() +
                 "\nHistory: " + this.getHistory();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Volunteer other = (Volunteer) obj;
+        return id.equals(other.id) && name.equals(other.name) && address.equals(other.address);
+    }
 }
