@@ -218,8 +218,9 @@ public class EditEventActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LocationActivity.class);
         intent.putExtra("latitude", Double.parseDouble(coords[0]));
         intent.putExtra("longitude", Double.parseDouble(coords[1]));
+        intent.putExtra("isEditable", true);
         intent.putExtra("address", eventLocationET.getText().toString());
-        startActivity(intent);
+        startActivityForResult(intent, LOCATION_REQUEST_CODE);
     }
 
 

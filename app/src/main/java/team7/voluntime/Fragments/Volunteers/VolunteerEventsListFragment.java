@@ -91,7 +91,6 @@ public class VolunteerEventsListFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     volunteer = dataSnapshot.getValue(Volunteer.class);
                     volunteer.setId(mUser.getUid());
-                    Log.d(TAG, volunteer.toString());
                 }
             }
 
@@ -121,7 +120,6 @@ public class VolunteerEventsListFragment extends Fragment {
                                                     String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
                                                     event.setVolunteerStatus(status);
                                                 }
-                                                Log.d(TAG, event.toString());
                                                 upcomingEventList.add(event);
                                                 listOfUpcomingEvents.invalidateViews();
                                             }
