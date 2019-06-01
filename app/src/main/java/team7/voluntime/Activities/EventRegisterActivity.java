@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,6 +64,8 @@ public class EventRegisterActivity extends AppCompatActivity {
     TextView endTimeTV;
     @BindView(R.id.eventCancelRegisterButton)
     TextView eventCancelButton;
+    @BindView(R.id.eventRegisterBackBtn)
+    ImageView eventRegisterBackBtn;
 
 
     @Override
@@ -218,6 +221,11 @@ public class EventRegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), CharityDetailsActivity.class);
         intent.putExtra("ID", charityID);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.eventRegisterBackBtn)
+    public void eventRegisterBackBtn() {
+        finish();
     }
 
 }
