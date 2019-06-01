@@ -142,6 +142,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                     } catch(IndexOutOfBoundsException e) {
                         Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
                         Log.e(TAG, e.toString());
+                    }  catch(NullPointerException e) {
+                        Log.e(TAG, e.toString());
                     }
                     locationTV.setText(address);
                 }

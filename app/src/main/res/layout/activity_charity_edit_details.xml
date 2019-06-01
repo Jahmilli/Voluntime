@@ -81,6 +81,7 @@
                 android:inputType="text" />
 
             <LinearLayout
+                android:id="@+id/editFinishCharityTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="36dp"
@@ -90,7 +91,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/editFinishCharityTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

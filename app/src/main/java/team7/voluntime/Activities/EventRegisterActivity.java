@@ -84,19 +84,18 @@ public class EventRegisterActivity extends AppCompatActivity {
         charityID = event.getOrganisers();
         nReference = database.getReference("Charities").child(charityID);
         nReference.child("Profile").child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
-                            charityName = dataSnapshot.getValue().toString();
-                            eventRegisterEventHostTV.setText(charityName);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NotNull DatabaseError databaseError) {
-                    }
+            @Override
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    charityName = dataSnapshot.getValue().toString();
+                    eventRegisterEventHostTV.setText(charityName);
                 }
-        );
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError databaseError) {
+            }
+        });
 
         coords = event.getLocation().split(" ");
         eventRegisterEventNameTV.setText(event.getTitle());
@@ -113,6 +112,8 @@ public class EventRegisterActivity extends AppCompatActivity {
                     .get(0).getAddressLine(0);
         } catch (IndexOutOfBoundsException e) {
             Log.e(TAG, "An error occurred when passing location coords: " + event.getLocation());
+            Log.e(TAG, e.toString());
+        } catch(NullPointerException e) {
             Log.e(TAG, e.toString());
         }
         eventRegisterEventAddressTV.setText(address);
