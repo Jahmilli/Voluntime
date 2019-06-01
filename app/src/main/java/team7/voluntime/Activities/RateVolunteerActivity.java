@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -135,6 +134,11 @@ public class RateVolunteerActivity extends AppCompatActivity {
             reference.setValue(rateVolunteer);
             finish();
         }
+    }
+
+    @OnClick(R.id.voleBackTV)
+    public void backButtonTV() {
+        finish();
     }
 
 }
