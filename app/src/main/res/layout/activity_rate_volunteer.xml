@@ -18,7 +18,7 @@
             android:id="@+id/TitleTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rate Volunteer"
+            android:text="Volunteer Rating"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"

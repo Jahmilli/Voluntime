@@ -4,7 +4,7 @@
     android:id="@+id/register_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     tools:context=".Activities.EventRegisterActivity">
 
     <ScrollView
@@ -26,24 +26,28 @@
 
             <TextView
                 android:id="@+id/eventRegisterTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:text="Review Registration"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="35dp"/>
 
 
             <TextView
                 android:id="@+id/eventRegisterStatusTV"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="5dp"
                 android:textSize="15dp"
-                android:textStyle="italic|bold" />
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/whiteColor"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,14 +60,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Event Hosted By:  " />
+                    android:text="Event Hosted By:  "
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/eventRegisterEventHostTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic|bold"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -77,13 +87,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Event Name:  " />
+                    android:text="Event Name:  "
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/eventRegisterEventNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"/>
 
             </LinearLayout>
 
@@ -97,12 +114,19 @@
                     android:id="@+id/eventRegisterEventAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Address:  " />
+                    android:text="Event Address:  "
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/eventRegisterEventAddressTV"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"/>
 
 
             </LinearLayout>
@@ -113,7 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_map" />
+                android:src="@drawable/ic_map"
+                android:tint="@color/whiteColor"/>
 
 
             <LinearLayout
@@ -126,13 +151,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Event Description:  " />
+                    android:text="Event Description:  "
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/eventRegisterEventDescriptionTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"/>
 
             </LinearLayout>
 
@@ -146,13 +178,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Event Date:  " />
+                    android:text="Event Date:  "
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/eventRegisterEventDateTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="15sp"/>
 
             </LinearLayout>
 
@@ -165,13 +204,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Event Start Time:  " />
+                android:text="Event Start Time:  "
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/eventRegisterEventStartTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"/>
 
         </LinearLayout>
 
@@ -184,38 +230,62 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Event Start Time:  " />
+                android:text="Event Start Time:  "
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/eventRegisterEventEndTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/whiteColor"
+                android:textSize="15sp"/>
 
         </LinearLayout>
 
-            <Button
-                android:id="@+id/eventRegisterButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="100dp"
-                android:onClick="eventRegisterConfirm"
-                android:text="Register" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/rect_whitefull"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/eventCancelRegisterButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="100dp"
-                android:onClick="eventRegisterCancel"
-                android:text="Cancel Registration"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/eventRegisterButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="eventRegisterConfirm"
+                    android:text="REGISTER"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#0000"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:textColor="#009eee"
+                    android:textSize="15.4dp"/>
 
+                <TextView
+                    android:id="@+id/eventCancelRegisterButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="eventRegisterCancel"
+                    android:text="CANCEL REGISTRATION"
+                    android:visibility="gone"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#0000"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:textColor="#009eee"
+                    android:textSize="15.4dp"/>
 
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-
 </RelativeLayout>

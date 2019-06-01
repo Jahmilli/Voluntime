@@ -50,7 +50,7 @@ public class EventRegisterActivity extends AppCompatActivity {
     @BindView(R.id.eventRegisterEventNameTV)
     TextView eventRegisterEventNameTV;
     @BindView(R.id.eventRegisterButton)
-    Button eventRegisterButton;
+    TextView eventRegisterButton;
     @BindView(R.id.eventRegisterEventDescriptionTV)
     TextView eventRegisterEventDescriptionTV;
     @BindView(R.id.eventRegisterEventAddressTV)
@@ -62,7 +62,7 @@ public class EventRegisterActivity extends AppCompatActivity {
     @BindView(R.id.eventRegisterEventEndTimeTV)
     TextView endTimeTV;
     @BindView(R.id.eventCancelRegisterButton)
-    Button eventCancelButton;
+    TextView eventCancelButton;
 
 
     @Override
