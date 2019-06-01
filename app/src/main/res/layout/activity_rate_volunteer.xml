@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     tools:context=".Activities.RateVolunteerActivity">
 
     <LinearLayout
@@ -30,41 +30,31 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/rateVolunteerNameTV"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:text=""/>
 
-            <TextView
-                android:id="@+id/rateVolunteerNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text=""/>
-
-        </LinearLayout>
 
         <RatingBar
             android:id="@+id/rateVolunteerRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:progressTint="@color/whiteColor"
             android:numStars="5"
             android:stepSize="0.5" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:textSize="18sp"
-            android:text="Comment:"/>
 
         <EditText
             android:id="@+id/rateVolunteerCommentET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             style="@style/loginEditTexts"
-            android:hint="Add a comment here"
+            android:layout_marginTop="8sp"
+            android:hint="Add a comment"
+            android:textSize="20sp"
             android:inputType="textMultiLine" />
 
         <TextView
@@ -74,18 +64,29 @@
             android:layout_marginTop="15dp"
             android:textSize="18sp"
             android:visibility="gone"
+            android:layout_gravity="center"
             android:text="" />
 
-        <Button
-            android:id="@+id/rateVolunteerSubmitBtn"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/gradient_login_btn"
-            android:text="Submit"
-            android:textSize="20sp"
-            android:textColor="#eee" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/rect_whitefull"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rateVolunteerSubmitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:text="Submit Rating"
+                android:padding="15dp"
+                android:textColor="#009eee"
+                android:textSize="15.4dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

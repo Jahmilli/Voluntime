@@ -51,7 +51,7 @@ public class RateVolunteerActivity extends AppCompatActivity {
     @BindView(R.id.rateVolunteerCommentTV)
     TextView commentTV;
     @BindView(R.id.rateVolunteerSubmitBtn)
-    Button submitBtn;
+    TextView submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +80,13 @@ public class RateVolunteerActivity extends AppCompatActivity {
                 if (rating != null) {
                     ratingBar.setRating(rating.getRating());
                     if (isPastEvent) {
-                        commentTV.setText(rating.getComment());
+                        commentTV.setText("Comment: " + rating.getComment());
                     } else {
                         commentET.setText(rating.getComment());
+                    }
+                } else {
+                    if (isPastEvent) {
+                        commentTV.setText("Comment: No comment was made");
                     }
                 }
             }
