@@ -4,7 +4,7 @@
     android:id="@+id/register_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     tools:context=".Activities.EventRegisterActivity">
 
     <ScrollView
@@ -201,7 +201,11 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
                 android:onClick="eventRegisterConfirm"
-                android:text="Register" />
+                android:background="@drawable/wbutton"
+                android:paddingStart="5sp"
+                android:paddingRight="5sp"
+                android:text="Register"
+                android:textColor="@color/vtBlue" />
 
             <Button
                 android:id="@+id/eventCancelRegisterButton"
@@ -211,6 +215,10 @@
                 android:layout_marginTop="100dp"
                 android:onClick="eventRegisterCancel"
                 android:text="Cancel Registration"
+                android:background="@drawable/wbutton"
+                android:paddingStart="5sp"
+                android:paddingRight="5sp"
+                android:textColor="@color/vtBlue"
                 android:visibility="gone" />
 
 

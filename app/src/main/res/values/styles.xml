@@ -13,6 +13,11 @@
         <item name="android:textSize">8pt</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/dropBlue</item>
+        <item name="colorControlActivated">@color/whiteColor</item>
+    </style>
+
     <style name="loginEditTexts" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

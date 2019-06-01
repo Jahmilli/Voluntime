@@ -232,7 +232,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp">
+                android:paddingBottom="20dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -342,7 +342,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:text="Minimum"
                     android:textAlignment="center"
                     android:textColor="@color/whiteColor"
@@ -372,7 +372,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
                     android:text="Maximum"
                     android:textAlignment="center"
                     android:textColor="@color/whiteColor"
