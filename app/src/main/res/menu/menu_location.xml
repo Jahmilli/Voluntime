@@ -5,7 +5,8 @@
     <item
         android:id="@+id/location_help"
         android:title="locationHelp"
-        android:icon="@drawable/ic_info_white_icon"
+        android:icon="@drawable/ic_account_edit"
+        android:iconTint="@color/vtBlue"
         app:showAsAction="always"/>
 
 </menu>

@@ -2,6 +2,7 @@ package team7.voluntime.Domains;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.EditText;
 
 import java.util.HashMap;
 
@@ -202,5 +203,11 @@ public class Event implements Parcelable {
                 "\nOrganisers: " + getOrganisers() +
                 "\nMinimum: " + getMinimum() +
                 "\nMaximum: " + getMaximum();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Event other = (Event) obj;
+        return id.equals(other.id) && title.equals(other.title) && organisers.equals(other.organisers);
     }
 }

@@ -17,6 +17,8 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:textAlignment="center"
+            android:textColor="@color/whiteColor"
+            android:textStyle="bold|italic"
             android:text="" />
 
     </LinearLayout>
@@ -33,21 +35,21 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:src="@drawable/ic_cancel_icon" />
+            android:src="@drawable/ic_cancel_black_24dp" />
 
         <ImageView
             android:id="@+id/volunteerAdapterAddIV"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:src="@drawable/ic_tick_icon" />
+            android:src="@drawable/ic_check_circle" />
 
         <ImageView
             android:id="@+id/volunteerAdapterProfileIV"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:src="@drawable/ic_view_profile_icon" />
+            android:src="@drawable/ic_person_black_24dp" />
 
     </LinearLayout>
 

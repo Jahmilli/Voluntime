@@ -13,12 +13,21 @@
         <item name="android:textSize">8pt</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/dropBlue</item>
+        <item name="colorControlActivated">@color/whiteColor</item>
+    </style>
+
     <style name="loginEditTexts" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">7dp</item>
         <item name="android:padding">7dp</item>
         <item name="android:textSize">23sp</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textColor">@color/whiteColor</item>
+        <item name="android:textColorHint">@color/whiteColor</item>
+        <item name='android:backgroundTint'>@color/whiteColor</item>
     </style>
 
     <style name="loginButton" parent="Theme.AppCompat.Light.NoActionBar">

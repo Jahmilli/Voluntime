@@ -287,14 +287,6 @@ public class EditVolunteerActivity extends AppCompatActivity {
         finish();
     }
 
-    @OnClick(R.id.editDetailsBackTV)
-    public void editDetailsBackOnClick() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("accountType", "Volunteer");
-        startActivity(intent);
-        finish();
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

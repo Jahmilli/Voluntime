@@ -7,11 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,9 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import team7.voluntime.Activities.CreateEventActivity;
 import team7.voluntime.Domains.Charity;
 import team7.voluntime.Domains.Event;
@@ -44,12 +43,6 @@ public class CharityViewEventsFragment extends Fragment {
 
     ListView listOfUpcomingEventsLV;
 
-    @BindView(R.id.upcomingEventsTV)
-    TextView upcomingEventsTV;
-    @BindView(R.id.viewEventTitleTV)
-    TextView viewEventTitleTV;
-    @BindView(R.id.createEventIV)
-    ImageView createEventIV;
 
     private final static String TAG = "CharityViewEvents";
 
@@ -69,6 +62,7 @@ public class CharityViewEventsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_charity_view_events, container, false);
         ButterKnife.bind(this, v);
+        setHasOptionsMenu(true);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseDatabase.getInstance();
         charityReference = Utilities.getCharityReference(database, mUser.getUid());
@@ -125,7 +119,6 @@ public class CharityViewEventsFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         upcomingEventList.clear();
-                        upcomingEventsTV.setVisibility(View.VISIBLE);
 
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             if (child.exists()) {
@@ -142,9 +135,6 @@ public class CharityViewEventsFragment extends Fragment {
                                     if (upcomingEvents.containsKey(eventId)) {
                                         event.setPastEvent(false);
                                         upcomingEventList.add(event);
-                                        if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                            upcomingEventsTV.setVisibility(View.INVISIBLE);
-                                        }
                                         listOfUpcomingEventsLV.invalidateViews();
                                     }
                                 }
@@ -174,12 +164,19 @@ public class CharityViewEventsFragment extends Fragment {
         return mUser;
     }
 
-    @OnClick(R.id.createEventIV)
-    public void createEventOnClick() {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent createEventIntent = new Intent(getActivity(), CreateEventActivity.class);
         createEventIntent.putExtra("id", charity.getId());
         createEventIntent.putExtra("categories", charity.getCategory());
         startActivity(createEventIntent);
+        return true;
     }
 
 }

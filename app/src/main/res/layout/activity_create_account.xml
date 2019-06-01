@@ -4,94 +4,116 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login_bg"
+    android:background="@drawable/gradient_1"
     tools:context=".Activities.CreateAccountActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Create an Account"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/whiteColor"
+            android:textSize="35dp"/>
+
+        <TextView
+            android:id="@+id/createAccDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:text="Enter an E-mail and password into the fields below to use with our service"
+            android:textAlignment="center"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="17.3dp"
+            android:textColor="@color/whiteColor"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/createEmailInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rect_white"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/createAccEmailET"
+                android:hint="@string/email_txt"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@color/whiteColor"
+                android:textColorHighlight="@color/colorPrimaryDark"
+                android:textColorHint="@color/whiteColor"
+                android:textColorLink="@color/colorPrimary"
+                android:textSize="15.4dp"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/createPasswordInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="38.4dp"
+            android:background="@drawable/rect_white"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/createAccPasswordET"
+                android:hint="@string/password_txt"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:background="#00000000"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="@color/whiteColor"
+                android:textColorHighlight="@color/colorPrimaryDark"
+                android:textColorHint="@color/whiteColor"
+                android:textColorLink="@color/colorPrimary"
+                android:textSize="15.4dp" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-
-            <ImageView
-                android:id="@+id/logoCreate"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40dp" />
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="38.4dp"
+            android:background="@drawable/rect_whitefull"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Create an Account"
-                android:textColor="#444"
-                android:textSize="33sp" />
-
-            <TextView
-                android:id="@+id/createAccDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20sp"
-                android:text="Enter an E-mail and password into the fields below to use with our service"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/createEmailInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/createAccEmailET"
-                    style="@style/loginEditTexts"
-                    android:drawableStart="@drawable/ic_mail_outline"
-                    android:layout_marginBottom="10sp"
-                    android:hint="@string/email_txt"
-                    android:inputType="textEmailAddress" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/createPasswordInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/createAccPasswordET"
-                    style="@style/loginEditTexts"
-                    android:drawableStart="@drawable/ic_lock_outline"
-                    android:layout_marginTop="10sp"
-                    android:layout_marginBottom="10sp"
-                    android:hint="@string/password_txt"
-                    android:inputType="textPassword" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
                 android:id="@+id/createAccBtn"
-                android:layout_width="275dp"
+                android:text="CREATE ACCOUNT"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/gradient_login_btn"
-                android:text="Create Account"
-                android:textColor="#eee"
-                android:textSize="20sp" />
-
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textColor="#009eee"
+                android:textSize="15.4dp"/>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </RelativeLayout>

@@ -2,7 +2,6 @@ package team7.voluntime.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,6 +47,9 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
     private T screen;
     int mResource;
     private String eventId;
+    private String charityName;
+    private DatabaseReference nReference;
+    private FirebaseDatabase database;
 
 
     public EventListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> objects, T screen) {
@@ -52,6 +62,7 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        database = FirebaseDatabase.getInstance();
         eventId = Objects.requireNonNull(getItem(position)).getId();
 
         String title = getItem(position).getTitle();
@@ -77,9 +88,13 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
         convertView = inflater.inflate(mResource, parent, false);
 
         LinearLayout eventLayout = convertView.findViewById(R.id.adapterEventLL);
-        ImageView statusIV = convertView.findViewById(R.id.adapterEventStatusIV);
+        RelativeLayout dotLayout = convertView.findViewById(R.id.adapterDot);
+        ImageView rejectDot = convertView.findViewById(R.id.adapterEventStatusDotReject);
+        ImageView regDot = convertView.findViewById(R.id.adapterEventStatusDotReg);
+        ImageView penDot = convertView.findViewById(R.id.adapterEventStatusDotPen);
         TextView dateTV = convertView.findViewById(R.id.adapterEventDateTV);
         TextView titleTV = convertView.findViewById(R.id.adapterEventTitleTV);
+        final TextView charityTV = convertView.findViewById(R.id.adapterEventCharityTV);
         ImageView adapterEventIV1 = convertView.findViewById(R.id.adapterEventIV1);
         ImageView adapterEventInfoIV = convertView.findViewById(R.id.adapterEventInfoIV);
         ImageView adapterEventRatingIV = convertView.findViewById(R.id.adapterEventRatingIV);
@@ -129,17 +144,28 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
 
         } else if (screen.getClass().equals(VolunteerEventsListFragment.class)) {
             adapterEventIV1.setVisibility(View.VISIBLE);
+            dotLayout.setVisibility(View.VISIBLE);
             if (!StringUtils.isEmpty(volunteerStatus)) {
                 switch (volunteerStatus) {
                     case Constants.EVENT_PENDING:
-//                        statusIV.setImageResource(R.mipmap.subtract_round);
-                        eventLayout.setBackgroundColor(Color.rgb(255, 253, 123));
+                        rejectDot.setVisibility(View.GONE);
+                        regDot.setVisibility(View.GONE);
+                        penDot.setVisibility(View.VISIBLE);
                         break;
-                    case Constants.EVENT_REGISTERED: eventLayout.setBackgroundColor(Color.rgb(60, 179, 113));
+                    case Constants.EVENT_REGISTERED:
+                        rejectDot.setVisibility(View.GONE);
+                        regDot.setVisibility(View.VISIBLE);
+                        penDot.setVisibility(View.GONE);
                         break;
-                    case Constants.EVENT_REJECTED: eventLayout.setBackgroundColor(Color.rgb(255, 99, 71));
+                    case Constants.EVENT_REJECTED:
+                        regDot.setVisibility(View.GONE);
+                        penDot.setVisibility(View.GONE);
+                        rejectDot.setVisibility(View.VISIBLE);
                         break;
-                    default: eventLayout.setBackgroundColor(Color.WHITE);
+                    default:
+                        rejectDot.setVisibility(View.GONE);
+                        regDot.setVisibility(View.GONE);
+                        penDot.setVisibility(View.GONE);
                 }
 
             }
@@ -188,6 +214,21 @@ public class EventListAdapter<T> extends ArrayAdapter<Event> {
 
         dateTV.setText(date);
         titleTV.setText(title);
+        nReference = database.getReference("Charities").child(organisers);
+        nReference.child("Profile").child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                     charityName = dataSnapshot.getValue().toString();
+                     charityTV.setText(charityName);
+                 }
+             }
+
+             @Override
+             public void onCancelled(@NotNull DatabaseError databaseError) {
+             }
+                                                                                 }
+        );
         return convertView;
     }
 }

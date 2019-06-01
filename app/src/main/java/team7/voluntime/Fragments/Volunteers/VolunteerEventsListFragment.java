@@ -1,7 +1,6 @@
 package team7.voluntime.Fragments.Volunteers;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,11 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import team7.voluntime.Activities.SearchCharityActivity;
-import team7.voluntime.Activities.SearchEventActivity;
 import team7.voluntime.Domains.Event;
 import team7.voluntime.Domains.Volunteer;
 import team7.voluntime.R;
@@ -52,16 +46,6 @@ public class VolunteerEventsListFragment extends Fragment {
 
     ListView listOfUpcomingEvents;
 
-    @BindView(R.id.volunteerUpcomingEventsTV)
-    TextView upcomingEventsTV;
-
-    @BindView(R.id.volunteerViewEventTitleTV)
-    TextView viewEventTitleTV;
-
-    @BindView(R.id.searchCharity)
-    TextView searchCharity;
-
-
     private final static String TAG = "VolunteerEventsList";
 
 
@@ -73,7 +57,7 @@ public class VolunteerEventsListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getActivity().setTitle("All Events");
+        getActivity().setTitle("Upcoming Events");
     }
 
     @Override
@@ -107,7 +91,6 @@ public class VolunteerEventsListFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     volunteer = dataSnapshot.getValue(Volunteer.class);
                     volunteer.setId(mUser.getUid());
-                    Log.d(TAG, volunteer.toString());
                 }
             }
 
@@ -120,42 +103,53 @@ public class VolunteerEventsListFragment extends Fragment {
         eventsReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        upcomingEventList.clear();
-                        upcomingEventsTV.setVisibility(View.VISIBLE);
+                        if (dataSnapshot.exists()) {
+                            for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                                if (eventSnapshot.exists()) {
+                                    final Event event = eventSnapshot.getValue(Event.class);
+                                    event.setId(eventSnapshot.getKey());
 
-                        for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                            if (eventSnapshot.exists()) {
-                                String eventId = eventSnapshot.getKey();
-                                final Event event = eventSnapshot.getValue(Event.class);
-                                event.setId(eventId);
-
-                                charitiesReference.child(event.getOrganisers()).child("Events").child(eventId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot charityEventStatusSnapshot) {
-                                        if (charityEventStatusSnapshot.exists() && charityEventStatusSnapshot.getValue() != null) {
-                                            if (charityEventStatusSnapshot.getValue().equals("upcoming")) {
-                                                if (eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue() != null) {
-                                                    String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
-                                                    event.setVolunteerStatus(status);
+                                    charitiesReference.child(event.getOrganisers()).child("Events").child(event.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot charityEventStatusSnapshot) {
+                                            if (charityEventStatusSnapshot.exists() && charityEventStatusSnapshot.getValue() != null) {
+                                                if (charityEventStatusSnapshot.getValue().equals("upcoming") && !upcomingEventList.contains(event)) {
+                                                    if (eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue() != null) {
+                                                        String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
+                                                        event.setVolunteerStatus(status);
+                                                    }
+                                                    upcomingEventList.add(event);
+                                                    listOfUpcomingEvents.invalidateViews();
+                                                } else if (charityEventStatusSnapshot.getValue().equals("upcoming") && upcomingEventList.contains(event)) {
+                                                    int index = upcomingEventList.indexOf(event);
+                                                    if (eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue() != null) {
+                                                        String status = eventSnapshot.child("Volunteers").child(volunteer.getId()).getValue().toString();
+                                                        event.setVolunteerStatus(status);
+                                                        if (!event.getVolunteerStatus().equals(upcomingEventList.get(index).getVolunteerStatus())) {
+                                                            upcomingEventList.get(index).setVolunteerStatus(event.getVolunteerStatus());
+                                                            listOfUpcomingEvents.invalidateViews();
+                                                        }
+                                                    }
+                                                } else if (charityEventStatusSnapshot.getValue().equals("previous") && upcomingEventList.contains(event)) {
+                                                    upcomingEventList.remove(event);
+                                                    listOfUpcomingEvents.invalidateViews();
+                                                } else if (charityEventStatusSnapshot.getValue().equals("cancelled") && upcomingEventList.contains(event)) {
+                                                    upcomingEventList.remove(event);
+                                                    listOfUpcomingEvents.invalidateViews();
                                                 }
-                                                Log.d(TAG, event.toString());
-                                                upcomingEventList.add(event);
-                                                if (upcomingEventsTV.getVisibility() != View.INVISIBLE) {
-                                                    upcomingEventsTV.setVisibility(View.INVISIBLE);
-                                                }
-                                                listOfUpcomingEvents.invalidateViews();
                                             }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
 
+                                }
                             }
                         }
+
                     }
 
                     @Override
@@ -165,23 +159,23 @@ public class VolunteerEventsListFragment extends Fragment {
                 });
 
 
-        EditText charityFilter = (EditText) v.findViewById(R.id.charityFilter);
-        charityFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            EditText charityFilter = (EditText) v.findViewById(R.id.charityFilter);
+            charityFilter.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                (VolunteerEventsListFragment.this).upcomingEventListAdapter.getFilter().filter(charSequence);
-            }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    (VolunteerEventsListFragment.this).upcomingEventListAdapter.getFilter().filter(charSequence);
+                }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
+                @Override
+                public void afterTextChanged(Editable editable) {
 
-            }
-        });
+                }
+            });
 
         return v;
     }

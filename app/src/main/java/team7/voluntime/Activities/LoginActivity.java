@@ -61,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
      * Use the @BindView annotation so Butter Knife can search for that view, and cast it for you
      * (in this case it will get casted to Edit Text)
      */
-    @BindView(R.id.logoMain)
-    ImageView logoMain;
 
     @BindView(R.id.loginEmailET)
     EditText loginEmailET;
@@ -135,7 +133,6 @@ public class LoginActivity extends AppCompatActivity {
         try {
             InputStream stream = getAssets().open(logoName);
             Drawable d = Drawable.createFromStream(stream, null);
-            logoMain.setImageDrawable(d);
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, e.toString());
@@ -212,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.email_authentication_message_success, Toast.LENGTH_LONG).show();
                         } else {
                             Log.d(TAG, "Authentication email failed to send " + task.getException());
-                            Toast.makeText(LoginActivity.this, R.string.email_authentication_message_failure, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Failed to send verification email, please try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

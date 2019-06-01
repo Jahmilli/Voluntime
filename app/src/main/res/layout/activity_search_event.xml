@@ -22,15 +22,12 @@
             android:paddingTop="20dp"
             android:paddingBottom="20dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Search Event"/>
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/eventFilter"/>
+                android:id="@+id/eventFilter"
+                android:background="@drawable/rounded_search"
+                android:hint="Search" />
 
 
             <ListView
