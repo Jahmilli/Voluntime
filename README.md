@@ -7,7 +7,7 @@
   * [Android Studio](https://developer.android.com/studio/)
   * [IntelliJ](https://www.jetbrains.com/help/idea/getting-started-with-android-development.html)
 * Java Development Kit (JDK) (Comes with Android Studio)
-* An emulator with API version >= 20 OR a physical Android device
+* An emulator with API version >= 23 OR a physical Android device
 * Git (https://git-scm.com/downloads)
 * Trello (https://trello.com/b/uRSHuzCW/team-7-volunteer-services-application)
 
