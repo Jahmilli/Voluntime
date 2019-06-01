@@ -22,7 +22,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:visibility="visible"
-                app:srcCompat="@drawable/vt" />
+                app:srcCompat="@drawable/ic_launcher_vt_white" />
 
             <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->
