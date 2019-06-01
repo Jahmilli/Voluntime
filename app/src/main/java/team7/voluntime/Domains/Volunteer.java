@@ -135,13 +135,7 @@ public class Volunteer implements Parcelable {
 
     @Override
     public boolean equals(Object obj) {
-
         Volunteer other = (Volunteer) obj;
-
-        return name.equals(other.name) && address.equals(other.address);
-
-//        Hole other = (Hole) obj;
-
-//        return a == other.a && b == other.b;
+        return id.equals(other.id) && name.equals(other.name) && address.equals(other.address);
     }
 }
