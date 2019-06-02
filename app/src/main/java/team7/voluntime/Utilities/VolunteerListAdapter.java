@@ -90,8 +90,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             DatabaseReference reference = activity.getDatabaseReference();
-                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_PENDING); // TESTING THIS SHOULD BE REJECETD
-                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_PENDING); // TESTING THIS SHOULD BE REJECETD
+                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REJECTED);
+                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REJECTED);
                             activity.removeVolunteerFromList(position, false);
                         }
                     });
