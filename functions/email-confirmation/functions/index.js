@@ -145,7 +145,7 @@ exports.sendEmailConfirmation = functions.database.ref('/Volunteers/{uid}/Events
         `\nCategory: ${eventData.category}` +
         `\nLocation: ${location} \n\n\n` +
         `\nWe hope you understand and we encourage you to apply for our future events.` +
-        `\nLooking forward to seeing you sometime soon,\n` +
+        `\nLooking forward to seeing you sometime soon,` +
         `\n${charityData.name}` +
         `\n${charityData.phoneNumber}` +
         `\n${charityData.address}`;
