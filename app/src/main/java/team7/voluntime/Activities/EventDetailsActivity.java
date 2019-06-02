@@ -335,14 +335,16 @@ public class EventDetailsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot volunteer : dataSnapshot.getChildren()) {
-                                if (status.equals(Constants.EVENT_PREVIOUS)) {
-                                    if (volunteer.getValue() != null && volunteer.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
+                                if (volunteer.exists()) {
+                                    if (status.equals(Constants.EVENT_PREVIOUS)) {
+                                        if (volunteer.getValue() != null && volunteer.getValue().toString().equals(Constants.EVENT_REGISTERED)) {
+                                            eventVolunteersReference.child(volunteer.getKey()).setValue(status);
+                                            volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
+                                        }
+                                    } else if (status.equals(Constants.EVENT_CANCELLED)) {
                                         eventVolunteersReference.child(volunteer.getKey()).setValue(status);
                                         volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
                                     }
-                                } else if (status.equals(Constants.EVENT_CANCELLED)) {
-                                    eventVolunteersReference.child(volunteer.getKey()).setValue(status);
-                                    volunteersReference.child(volunteer.getKey()).child("Events").child(event.getId()).setValue(status);
                                 }
                             }
                         }

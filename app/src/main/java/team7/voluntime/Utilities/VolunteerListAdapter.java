@@ -64,7 +64,8 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
 
         TextView nameTV  = (TextView) convertView.findViewById(R.id.volunteerAdapterNameTV);
         final ImageView volunteerAdapterAddIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterAddIV);
-        final ImageView volunteerAdapterRemoveIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveIV);
+        final ImageView volunteerAdapterRemovePendingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemovePendingIV);
+        final ImageView volunteerAdapterRemoveRegisteredIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRemoveRegisteredIV);
         ImageView volunteerAdapterProfileIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterProfileIV);
         ImageView volunteerAdapterRatingIV = (ImageView) convertView.findViewById(R.id.volunteerAdapterRatingIV);
 
@@ -80,8 +81,35 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
             });
         }
 
-        if (volunteerAdapterRemoveIV != null) {
-            volunteerAdapterRemoveIV.setOnClickListener(new View.OnClickListener() {
+        if (volunteerAdapterRemovePendingIV != null) {
+            volunteerAdapterRemovePendingIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(@NonNull View view) {
+                    final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Reject Volunteer");
+                    builder.setMessage("Are you sure you wish to reject this volunteer?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DatabaseReference reference = activity.getDatabaseReference();
+                            reference.child("Volunteers").child(volunteerId).child("Events").child(event.getId()).setValue(Constants.EVENT_REJECTED);
+                            reference.child("Events").child(event.getId()).child("Volunteers").child(volunteerId).setValue(Constants.EVENT_REJECTED);
+                            activity.removeVolunteerFromList(position, true);
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                     builder.show();
+                }
+            });
+
+        }
+
+        if (volunteerAdapterRemoveRegisteredIV != null) {
+            volunteerAdapterRemoveRegisteredIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(@NonNull View view) {
                     final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -101,10 +129,9 @@ public class VolunteerListAdapter extends ArrayAdapter<Volunteer> {
                             dialog.cancel();
                         }
                     });
-                     builder.show();
+                    builder.show();
                 }
             });
-
         }
 
         if (volunteerAdapterProfileIV != null) {
