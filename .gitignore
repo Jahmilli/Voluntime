@@ -63,6 +63,8 @@ obj/
 /out/
 
 # Idea stuff
+*.idea/
+.idea*
 **/.idea/workspace.xml 
 **/.idea/tasks.xml
 
@@ -107,5 +109,11 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+# node_modules
+functions/email-confirmation/functions/node_modules/
+functions/email-confirmation/*node_modules/
+
+#env
+functions/email-confirmation/.env.yml
 
 # End of https://www.gitignore.io/api/androidstudio

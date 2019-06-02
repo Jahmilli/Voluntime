@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="66.6">
+
+        <TextView
+            android:id="@+id/volunteerAdapterNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/whiteColor"
+            android:textStyle="italic|bold"
+            android:text="" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="33.3"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:id="@+id/volunteerAdapterRemoveRegisteredIV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_cancel_black_24dp" />
+
+        <ImageView
+            android:id="@+id/volunteerAdapterProfileIV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_person_black_24dp" />
+
+        <ImageView
+            android:id="@+id/volunteerAdapterRatingIV"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_stars_black_24dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

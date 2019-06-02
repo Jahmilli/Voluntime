@@ -8,10 +8,55 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
-    <style name="LoginStyles" >
+    <style name="LoginStyles">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">8pt</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/dropBlue</item>
+        <item name="colorControlActivated">@color/whiteColor</item>
+    </style>
+
+    <style name="loginEditTexts" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">7dp</item>
+        <item name="android:padding">7dp</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:textColor">@color/whiteColor</item>
+        <item name="android:textColorHint">@color/whiteColor</item>
+        <item name='android:backgroundTint'>@color/whiteColor</item>
+    </style>
+
+    <style name="loginButton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:radius">15dp</item>
+    </style>
+
+    <style name="volunteerInfoTVSize" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <style name="volunteerInfoETSize" parent="android:Widget.EditText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="toolbarStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorControlNormal">#eee</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

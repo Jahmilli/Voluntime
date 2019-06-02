@@ -1,0 +1,42 @@
+Volunteers:
+  <UserID>:
+    Profile:
+      name: String
+      phoneNumber: String
+      dateOfBirth: String
+      address: String
+      gender: String
+    Events:
+      <EventID>: String # pending/registered/previous/cancelled
+    Ratings:
+      <EventID>:
+        charityId: <CharityID>
+        eventId: <EventID>
+        rating: Integer
+        comment: String
+        dateRated: String
+Charities:
+  <CharityID>:
+    Profile:
+      name: String
+      address: String
+      phoneNumber: String
+      description: String
+      category: [String]
+    Events:
+      <EventID>: String # previous/upcoming
+Events:
+  <EventID>:
+    title: String
+    description: String
+    category: [String]
+    location: String # String representing GPS coords
+    date: String
+    startTime: String
+    endTime: String
+    createdTime: String
+    organisers: CharityID
+    minimum: Integer
+    maximum: Integer
+    Volunteers:
+      <VolunteerID>: String # pending/registered/attended

@@ -1,21 +1,44 @@
 <resources>
-    <string name="app_name">SESHealthPatient</string>
+    <string name="app_name">Voluntime</string>
     <string name="username_txt">Username</string>
     <string name="email_example_com">email@example.com</string>
+    <string name="email_txt">Email</string>
     <string name="password_txt">Password</string>
     <string name="log_in_txt">Log In</string>
-    <string name="login_activity_title">Log In</string>
+    <string name="title_activity_create_account">CreateAccountActivity</string>
+    <string name="password_reset_txt">Enter your E-mail below and we\'ll send you a link to reset it</string>
+
+
+    <string name="email_authentication_message_success">A verification email has been sent to your account. Please click on the link sent to verify your account</string>
+    <string name="email_authentication_message_failure">Failed to create account</string>
+    <string name="create_account_txt">Creating account</string>
+    <string name="login_progress_dialog">Logging in...</string>
+
+    <!-- Invalid details -->
+    <string name="email_check_toast">Please fill in a valid email</string>
+    <string name="password_check_length_toast">Password must be 6 or more characters</string>
+    <string name="password_check_toast">Please fill in your password</string>
+    <string name="invalid_email_and_password">You have entered an invalid username or password</string>
+
+
+    <!-- Exceptions -->
+    <string name="exception_email_already_exists">The email address is already in use by another account</string>
+    <string name="exception_network_connectivity">Network connectivity issues, please check your internet connection</string>
+    <string name="exception_during_login">An error occurred during logging in, please try again</string>
+    <string name="google_authentication_message_failure">Failed to connect to Google</string>
+    <string name="title_activity_setup">SetupActivity</string>
+    <string name="user_not_verified_message">\ has not been verified yet, check your inbox or resend a verification email</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <string name="email_success">An email has been sent, please view it to update your password</string>
+    <string name="email_failure">There was a problem sending an email to the listed email address, please try again and ensure you have the correct email address.</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
+    <string name="title_activity_location">LocationActivity</string>
+    <string name="title_event_details">EventDetailsActivity</string>
+    <string name="title_search_charity">SearchCharityActivity</string>
+    <string name="title_activity_event_register">EventRegisterActivity</string>
+    <string name="title_activity_charity_details">CharityDetails</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="patient_information">Patient Information</string>
-    <string name="create_data_packet">Create Data Packet</string>
-    <string name="heart_rate">Heart Rate</string>
-    <string name="record_video">Record Video</string>
-    <string name="send_local_file">Send Local File</string>
-    <string name="facilities_map">Facilities Map</string>
-
-    <string name="drawer_open">Drawer Open</string>
-    <string name="drawer_close">Drawer Close</string>
+    <string name="title_activity_edit_event">EditEventActivity</string>
 </resources>

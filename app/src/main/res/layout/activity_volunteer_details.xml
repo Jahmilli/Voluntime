@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_1"
+    android:fillViewport="true"
+    tools:context=".Activities.VolunteerDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/volunteerDetailsBackTV"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingStart="10sp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_arrow_back_short"/>
+
+        </LinearLayout>
+
+        <!-- Main Layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/volunteerDetailsNameTV"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"
+                android:textSize="35dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/volunteerDetailsEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:text="Email: "
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/volunteerDetailsEmailTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/volunteerDetailsPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:text="Phone: "
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/volunteerDetailsPhoneTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/volunteerDetailsAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:text="Address: "
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/volunteerDetailsAddressTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="20sp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/whiteColor"/>
+
+            </LinearLayout>
+
+            <!-- Individual Volunteer Attributes -->
+            <LinearLayout
+                android:id="@+id/volunteerDetailsVolunteerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/volunteerDetailsDob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:text="DOB: "
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/whiteColor"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/volunteerDetailsDobTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/whiteColor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/volunteerDetailsGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:text="Gender: "
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/whiteColor"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/volunteerDetailsGenderTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="20sp"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/whiteColor"/>
+                </LinearLayout>
+
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       android:text="Volunteer History: "
+                       android:layout_gravity="center_horizontal"
+                       android:fontFamily="@font/roboto_bold"
+                       android:textColor="@color/whiteColor" />
+
+                   <TextView
+                       android:id="@+id/volunteerDetailsHistoryTV"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginStart="8dp"
+                       android:text="None"
+                       android:fontFamily="@font/roboto_regular"
+                       android:textColor="@color/whiteColor"/>
+
+               </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/volunteerDetailsHistoryLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

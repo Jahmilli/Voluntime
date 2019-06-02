@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/gradient_1"
+    android:orientation="horizontal">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/editCharitySV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Details"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/whiteColor"
+                android:textSize="35sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Charity Details"
+                android:textSize="23sp"
+                android:fontFamily="@font/roboto_light"
+                android:textColor="@color/whiteColor" />
+
+            <EditText
+                android:id="@+id/editCharityNameET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="25sp"
+                android:ems="10"
+                android:hint="Charity Name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editCharityAddressET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="10sp"
+                android:ems="10"
+                android:hint="Charity Address"
+                android:inputType="textPostalAddress" />
+
+            <EditText
+                android:id="@+id/editCharityPhoneET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="10sp"
+                android:ems="10"
+                android:hint="Charity Phone Number"
+                android:inputType="phone"
+                android:maxLength="12" />
+
+            <EditText
+                android:id="@+id/editCharityDescriptionET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="10sp"
+                android:ems="10"
+                android:hint="Charity Description"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/editCharityCategoryET"
+                style="@style/loginEditTexts"
+                android:layout_marginTop="10sp"
+                android:ems="10"
+                android:hint="Categories"
+                android:inputType="text" />
+
+            <LinearLayout
+                android:id="@+id/editFinishCharityTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/rect_whitefull"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#0000"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="FINISH"
+                    android:textColor="#009eee"
+                    android:textSize="15.4dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

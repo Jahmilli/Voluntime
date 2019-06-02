@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whiteColor"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:background="@drawable/rounded_search"
+        android:id="@+id/charityFilter"
+        android:drawableLeft="@drawable/ic_search"
+        android:drawablePadding="10sp"
+        android:hint="Search"
+        android:padding="8sp"
+        android:textColor="@color/offWhiteColor"
+        android:textColorHighlight="@color/whiteColor"
+        android:textColorHint="@color/offWhiteColor"
+        />
+
+    <ListView
+        android:id="@+id/volunteerListOfUpcomingEventsLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>
