@@ -3,8 +3,8 @@
   "description": "Send Email confirmation upon sign up to a Mailing list Firebase Functions sample",
   "dependencies": {
     "@google/maps": "^0.5.5",
-    "firebase-admin": "~7.1.1",
-    "firebase-functions": "^2.2.1",
+    "firebase-admin": "~11.4.1",
+    "firebase-functions": "^4.1.1",
     "nodemailer": "^2.4.1"
   },
   "devDependencies": {
